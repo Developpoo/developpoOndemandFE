@@ -14,6 +14,7 @@ import { NotFound404Module } from './_pagine/not-found404/not-found404.module';
 import { NovitaModule } from './_pagine/novita/novita.module';
 import { PreferitiModule } from './_pagine/preferiti/preferiti.module';
 import { SerieTVModule } from './_pagine/serie-tv/serie-tv.module';
+import { HttpClientModule } from '@angular/common/http'
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SerieTVModule } from './_pagine/serie-tv/serie-tv.module';
     NotFound404Module,
     NovitaModule,
     PreferitiModule,
-    SerieTVModule
+    SerieTVModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
