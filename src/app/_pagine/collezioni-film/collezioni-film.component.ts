@@ -33,7 +33,7 @@ export class CollezioniFilmComponent implements OnInit {
   private osservoCat() {
     return {
       next: (rit: IRispostaServer) => {
-        console.log("NEXT", rit)
+        // console.log("NEXT", rit)
         const elementi = rit.data
         for (let i = 0; i < elementi.length; i++) {
           // const tmpImg:Immagine=elementi[1].img // se non ci fosse un fake DB si sarebbe adoperato questa stringa
@@ -64,7 +64,4 @@ export class CollezioniFilmComponent implements OnInit {
       complete: () => { console.log("%c COMPLETATO", "color:#00AA00") }
     }
   }
-
-
 }
-

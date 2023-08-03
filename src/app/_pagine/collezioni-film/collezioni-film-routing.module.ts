@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: '', component: CollezioniFilmComponent,
     children: [
-      { path: 'collezioni/:idFilm', loadChildren: () => import('../film/film.module').then(m => m.FilmModule) }
+      { path: 'elenco/:idFilm', loadChildren: () => import('../film/film.module').then(m => m.FilmModule) }
     ]
   }
 ];
