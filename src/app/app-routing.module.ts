@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'novita', loadChildren: () => import('./_pagine/novita/novita.module').then(m => m.NovitaModule) },
   { path: 'genere', loadChildren: () => import('./_pagine/genere/genere.module').then(m => m.GenereModule) },
   { path: 'chisono', loadChildren: () => import('./_pagine/chisono/chisono.module').then(m => m.ChisonoModule) },
+  { path: 'collezioni', loadChildren: () => import('./_pagine/collezioni-film/collezioni-film.module').then(m => m.CollezioniFilmModule) },
   { path: '**', loadChildren: () => import('./_pagine/not-found404/not-found404.module').then(m => m.NotFound404Module) }
 ];
 

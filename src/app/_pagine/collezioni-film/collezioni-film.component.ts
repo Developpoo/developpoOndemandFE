@@ -7,13 +7,13 @@ import { Card } from 'src/app/_types/Card.type';
 import { Immagine } from 'src/app/_types/Immagine.type';
 
 @Component({
-  selector: 'app-genere',
-  templateUrl: './genere.component.html',
-  styleUrls: ['./genere.component.scss']
+  selector: 'app-collezioni-film',
+  templateUrl: './collezioni-film.component.html',
+  styleUrls: ['./collezioni-film.component.scss']
 })
-export class GenereComponent implements OnInit {
+export class CollezioniFilmComponent implements OnInit {
 
-  generi: Card[] = []
+  categorie: Card[] = []
   cat$: Observable<IRispostaServer>
 
   constructor(private api: ApiService) {
@@ -25,6 +25,7 @@ export class GenereComponent implements OnInit {
       delay(1000)
     ).subscribe(this.osservoCat())
   }
+
   //########################################
   // Observer
   //########################################
@@ -46,15 +47,15 @@ export class GenereComponent implements OnInit {
             icona: null,
             tipo: "button",
             emitId: null,
-            link: "/genere/" + elementi[i].id
+            link: "/collezioni/elenco/" + elementi[i].id
           }
           const card: Card = {
             immagine: tmpImg,
-            titolo: elementi[i].nome,
             descrizione: '',
+            titolo: elementi[i].nome,
             bottone: bott
           }
-          this.generi.push(card)
+          this.categorie.push(card)
         }
       },
       error: (err: any) => {
@@ -66,3 +67,4 @@ export class GenereComponent implements OnInit {
 
 
 }
+

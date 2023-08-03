@@ -1,0 +1,15 @@
+<ng-container *ngIf="!(categorie.length>0)">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="categorie.length>0">
+    <ul class="row">
+        <li *ngFor="let categoria of categorie" class="col">
+            <app-bs-card [opzioni]="categoria"></app-bs-card>
+        </li>
+    </ul>
+</ng-container>
+
+<router-outlet></router-outlet>

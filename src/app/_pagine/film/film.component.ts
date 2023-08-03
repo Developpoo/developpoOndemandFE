@@ -13,32 +13,21 @@ import { Immagine } from 'src/app/_types/Immagine.type';
 })
 export class FilmComponent implements OnInit, OnDestroy {
 
-  idFilm: string | null
   films: Card[] = []
-  elem$!: Observable<IRispostaServer>
   private distruggi$ = new Subject<void>()
 
   constructor(private api: ApiService, private route: ActivatedRoute) {
-    this.idFilm = this.route.snapshot.paramMap.get("idFilm")
-    if (this.idFilm !== null) {
-      this.elem$ = this.api.getFilmsDaGenere(parseInt(this.idFilm))
-    }
+
   }
 
   ngOnInit(): void {
-    this.elem$.pipe(
-      delay(1000),
-      tap(x => console.log("TAP", x))
+    this.recuperaDati().pipe(
+      delay(1000)
     ).subscribe(this.osservoFilms())
-
-
-    // this.recuperaDati().pipe(
-    //   delay(1000)
-    // ).subscribe(this.osservoFilms())
   }
 
   ngOnDestroy(): void {
-    // this.distruggi$.next()
+    this.distruggi$.next()
   }
 
   private recuperaDati(): Observable<IRispostaServer> {
