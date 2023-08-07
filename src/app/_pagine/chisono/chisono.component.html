@@ -1,1 +1,8 @@
-<p>chisono works!</p>
+<p *ngFor="let valori of dati">{{valori.idTipoIndirizzo}} - {{ valori.nome}}</p>
+
+<ul *ngFor="let valori of dati">
+    <li>
+        <a href="javascript:void(0)" title="Vai alla pagina{{valori.nome}}"
+            [routerLink]="['/pagina'+'/'+valori.idTipoIndirizzo]">{{valori.nome}}</a>
+    </li>
+</ul>

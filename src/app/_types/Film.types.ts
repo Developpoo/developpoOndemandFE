@@ -1,9 +1,15 @@
-import { Immagine } from "./Immagine.type"
+
 
 export type Film = {
-    id: number,
-    idCat: number,
+    idFilm: number,
     titolo: string,
-    autore: string,
-    img?: Immagine
+    descrizione: string,
+    durata: number,
+    regista: string,
+    attori: string,
+    anno: number,
+    idImg?: string | null,
+    idFilmato?: string | null,
+    idTrailer?: string |null,
+    watch: number
 }

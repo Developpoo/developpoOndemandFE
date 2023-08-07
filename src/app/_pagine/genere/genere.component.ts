@@ -23,8 +23,15 @@ export class GenereComponent implements OnInit {
   ngOnInit(): void {
     this.cat$.pipe(
       delay(1000)
-    ).subscribe(this.osservoCat())
+    ).subscribe(this.osservoCat)
   }
+
+  // getGeneri() {
+  //   this.api.getGeneri().subscribe((response) => {
+  //     this.generi = response.data;
+  //   });
+  // }
+
   //########################################
   // Observer
   //########################################
@@ -35,7 +42,7 @@ export class GenereComponent implements OnInit {
         console.log("NEXT", rit)
         const elementi = rit.data
         for (let i = 0; i < elementi.length; i++) {
-          // const tmpImg:Immagine=elementi[1].img // se non ci fosse un fake DB si sarebbe adoperato questa stringa
+          // const tmpImg:Immagine=elementi[i].img // se non ci fosse un fake DB si sarebbe adoperato questa stringa
           const tmpImg: Immagine = {
             src: elementi[i].img.src,
             alt: elementi[i].img.alt

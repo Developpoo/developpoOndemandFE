@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, concatMap, map, of, take, tap } from 'rxjs';
 import { IRispostaServer } from '../_interfacce/IRispostaServer.interface';
 import { Immagine } from '../_types/Immagine.type';
 import { Genere } from '../_types/Genere.type';
 import { Film } from '../_types/Film.types';
+import { ChiamataHTTP } from '../_types/ChiamataHTTP.type';
+import { HttpClient } from '@angular/common/http';
+import { UtilityServices } from './utility.services';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   /**
    * Funzione per chiamare l'elenco dei generi dei Film
@@ -18,12 +21,8 @@ export class ApiService {
    * @returns Observable
    */
   public getGeneri(): Observable<IRispostaServer> {
-    const rit: IRispostaServer = {
-      data: this.fakeHttpCategorie(),
-      error: null,
-      message: null
-    }
-    return of(rit)
+    const risorsa:string[]=["generi"]
+    return this.richiestaGenerica(risorsa, "GET")
   }
 
   /**
@@ -32,12 +31,8 @@ export class ApiService {
  * @returns Observable
  */
   public getFilms(): Observable<IRispostaServer> {
-    const rit: IRispostaServer = {
-      data: this.fakeHttpLibri(),
-      error: null,
-      message: null
-    }
-    return of(rit)
+    const risorsa: string[] = ["film"]; // Modifica l'endpoint se necessario
+    return this.richiestaGenerica(risorsa, "GET");
   }
 
   /**
@@ -47,13 +42,8 @@ export class ApiService {
    * @returns Observable
    */
   public getFilmsDaGenere(idCat: number): Observable<IRispostaServer> {
-    const tmp = this.fakeHttpLibri().filter(x => x.idCat === idCat)
-    const rit: IRispostaServer = {
-      data: tmp,
-      error: null,
-      message: null
-    }
-    return of(rit)
+    const risorsa: (string | number)[] = ["generi", idCat, "film"]; // Modifica l'endpoint se necessario
+    return this.richiestaGenerica(risorsa, "GET");
   }
 
   /**
@@ -63,13 +53,8 @@ export class ApiService {
    * @returns Observable
    */
   public getFilm(id: number): Observable<IRispostaServer> {
-    const tmp = this.fakeHttpLibri().filter(x => x.id === id)
-    const rit: IRispostaServer = {
-      data: tmp,
-      error: null,
-      message: null
-    }
-    return of(rit)
+    const risorsa: (string | number)[] = ["films", id]; // Modifica l'endpoint se necessario
+    return this.richiestaGenerica(risorsa, "GET");
   }
 
   /**
@@ -79,66 +64,138 @@ export class ApiService {
   * @returns Observable
   */
   public getGenere(id: number): Observable<IRispostaServer> {
-    const tmp = this.fakeHttpCategorie().filter(x => x.id === id)
-    const rit: IRispostaServer = {
-      data: tmp,
-      error: null,
-      message: null
-    }
-    return of(rit)
+    const risorsa: (string | number)[] = ["generi", id]; // Modifica l'endpoint se necessario
+    return this.richiestaGenerica(risorsa, "GET");
   }
 
-  // ----------- Servizi fake per tirare fuori i dati ----------------------
-  /***
-   * La funzione ritorna un array di categorie simulando una chiamata HTTP
-   * 
-   * @returns Categoria []
-   */
+  //###########################################################################
 
-  private fakeHttpCategorie(): Genere[] {
-    const img1: Immagine = { src: 'https://via.placeholder.com/360x200/FBADE3', alt: "Visualizza immagine Romantico" }
-    const img2: Immagine = { src: 'https://via.placeholder.com/360x200/5880A8', alt: "Visualizza immagine Fantascienza" }
-    const img3: Immagine = { src: 'https://via.placeholder.com/360x200/6DA75A', alt: "Visualizza immagine Avventura" }
-    const img4: Immagine = { src: 'https://via.placeholder.com/360x200/6D005A', alt: "Visualizza immagine Fango" }
+  /**
+     * @param risorsa (string!number)[]
+     * @returns string stringa che rappresenta l'endpoint del serve
+     */
 
-    const arrCat = [
-      { id: 1, nome: "Romantico", img: img1 },
-      { id: 2, nome: "Fantascienza", img: img2 },
-      { id: 3, nome: "Avventura", img: img3 },
-      { id: 4, nome: "Fango", img: img4 },
-    ]
-    return arrCat
+
+  protected calcolaRisorsa(risorsa: (string | number)[]): string {
+    const server: string = "https://www.developpo.com/developpoOndemandBE/public/api" //http://127.0.0.1:8000/api dopo modifica con proxy
+    const versione: string = "v1"
+    let url = server + "/" + versione + "/"
+    risorsa.forEach(x => { url = url + x + "/" })
+    url = url + risorsa.join("/")
+    return url
   }
 
   /**
-   * Funzione che ritorna un array di libri che simula una chiamata HTTP
-   * 
-   * @returns Libri []
-   */
+     * @param risorsa (string!number)[] Risorsa di cui voglio sapere i dati 
+     * @param tipo string GET | POST | PUT | DELETE tipo di chiamata Http
+     * @param parametri Oblect |null Parametri da passare all'endpoint
+     * @returns Observable
+     */
 
-  private fakeHttpLibri(): Film[] {
-    const img1: Immagine = { src: 'https://via.placeholder.com/240x150/DB9A00', alt: "Visualizza immagine Romantico" }
-    const img2: Immagine = { src: 'https://via.placeholder.com/240x150/FBADE3', alt: "Visualizza immagine Avventura" }
-    const img3: Immagine = { src: 'https://via.placeholder.com/240x150/FF7000', alt: "Visualizza immagine Fantascienza" }
-    const img4: Immagine = { src: 'https://via.placeholder.com/240x150/9DA7FF', alt: "Visualizza immagine Avventura" }
-    const img5: Immagine = { src: 'https://via.placeholder.com/240x150/9DA75A', alt: "Visualizza immagine Romantico" }
-    const img6: Immagine = { src: 'https://via.placeholder.com/240x150/FAC700', alt: "Visualizza immagine Fanga" }
-    const img7: Immagine = { src: 'https://via.placeholder.com/240x150/FF70EE', alt: "Visualizza immagine Fantascienza" }
-    const img8: Immagine = { src: 'https://via.placeholder.com/240x150/6DA75A', alt: "Visualizza immagine Fantascienza" }
-    const img9: Immagine = { src: 'https://via.placeholder.com/240x150/6DA750', alt: "Visualizza immagine Fantascienza" }
+  protected richiestaGenerica(risorsa: (string | number)[], tipo: ChiamataHTTP, parametri: Object | null = null): Observable<IRispostaServer> {
 
-    const arrLibri: Film[] = [
-      { id: 1, idCat: 1, titolo: "Libro Romantico", autore: "Mario Rossi", img: img1 },
-      { id: 2, idCat: 3, titolo: "Libro Avventura", autore: "Paolo Rossi", img: img2 },
-      { id: 3, idCat: 2, titolo: "Libro Fantascienza", autore: "Luca Bianchi", img: img3 },
-      { id: 4, idCat: 3, titolo: "L'Avventura", autore: "Giuseppe Verdi", img: img4 },
-      { id: 5, idCat: 1, titolo: "Il Romantismo", autore: "Sandro Sandri", img: img5 },
-      { id: 6, idCat: 4, titolo: "Fanghilandia", autore: "Fango Fanghi", img: img6 },
-      { id: 7, idCat: 2, titolo: "La Fantascienza", autore: "Mario Rossi", img: img7 },
-      { id: 8, idCat: 2, titolo: "2001 odissea nello spazio", autore: "Mario Rossi", img: img8 },
-      { id: 9, idCat: 4, titolo: "sti cazzi la fantascienza", autore: "Fango Fanghi", img: img9 }
-    ]
-    return arrLibri
+    const url = this.calcolaRisorsa(risorsa)
+
+    switch (tipo) {
+      case "GET": 
+      console.log("Passo da qui 1")
+        return this.http.get<IRispostaServer>(url)
+        break
+
+      case "POST": 
+      if (parametri !== null) {
+        console.log("Passo da qui 2")
+        return this.http.post<IRispostaServer>(url, parametri).pipe(tap(x => console.log("SERVICE", x)))
+      } else {
+        const objErrore = { data: null, message: null, error: "NO_PARAMETRI" }
+        const obs$ = new Observable<IRispostaServer>(subscriber => subscriber.next(objErrore))
+        return obs$
+      }
+        break
+
+      case "PUT": 
+      if (parametri !== null) {
+        console.log("Passo da qui 4")
+        return this.http.put<IRispostaServer>(url, parametri).pipe(tap(x => console.log("SERVICE MODIFCA", x)))
+      } else {
+        const objErrore = { data: null, message: null, error: "NO_PARAMETRI" }
+        const obs$ = new Observable<IRispostaServer>(subscriber => subscriber.next(objErrore))
+        return obs$
+      }
+        break
+
+      case "DELETE": 
+      console.log("PASSO DA QUI 5")
+        return this.http.delete<IRispostaServer>(url)
+        break
+
+      default: 
+      console.log("Passo da qui 3")
+        return this.http.get<IRispostaServer>(url)
+        break
+    }
   }
 
+  //###### FASE LOGIN ##################
+
+   /**
+   * Funzione che manda l'untente al server per l'autenticazioni
+   * @param hashUtente stringa che rappresenta l'utente
+   * @returns  Observable
+   */
+
+   public getLoginFase1(hashUtente: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ["signClient", hashUtente]
+    const rit = this.richiestaGenerica(risorsa, "GET")
+    return rit
+  }
+
+  /**
+   * Funzione che manda hash utente e hash password cifrata al server
+   * @param hashUtente stringa che rappresenta l'utente
+   * @param hashPassword stringa che rappresenta l'hash sha512 della password unita al sale
+   * @returns Observable
+   */
+
+  public getLoginFase2(hashUtente: string, hashPassword: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ["signClient", hashUtente, hashPassword]
+    const rit = this.richiestaGenerica(risorsa, "GET")
+    return rit
+  }
+
+
+  /**
+   * Funzione che effettua il Login
+   * @param utente stringa che rappresenta l'utente
+   * @param password stringa che rappresenta la password
+   * @returns Observable
+   */
+  public login(utente: string, password: string): Observable<IRispostaServer> {
+    const hashUtente: string = UtilityServices.hash(utente)
+    const hashPassword: string = UtilityServices.hash(password)
+    const controllo$ = this.getLoginFase1(hashUtente).pipe(
+      take(1),
+      tap(x => console.log("Dati:", x)),
+      map((rit: IRispostaServer): string => {
+        const sale: string = rit.data.sale
+        const passwordNascosta = UtilityServices.nascondiPassword(hashPassword, sale)
+        return passwordNascosta
+      }),
+      concatMap((passwordNascosta: string) => {
+        return this.getLoginFase2(hashUtente, passwordNascosta)
+      })
+    )
+    return controllo$
+  }
+
+  /**
+     * Funzione richiamare elenco Tipo Indirizzi
+     * 
+     * @returns Observable
+     */
+
+  public getTipoIndirizzi(): Observable<IRispostaServer> {
+    const risorsa: string[] = ["tipoIndirizzi"]
+    return this.richiestaGenerica(risorsa, "GET")
+  }
 }
