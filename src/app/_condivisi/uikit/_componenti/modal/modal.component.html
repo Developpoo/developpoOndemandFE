@@ -1,28 +1,46 @@
 <ng-template #content let-modal>
 	<div class="modal-header">
-	  <h4 class="modal-title" id="modal-basic-title">Login</h4>
+	  <h4 class="modal-title" id="modal-basic-title">Inserisci i dati per il tuo Login</h4>
 	  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
-	  <form>
-		<div class="mb-3">
-		  <!-- <label for="dateOfBirth">Date of birth</label>
-		  <div class="input-group">
-			<input
-			  id="dateOfBirth"
-			  class="form-control"
-			  placeholder="yyyy-mm-dd"
-			  name="dp"
-			  ngbDatepicker
-			  #dp="ngbDatepicker"
-			/>
-			<button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button>
-		  </div> -->
-		</div>
-	  </form>
+		<ng-container *ngIf="(auth | async)?.tk===null">
+			<div class="row form-login">
+				<div class="col-4">
+					<form action="" name="formLogin" [formGroup]="reactiveForm" (ngSubmit)="accedi()">
+						<label for="utente"
+							[ngClass]="{'is-invalid':reactiveForm.controls[ 'utente'].errors}">Email</label><br>
+						<input type="text" name="utente" id="utente" formControlName="utente"
+							[ngClass]="{'is-invalid':reactiveForm.controls['utente'].errors}"><br>
+						<label for="password"
+							[ngClass]="{'is-invalid':reactiveForm.controls['password'].errors}">Password</label><br>
+						<input type="password" name="password" id="password" formControlName="password"
+							[ngClass]="{'is-invalid':reactiveForm.controls['password'].errors}"><br><br>
+						<button type="submit" class="btn btn-primary" [disabled]="!reactiveForm.valid">
+							Accedi
+							<div class="spinner-border spinner-border-sm text-warning" role="status" *ngIf="stoControllando">
+								<span class="visually-hidden">Loading...</span>
+							</div>
+						</button>
+						<br>
+						<div>DEBUG:</div>
+						<div>E' valido reactiveform? {{ reactiveForm.valid | json}}</div>
+					</form>
+				</div>
+			</div>
+		</ng-container>
+		
+		<ng-container *ngIf="(auth | async)?.tk!==null">
+			<div class="row form-login">
+				<div class="col-4">
+					Benvenuto utente
+				</div>
+			</div>
+		</ng-container>
+		<div>Sto controllando? {{ stoControllando | json}}</div>
 	</div>
 	<div class="modal-footer">
-	  <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+	  <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Se non disponi di un account chiudi e registrati</button>
 	</div>
   </ng-template>
   <button class="btn btn-lg btn-outline-light" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" (click)="open(content)">Accedi
