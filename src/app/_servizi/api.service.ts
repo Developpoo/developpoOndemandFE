@@ -21,7 +21,7 @@ export class ApiService {
    * @returns Observable
    */
   public getGeneri(): Observable<IRispostaServer> {
-    const risorsa:string[]=["generi"]
+    const risorsa:string[]=["category"]
     return this.richiestaGenerica(risorsa, "GET")
   }
 
@@ -31,18 +31,18 @@ export class ApiService {
  * @returns Observable
  */
   public getFilms(): Observable<IRispostaServer> {
-    const risorsa: string[] = ["film"]; // Modifica l'endpoint se necessario
+    const risorsa: string[] = ["film"]; 
     return this.richiestaGenerica(risorsa, "GET");
   }
 
   /**
    * Funzione ritorna l'elenco dei Films appartamenti ad un genere
    * 
-   * @param idCat id della Categoria scelta
+   * @param idCategory id della Categoria scelta
    * @returns Observable
    */
-  public getFilmsDaGenere(idCat: number): Observable<IRispostaServer> {
-    const risorsa: (string | number)[] = ["generi", idCat, "film"]; // Modifica l'endpoint se necessario
+  public getFilmsDaGenere(idCategory: number): Observable<IRispostaServer> {
+    const risorsa: (string | number)[] = ["category", idCategory, "film"]; 
     return this.richiestaGenerica(risorsa, "GET");
   }
 
@@ -53,7 +53,7 @@ export class ApiService {
    * @returns Observable
    */
   public getFilm(id: number): Observable<IRispostaServer> {
-    const risorsa: (string | number)[] = ["films", id]; // Modifica l'endpoint se necessario
+    const risorsa: (string | number)[] = ["film", id]; 
     return this.richiestaGenerica(risorsa, "GET");
   }
 
@@ -64,14 +64,14 @@ export class ApiService {
   * @returns Observable
   */
   public getGenere(id: number): Observable<IRispostaServer> {
-    const risorsa: (string | number)[] = ["generi", id]; // Modifica l'endpoint se necessario
+    const risorsa: (string | number)[] = ["category", id]; 
     return this.richiestaGenerica(risorsa, "GET");
   }
 
   //###########################################################################
 
   /**
-     * @param risorsa (string!number)[]
+     * @param risorsa (string|number)[]
      * @returns string stringa che rappresenta l'endpoint del serve
      */
 
@@ -81,7 +81,7 @@ export class ApiService {
     const versione: string = "v1"
     let url = server + "/" + versione + "/"
     risorsa.forEach(x => { url = url + x + "/" })
-    url = url + risorsa.join("/")
+    // url = url + risorsa.join("/")
     return url
   }
 

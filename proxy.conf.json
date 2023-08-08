@@ -1,6 +1,6 @@
 {
     "/api": {
-        "target": "https://www.developpo.com/developpoOndemandBE",
+        "_target": "https://www.developpo.com/developpoOndemandBE",
         "secure": false,
         "changeOrigin": true,
         "pathRewrite": {

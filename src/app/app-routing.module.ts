@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './_componenti/login/login.component';
+import { ModalComponent } from './_condivisi/uikit/_componenti/modal/modal.component';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./_pagine/home/home.module').then(m => m.HomeModule) },
   { path: 'home', loadChildren: () => import('./_pagine/home/home.module').then(m => m.HomeModule) },
   { path: 'login', component: LoginComponent },
+  { path: 'modal', component: ModalComponent },
   { path: 'contatti', loadChildren: () => import('./_pagine/contatti/contatti.module').then(m => m.ContattiModule) },
   { path: 'serietv', loadChildren: () => import('./_pagine/serie-tv/serie-tv.module').then(m => m.SerieTVModule) },
   { path: 'genere/:idFilm', loadChildren: () => import('./_pagine/film/film.module').then(m => m.FilmModule) },

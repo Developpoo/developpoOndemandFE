@@ -40,8 +40,8 @@ export class UtilityServices {
      * @param sale string che rappresenta un'altra stringa da legare alla password
      * @returns string che rappresenta hash sha512 della password unita al sale
      */
-    static nascondiPassword(password: string, sale: string): string {
-        const tmp: string = sale + password
+    static nascondiPassword(password: string, salt: string): string {
+        const tmp: string = salt + password
         const hash: string = sha512(tmp)
         return hash
     }

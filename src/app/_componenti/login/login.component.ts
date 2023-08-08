@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy{
   ){
     this.reactiveForm = this.fb.group({
       'utente': ['', [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(40)]],
-      'password': ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
+      'password': ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
     })
 
     this.auth = this.authService.leggiObsAuth()
@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit, OnDestroy{
           }
           this.authService.settaObsAuth(auth)
           this.authService.scriviAuthSuLocalStorage(auth)
-          this.router.navigateByUrl('/contatti')
+          this.router.navigateByUrl('/home')
         } else {
           console.log("ERRORE in osservoLogin")
         }
