@@ -1,32 +1,56 @@
 <ng-template #content let-modal>
 	<div class="modal-header">
-	  <h4 class="modal-title" id="modal-basic-title">Inserisci i dati per il tuo Login</h4>
+	  <h2 class="modal-title text-primary" id="modal-basic-title">Benvenuto in Developpo Ondemand</h2>
 	  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
 		<ng-container *ngIf="(auth | async)?.tk===null">
 			<div class="row form-login">
-				<div class="col-4">
-					<form action="" name="formLogin" [formGroup]="reactiveForm" (ngSubmit)="accedi()">
-						<label for="utente"
-							[ngClass]="{'is-invalid':reactiveForm.controls[ 'utente'].errors}">Email</label><br>
-						<input type="text" name="utente" id="utente" formControlName="utente"
-							[ngClass]="{'is-invalid':reactiveForm.controls['utente'].errors}"><br>
-						<label for="password"
-							[ngClass]="{'is-invalid':reactiveForm.controls['password'].errors}">Password</label><br>
-						<input type="password" name="password" id="password" formControlName="password"
-							[ngClass]="{'is-invalid':reactiveForm.controls['password'].errors}"><br><br>
+				
+					<form action="" class="text-primary" name="formLogin" [formGroup]="reactiveForm" (ngSubmit)="accedi()">
+						<!-- <label for="utente" [ngClass]="{'is-invalid':reactiveForm.controls[ 'utente'].errors}">Email</label><br> -->
+						<div class="input-group mb-3 col-12">	
+							<span class="input-group-text"><svg
+								xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-person-badge-fill" viewBox="0 0 16 16">
+								<path
+									d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm4.5 0a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5 2.755C12.146 12.825 10.623 12 8 12s-4.146.826-5 1.755V14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-.245z" />
+							</svg></span>
+						<input type="text" class="form-control" placeholder="inserisci la tua Email"
+						aria-label="Username" aria-describedby="basic-addon1" name="utente" id="utente" formControlName="utente"
+							[ngClass]="{'is-invalid':reactiveForm.controls['utente'].errors}">
+						</div>
+						<br>
+						<!-- <label for="password" [ngClass]="{'is-invalid':reactiveForm.controls['password'].errors}">Password</label><br> -->
+						<div class="input-group mb-3 col-12">
+							<span class="input-group-text"> <svg
+                                    xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-file-lock2" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224z" />
+                                    <path
+                                        d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
+                                </svg></span>
+						<input type="password" class="form-control" placeholder="Inserisci la tua Password"
+						aria-label="Password" aria-describedby="basic-addon2" name="password" id="password" formControlName="password"
+							[ngClass]="{'is-invalid':reactiveForm.controls['password'].errors}">
+						</div>
+						<br>
 						<button type="submit" class="btn btn-primary" [disabled]="!reactiveForm.valid">
-							Accedi
+							Accedi <svg xmlns="http://www.w3.org/2000/svg"
+							width="20" height="20" fill="currentColor" class="bi bi-send-fill"
+							viewBox="0 0 16 16">
+							<path
+								d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
+						</svg> 
 							<div class="spinner-border spinner-border-sm text-warning" role="status" *ngIf="stoControllando">
 								<span class="visually-hidden">Loading...</span>
 							</div>
 						</button>
-						<br>
+						<br><br>
 						<div>DEBUG:</div>
 						<div>E' valido reactiveform? {{ reactiveForm.valid | json}}</div>
 					</form>
-				</div>
 			</div>
 		</ng-container>
 		
@@ -37,7 +61,7 @@
 				</div>
 			</div>
 		</ng-container>
-		<div>Sto controllando? {{ stoControllando | json}}</div>
+		<div class="text-primary">Sto controllando? {{ stoControllando | json}}</div>
 	</div>
 	<div class="modal-footer">
 	  <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Se non disponi di un account chiudi e registrati</button>

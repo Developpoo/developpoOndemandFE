@@ -45,7 +45,7 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
 		}
 
 ngOnInit(): void {
-  // this.open(this.content)
+  this.open(this.content)
 }
 
 ngOnChanges(changes: SimpleChanges): void {

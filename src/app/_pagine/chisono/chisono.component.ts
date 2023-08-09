@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, map } from 'rxjs';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 import { ApiService } from 'src/app/_servizi/api.service';
-import { TipoIndirizzo } from 'src/app/_types/tipoIndirizzo.type';
+import { TipoIndirizzo } from 'src/app/_types/TipoIndirizzo.type';
 
 @Component({
   selector: 'app-chisono',
