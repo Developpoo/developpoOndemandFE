@@ -1,5 +1,5 @@
 <ng-template #content let-offcanvas>
-	<div class="offcanvas-header">
+	<div class="offcanvas-header offcanvas-primary">
 		<h4 class="offcanvas-title" id="offcanvas-basic-title">MENU</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
 	</div>
@@ -28,6 +28,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="javascript:void(0)" title="Vai alla Contatti"
                     [routerLink]="['/contatti']" [routerLinkActive]="['attivo']">Contatti</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" title="Vai alla Contatti"
+                    [routerLink]="['/login']" [routerLinkActive]="['attivo']">Account</a>
             </li>
         </ul>
 		<!-- <form>
