@@ -1,10 +1,36 @@
 <ng-template #content let-offcanvas>
 	<div class="offcanvas-header">
-		<h4 class="offcanvas-title" id="offcanvas-basic-title">Profile update</h4>
+		<h4 class="offcanvas-title" id="offcanvas-basic-title">MENU</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
 	</div>
 	<div class="offcanvas-body">
-		<form>
+        <ul class="navbar-nav justify-content-end me-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" title="Vai alla Home" [routerLink]="['/home']"
+                    [routerLinkActive]="['attivo']">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" title="Vai alla tua lista dei preferiti"
+                    [routerLink]="['/collezioni']" [routerLinkActive]="['attivo']">Collezioni</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" title="Scegli i tuoi titoli per genere"
+                    [routerLink]="['/genere']" [routerLinkActive]="['attivo']">Genere</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" title="Scegli i tuoi titoli preferiti"
+                    [routerLink]="['/preferiti']" [routerLinkActive]="['attivo']">Preferiti</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" title="Scopri le novità in arrivo"
+                    [routerLink]="['/novita']" [routerLinkActive]="['attivo']">Novità</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" title="Vai alla Contatti"
+                    [routerLink]="['/contatti']" [routerLinkActive]="['attivo']">Contatti</a>
+            </li>
+        </ul>
+		<!-- <form>
 			<div class="mb-3">
 				<label for="dateOfBirth">Date of birth</label>
 				<div class="input-group">
@@ -19,43 +45,12 @@
 					<button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button>
 				</div>
 			</div>
-		</form>
-		<div class="text-end">
+		</form> -->
+		<!-- <div class="text-end">
 			<button type="button" class="btn btn-outline-dark" (click)="offcanvas.close('Save click')">Save</button>
-		</div>
+		</div> -->
 	</div>
-    pippo
-    <ul class="navbar-nav justify-content-end me-auto">
-        <li class="nav-item">
-            <a class="nav-link text-black" href="javascript:void(0)" title="Vai alla Home" [routerLink]="['/home']"
-                [routerLinkActive]="['attivo']">Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-black" href="javascript:void(0)" title="Vai alla tua lista dei preferiti"
-                [routerLink]="['/collezioni']" [routerLinkActive]="['attivo']">Collezioni</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-black" href="javascript:void(0)" title="Scegli i tuoi titoli per genere"
-                [routerLink]="['/genere']" [routerLinkActive]="['attivo']">Genere</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-black" href="javascript:void(0)" title="Scegli i tuoi titoli preferiti"
-                [routerLink]="['/preferiti']" [routerLinkActive]="['attivo']">Preferiti</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-black" href="javascript:void(0)" title="Scopri le novità in arrivo"
-                [routerLink]="['/novita']" [routerLinkActive]="['attivo']">Novità</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-black" href="javascript:void(0)" title="Vai alla Contatti"
-                [routerLink]="['/contatti']" [routerLinkActive]="['attivo']">Contatti</a>
-        </li>
-    </ul>
-    ciao 
 </ng-template>
-
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo offcanvas</button>
-
-<hr />
-
-<pre>{{ closeResult }}</pre>
+<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" (click)="open(content)">
+    <span class="navbar-toggler-icon" data-bs-toggle="#navbarOffcanvas"></span>
+</button>
