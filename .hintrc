@@ -13,7 +13,8 @@
       "default",
       {
         "ignore": [
-          "min-height: auto"
+          "min-height: auto",
+          "-webkit-text-size-adjust"
         ]
       }
     ],

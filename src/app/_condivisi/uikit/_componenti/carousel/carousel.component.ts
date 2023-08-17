@@ -31,11 +31,11 @@ export class CarouselComponent implements OnInit {
     this.updateImages();
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any): void {
-    this.updateWindowSize();
-    this.updateImages();
-  }
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event: any): void {
+  //   this.updateWindowSize();
+  //   this.updateImages();
+  // }
 
   updateWindowSize(): void {
     this.windowHeight = window.innerHeight;
@@ -44,7 +44,8 @@ export class CarouselComponent implements OnInit {
 
   updateImages(): void {
     this.images = [700, 533, 807, 124, 324, 688].map(
-      (n) => `https://picsum.photos/id/${n}/${this.windowWidth}/${this.windowHeight}`
+      // (n) => `https://picsum.photos/id/${n}/${this.windowWidth}/${this.windowHeight}`
+      (n) => `https://picsum.photos/id/${n}/${this.windowWidth}`
     );
   }
 

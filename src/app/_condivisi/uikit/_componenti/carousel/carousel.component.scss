@@ -1,5 +1,11 @@
+.carousel {
+    width: 100%; // Imposta la larghezza al 100% della viewport width
+    height: 600px; // Imposta l'altezza massima a 300px
+    overflow: hidden; // Nasconde eventuali parti eccedenti delle immagini
+}
+
 .carousel-image {
-    max-width: 100%;
-    max-height: auto;
-    object-fit: contain;
+    width: 100%; // Assicura che l'immagine occupi l'intera larghezza del carousel
+    height: 100%; // Assicura che l'immagine occupi l'intera altezza del carousel
+    object-fit: cover; // Scala l'immagine per coprire l'area mantenendo l'aspect ratio
 }

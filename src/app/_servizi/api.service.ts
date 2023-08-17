@@ -77,11 +77,11 @@ export class ApiService {
 
 
   protected calcolaRisorsa(risorsa: (string | number)[]): string {
-    const server: string = "https://www.developpo.com/developpoOndemandBE/public/api" //http://127.0.0.1:8000/api dopo modifica con proxy
+    const server: string = "https://www.developpo.com/public/api" //http://127.0.0.1:8000/api dopo modifica con proxy
     const versione: string = "v1"
     let url = server + "/" + versione + "/"
-    risorsa.forEach(x => { url = url + x + "/" })
-    // url = url + risorsa.join("/")
+    // risorsa.forEach(x => { url = url + x + "/" })
+    url = url + risorsa.join("/")
     return url
   }
 
@@ -95,6 +95,7 @@ export class ApiService {
   protected richiestaGenerica(risorsa: (string | number)[], tipo: ChiamataHTTP, parametri: Object | null = null): Observable<IRispostaServer> {
 
     const url = this.calcolaRisorsa(risorsa)
+console.log("Url. ",url)
 
     switch (tipo) {
       case "GET": 
@@ -153,12 +154,12 @@ export class ApiService {
   /**
    * Funzione che manda hash utente e hash password cifrata al server
    * @param hashUtente stringa che rappresenta l'utente
-   * @param hashPassword stringa che rappresenta l'hash sha512 della password unita al sale
+   * @param passwordNascosta stringa che rappresenta l'hash sha512 della password unita al sale
    * @returns Observable
    */
 
-  public getLoginFase2(hashUtente: string, hashPassword: string): Observable<IRispostaServer> {
-    const risorsa: string[] = ["signClient", hashUtente, hashPassword]
+  public getLoginFase2(hashUtente: string, passwordNascosta: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ["signClient", hashUtente, passwordNascosta]
     const rit = this.richiestaGenerica(risorsa, "GET")
     return rit
   }
@@ -173,9 +174,10 @@ export class ApiService {
   public login(utente: string, password: string): Observable<IRispostaServer> {
     const hashUtente: string = UtilityServices.hash(utente)
     const hashPassword: string = UtilityServices.hash(password)
+    console.log("HashPassword: ", hashPassword)
     const controllo$ = this.getLoginFase1(hashUtente).pipe(
       take(1),
-      tap(x => console.log("Dati:", x)),
+      tap(x => console.log("DatiFase1:", x)),
       map((rit: IRispostaServer): string => {
         const sale: string = rit.data.sale
         const passwordNascosta = UtilityServices.nascondiPassword(hashPassword, sale)

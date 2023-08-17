@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy{
       let utente = this.reactiveForm.controls["utente"].value
       let password = this.reactiveForm.controls["password"].value
       this.stoControllando = true
-      this.obsLogin(utente, password).subscribe(this.osservoLogin)
+      this.obsLogin(utente, password).subscribe(this.osservoLogin())
       console.log("ACCEDI", utente, password)
     }
   }

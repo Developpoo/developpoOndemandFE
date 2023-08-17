@@ -6,9 +6,9 @@ import jwtDecode from "jwt-decode";
 export class UtilityServices {
 
 
-    static numeroCasuale(min: number, max: number): number {
-        return Math.floor(Math.random() * max) + min
-    }
+    // static numeroCasuale(min: number, max: number): number {
+    //     return Math.floor(Math.random() * max) + min
+    // }
 
     /**
      * Funzione che crea hash sha512 di una stringa

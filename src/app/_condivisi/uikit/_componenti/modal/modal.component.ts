@@ -88,7 +88,7 @@ ngOnChanges(changes: SimpleChanges): void {
       let utente = this.reactiveForm.controls["utente"].value
       let password = this.reactiveForm.controls["password"].value
       this.stoControllando = true
-      this.obsLogin(utente, password).subscribe(this.osservoLogin)
+      this.obsLogin(utente, password).subscribe(this.osservoLogin())
       console.log("ACCEDI", utente, password)
     }
   }
