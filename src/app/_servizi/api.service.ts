@@ -77,7 +77,7 @@ export class ApiService {
 
 
   protected calcolaRisorsa(risorsa: (string | number)[]): string {
-    const server: string = "https://www.developpo.com/public/api" //http://127.0.0.1:8000/api dopo modifica con proxy
+    const server: string = "https://www.developpo.com/developpoOndemandBE/public/api" //http://127.0.0.1:8000/api dopo modifica con proxy
     const versione: string = "v1"
     let url = server + "/" + versione + "/"
     // risorsa.forEach(x => { url = url + x + "/" })
