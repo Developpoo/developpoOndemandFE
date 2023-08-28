@@ -4,8 +4,6 @@
                 src="../../../assets/img/icon/icons8-movie-theater-50.png" alt="logo"></a>
         <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
             <app-offcanvas #offcanvasComponent></app-offcanvas>
-
-
         <div class="offcanvas offcanvas-start " data-bs-hideresize="true" id="navbarOffcanvas">
             <div class="offcanvas-header bg-primary">
                 <h5 class="offcanvas-title" id="ofFcanvasLabel">MENU</h5>
@@ -15,30 +13,43 @@
             <div class="offcanvas-body bg-primary ">
                 <ul class="navbar-nav justify-content-end me-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="javascript:void(0)" title="Vai alla Home" [routerLink]="['/home']"
+                        <a class="nav-link" href="javascript:void(0)" title="Vai alla Home" [routerLink]="['/home']"
                             [routerLinkActive]="['attivo']">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="javascript:void(0)" title="Vai alla tua lista dei preferiti"
+                        <a class="nav-link" href="javascript:void(0)" title="Vai alla tua lista dei preferiti"
                             [routerLink]="['/collezioni']" [routerLinkActive]="['attivo']">Collezioni</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="javascript:void(0)" title="Scegli i tuoi titoli per genere"
+                        <a class="nav-link" href="javascript:void(0)" title="Scegli i tuoi titoli per genere"
                             [routerLink]="['/genere']" [routerLinkActive]="['attivo']">Genere</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="javascript:void(0)" title="Scegli i tuoi titoli preferiti"
+                        <a class="nav-link" href="javascript:void(0)" title="Scegli i tuoi titoli preferiti"
                             [routerLink]="['/preferiti']" [routerLinkActive]="['attivo']">Preferiti</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="javascript:void(0)" title="Scopri le novità in arrivo"
+                        <a class="nav-link" href="javascript:void(0)" title="Scopri le novità in arrivo"
                             [routerLink]="['/novita']" [routerLinkActive]="['attivo']">Novità</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="javascript:void(0)" title="Vai alla Contatti"
+                        <a class="nav-link" href="javascript:void(0)" title="Vai alla Contatti"
                             [routerLink]="['/contatti']" [routerLinkActive]="['attivo']">Contatti</a>
                     </li>
                 </ul>
+                <!-- SALUTO LOGIN -->
+                <!-- <ng-template *ngIf="isVisible; then bloccoIf else bloccoElse"></ng-template>
+                <ng-template class="saluto" #bloccoIf>Benvenuto</ng-template>
+                <ng-template class="saluto" #bloccoElse>Ciao Utente</ng-template> -->
+
+                <div [appHighlight]="colore" defaultHighlight="blue" class="navbar-nav justify-content-end me-auto" [ngSwitch]="getGreetingMessage()">
+                    <div class="nav-link text-white" *ngSwitchCase="'buongiorno'">Buongiorno utente e benvenuto.</div>
+                    <div class="nav-link text-white" *ngSwitchCase="'buonPomeriggio'">Buon pomeriggio utente e benvenuto.</div>
+                    <div class="nav-link text-white" *ngSwitchCase="'buonasera'">Buonasera utente e benvenuto.</div>
+                    <div class="nav-link text-white" *ngSwitchDefault>Ciao utente e benvenuto.</div>
+                </div>
+                  
+                <!-- MODAL -->
                 <app-modal #modalComponent></app-modal>
             </div>
         </div>

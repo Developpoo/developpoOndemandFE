@@ -174,13 +174,15 @@ console.log("Url. ",url)
   public login(utente: string, password: string): Observable<IRispostaServer> {
     const hashUtente: string = UtilityServices.hash(utente)
     const hashPassword: string = UtilityServices.hash(password)
-    console.log("HashPassword: ", hashPassword)
+    console.log("HashPassword: ", hashPassword, hashUtente)
     const controllo$ = this.getLoginFase1(hashUtente).pipe(
       take(1),
       tap(x => console.log("DatiFase1:", x)),
       map((rit: IRispostaServer): string => {
-        const sale: string = rit.data.sale
+        const sale: string = rit.data.salt
+        console.log ("rit", rit.data)
         const passwordNascosta = UtilityServices.nascondiPassword(hashPassword, sale)
+        console.log ("hash", passwordNascosta, "sale", sale)
         return passwordNascosta
       }),
       concatMap((passwordNascosta: string) => {

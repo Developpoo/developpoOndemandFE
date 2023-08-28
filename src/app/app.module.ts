@@ -10,6 +10,7 @@ import { LoginComponent } from './_componenti/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './_condivisi/uikit/_componenti/modal/modal.component';
 import { OffcanvasComponent } from './_condivisi/uikit/_componenti/offcanvas/offcanvas.component';
+import { HighlightDirective } from './_direttive/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { OffcanvasComponent } from './_condivisi/uikit/_componenti/offcanvas/off
     LoginComponent,
     ModalComponent,
     OffcanvasComponent,
+    HighlightDirective,
   ],
   imports: [
     BrowserModule,

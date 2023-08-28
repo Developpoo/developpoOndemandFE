@@ -77,12 +77,13 @@ export class LoginComponent implements OnInit, OnDestroy{
     const osservatore: Observer<any> = {
       next: (rit) => {
         console.log("RITORNO", rit)
-        if (rit.data !== null && rit.message !== null) {
-          const tk: string = rit.data.tk
+        if (rit.data !== null) {
+          const tk: string = rit.data.token
+          console.log("RITORNO2", tk)
           const contenutoToken = UtilityServices.leggiToken(tk)
           const auth: Auth = {
             idLingua: 1,
-            tk: rit.data.tk,
+            tk: rit.data.token,
             nome: contenutoToken.data.nome,
             idRuolo: contenutoToken.data.idRuolo,
             idStato: contenutoToken.data.idStato,

@@ -1,7 +1,7 @@
 <ng-container *ngIf="(auth | async)?.tk===null">
     <div class="row form-login">
         <div class="col-4">
-            <form action="" name="formLogin" [formGroup]="reactiveForm" (ngSubmit)="accedi()">
+            <form name="formLogin" [formGroup]="reactiveForm" (ngSubmit)="accedi()">
                 <label for="utente"
                     [ngClass]="{'is-invalid':reactiveForm.controls[ 'utente'].errors}">Utente</label><br>
                 <input type="text" name="utente" id="utente" formControlName="utente"

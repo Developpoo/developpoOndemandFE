@@ -44,19 +44,20 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
     console.log("AUTH", this.auth)
 		}
 
-ngOnInit(): void {
+  ngOnInit(): void {
   this.open(this.content)
-}
+  }
 
-ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes["startModal"].currentValue) {
-      this.open(this.ogModal);
+        this.open(this.ogModal);
     }
   }
 
-    ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.distruggi$.next()
   }
+  
 	open(content:any):any {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
 			(result) => {
@@ -116,7 +117,7 @@ ngOnChanges(changes: SimpleChanges): void {
       next: (rit) => {
         console.log("RITORNO", rit)
         if (rit.data !== null && rit.message !== null) {
-          const tk: string = rit.data.tk
+          const tk: string = rit.data.token
           const contenutoToken = UtilityServices.leggiToken(tk)
           const auth: Auth = {
             idLingua: 1,

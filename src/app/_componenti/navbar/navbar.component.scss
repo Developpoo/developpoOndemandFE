@@ -4,5 +4,17 @@
 }
 
 .navbar {
+    .nav-link {
+        color: white;
+
+        &:hover {
+            color: orange;
+        }
+    }
+}
+
+
+.saluto {
+    text-align: center;
     color: white;
 }
