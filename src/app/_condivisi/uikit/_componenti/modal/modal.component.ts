@@ -79,6 +79,23 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
 		}
 	}
 
+  // ########### LOGOUT ###############
+
+  esci(): void {
+    const auth: Auth = {
+      idLingua: 1,
+      tk: null,
+      nome: null,
+      idUserRole: null,
+      idUserStatus: null,
+      idUserClient: null,
+      ability: null
+    };
+    
+    this.authService.settaObsAuth(auth); // Reset dell'oggetto Auth
+    this.authService.scriviAuthSuLocalStorage(auth); // Rimuovi l'oggetto Auth dal local storage
+    this.router.navigateByUrl('/login'); // Reindirizza l'utente alla pagina di login
+  }
 
 	// ########### LOGIN ###############
 
@@ -90,7 +107,7 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
       let password = this.reactiveForm.controls["password"].value
       this.stoControllando = true
       this.obsLogin(utente, password).subscribe(this.osservoLogin())
-      console.log("ACCEDI", utente, password)
+      // console.log("ACCEDI", utente, password)
     }
   }
 
@@ -115,18 +132,18 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
   private osservoLogin() {
     const osservatore: Observer<any> = {
       next: (rit) => {
-        console.log("RITORNO", rit)
-        if (rit.data !== null && rit.message !== null) {
+        // console.log("RITORNO", rit)
+        if (rit.data !== null) {
           const tk: string = rit.data.token
           const contenutoToken = UtilityServices.leggiToken(tk)
           const auth: Auth = {
             idLingua: 1,
-            tk: rit.data.tk,
+            tk: rit.data.token,
             nome: contenutoToken.data.nome,
-            idRuolo: contenutoToken.data.idRuolo,
-            idStato: contenutoToken.data.idStato,
-            idUtente: contenutoToken.data.idUtente,
-            abilita: contenutoToken.data.abilita
+            idUserRole: contenutoToken.data.idUserRole,
+            idUserStatus: contenutoToken.data.idUserStatus,
+            idUserClient: contenutoToken.data.idUserClient,
+            ability: contenutoToken.data.ability
           }
           this.authService.settaObsAuth(auth)
           this.authService.scriviAuthSuLocalStorage(auth)
@@ -142,10 +159,10 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
           idLingua: 1,
           tk: null,
           nome: null,
-          idRuolo: null,
-          idStato: null,
-          idUtente: null,
-          abilita: null
+          idUserRole: null,
+          idUserStatus: null,
+          idUserClient: null,
+          ability: null
         }
         this.authService.settaObsAuth(auth)
         this.stoControllando = false

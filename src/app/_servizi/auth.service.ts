@@ -37,12 +37,12 @@ export class AuthService {
     } else {
       auth = {
         idLingua: 1,
-        idUtente: null,
-        idRuolo: null,
-        idStato: null,
+        idUserClient: null,
+        idUserRole: null,
+        idUserStatus: null,
         tk: null,
         nome: null,
-        abilita: null
+        ability: null
       }
     }
     return auth

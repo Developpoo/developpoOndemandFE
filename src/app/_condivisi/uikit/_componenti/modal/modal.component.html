@@ -47,9 +47,9 @@
 								<span class="visually-hidden">Loading...</span>
 							</div>
 						</button>
-						<br><br>
+						<!-- <br><br>
 						<div>DEBUG:</div>
-						<div>E' valido reactiveform? {{ reactiveForm.valid | json}}</div>
+						<div>E' valido reactiveform? {{ reactiveForm.valid | json}}</div> -->
 					</form>
 			</div>
 		</ng-container>
@@ -57,14 +57,20 @@
 		<ng-container *ngIf="(auth | async)?.tk!==null">
 			<div class="row form-login">
 				<div class="col-4">
-					Benvenuto utente
+					Ciao {{ (auth | async)?.nome }}
 				</div>
 			</div>
 		</ng-container>
-		<div class="text-primary">Sto controllando? {{ stoControllando | json}}</div>
+		<!-- <div class="text-primary">Sto controllando? {{ stoControllando | json}}</div> -->
 	</div>
 	<div class="modal-footer">
-	  <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Se non disponi di un account chiudi e registrati</button>
+		<button type="submit" class="btn btn-primary" (click)="esci()">
+			Esci
+			<div class="spinner-border spinner-border-sm text-warning" role="status" *ngIf="stoControllando">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</button>
+	  <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Chiudi</button>
 	</div>
   </ng-template>
   <button class="btn btn-lg btn-outline-light" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" (click)="open(content)">Accedi

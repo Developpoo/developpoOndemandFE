@@ -2,8 +2,8 @@ export type Auth = {
     idLingua: number,
     tk: string | null,
     nome: string | null,
-    idRuolo: number | null,
-    idStato: number | null,
-    abilita: number[] | null,
-    idUtente: number | null
+    idUserRole: number | null,
+    idUserStatus: number | null,
+    ability: number[] | null,
+    idUserClient: number | null
 }

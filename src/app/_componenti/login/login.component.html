@@ -12,13 +12,13 @@
                     [ngClass]="{'is-invalid':reactiveForm.controls['password'].errors}"><br><br>
                 <button type="submit" class="btn btn-primary" [disabled]="!reactiveForm.valid">
                     Accedi
-                    <div class="spinner-border text-warning" role="status" *ngIf="stoControllando">
+                    <div class="spinner-border spinner-border-sm text-warning" role="status" *ngIf="stoControllando">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </button>
-                <br>
+                <!-- <br>
                 <div>DEBUG:</div>
-                <div>E' valido reactiveform? {{ reactiveForm.valid | json}}</div>
+                <div>E' valido reactiveform? {{ reactiveForm.valid | json}}</div> -->
             </form>
         </div>
     </div>
@@ -27,8 +27,15 @@
 <ng-container *ngIf="(auth | async)?.tk!==null">
     <div class="row form-login">
         <div class="col-4">
-            Benvenuto utente
+            Benvenuto {{ (auth | async)?.nome }}
+            <br>
+            <button type="submit" class="btn btn-primary" (click)="esci()">
+                Esci
+                <div class="spinner-border spinner-border-sm text-warning" role="status" *ngIf="stoControllando">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </button>
         </div>
     </div>
 </ng-container>
-<div>Sto controllando? {{ stoControllando | json}}</div>
+<!-- <div>Sto controllando? {{ stoControllando | json}}</div> -->

@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BehaviorSubject } from 'rxjs';
 import { ModalComponent } from 'src/app/_condivisi/uikit/_componenti/modal/modal.component';
+import { AuthService } from 'src/app/_servizi/auth.service';
+import { Auth } from 'src/app/_types/Auth.type';
 
 @Component({
   selector: 'app-navbar',
@@ -56,12 +59,12 @@ export class NavbarComponent {
   closeResult = '';
   content="";
 
-	constructor(private modalService: NgbModal) {}
+	constructor(private modalService: NgbModal, private authService: AuthService) {}
 
-ngOnInit(): void {
-}
+  ngOnInit(): void {
+  }
 
 	goModal(modal: any): void {
 		this.modalComponent.open(modal)
-	  }
+  }
 }

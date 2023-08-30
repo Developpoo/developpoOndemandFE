@@ -27,7 +27,7 @@ export class UtilityServices {
      */
     static leggiToken(token: string): any {
         try {
-            console.log("token", token)
+            // console.log("token", token)
             return jwtDecode(token)
         } catch (error) {
             console.error("ERRORE DI LETTURA DEL TOKEN")

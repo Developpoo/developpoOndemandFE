@@ -68,6 +68,17 @@ export class ApiService {
     return this.richiestaGenerica(risorsa, "GET");
   }
 
+  /**
+     * Funzione richiamare elenco Tipo Indirizzi
+     * 
+     * @returns Observable
+     */
+
+  public getTipoIndirizzi(): Observable<IRispostaServer> {
+    const risorsa: string[] = ["tipoIndirizzi"]
+    return this.richiestaGenerica(risorsa, "GET")
+  }
+
   //###########################################################################
 
   /**
@@ -95,17 +106,17 @@ export class ApiService {
   protected richiestaGenerica(risorsa: (string | number)[], tipo: ChiamataHTTP, parametri: Object | null = null): Observable<IRispostaServer> {
 
     const url = this.calcolaRisorsa(risorsa)
-console.log("Url. ",url)
+    // console.log("Url. ",url)
 
     switch (tipo) {
       case "GET": 
-      console.log("Passo da qui 1")
+      // console.log("Passo da qui 1")
         return this.http.get<IRispostaServer>(url)
         break
 
       case "POST": 
       if (parametri !== null) {
-        console.log("Passo da qui 2")
+        // console.log("Passo da qui 2")
         return this.http.post<IRispostaServer>(url, parametri).pipe(tap(x => console.log("SERVICE", x)))
       } else {
         const objErrore = { data: null, message: null, error: "NO_PARAMETRI" }
@@ -116,7 +127,7 @@ console.log("Url. ",url)
 
       case "PUT": 
       if (parametri !== null) {
-        console.log("Passo da qui 4")
+        // console.log("Passo da qui 4")
         return this.http.put<IRispostaServer>(url, parametri).pipe(tap(x => console.log("SERVICE MODIFCA", x)))
       } else {
         const objErrore = { data: null, message: null, error: "NO_PARAMETRI" }
@@ -126,12 +137,12 @@ console.log("Url. ",url)
         break
 
       case "DELETE": 
-      console.log("PASSO DA QUI 5")
+      // console.log("PASSO DA QUI 5")
         return this.http.delete<IRispostaServer>(url)
         break
 
       default: 
-      console.log("Passo da qui 3")
+      // console.log("Passo da qui 3")
         return this.http.get<IRispostaServer>(url)
         break
     }
@@ -174,15 +185,15 @@ console.log("Url. ",url)
   public login(utente: string, password: string): Observable<IRispostaServer> {
     const hashUtente: string = UtilityServices.hash(utente)
     const hashPassword: string = UtilityServices.hash(password)
-    console.log("HashPassword: ", hashPassword, hashUtente)
+    // console.log("HashPassword: ", hashPassword, hashUtente)
     const controllo$ = this.getLoginFase1(hashUtente).pipe(
       take(1),
-      tap(x => console.log("DatiFase1:", x)),
+      // tap(x => console.log("DatiFase1:", x)),
       map((rit: IRispostaServer): string => {
         const sale: string = rit.data.salt
-        console.log ("rit", rit.data)
+        // console.log ("rit", rit.data)
         const passwordNascosta = UtilityServices.nascondiPassword(hashPassword, sale)
-        console.log ("hash", passwordNascosta, "sale", sale)
+        // console.log ("hash", passwordNascosta, "sale", sale)
         return passwordNascosta
       }),
       concatMap((passwordNascosta: string) => {
@@ -190,16 +201,5 @@ console.log("Url. ",url)
       })
     )
     return controllo$
-  }
-
-  /**
-     * Funzione richiamare elenco Tipo Indirizzi
-     * 
-     * @returns Observable
-     */
-
-  public getTipoIndirizzi(): Observable<IRispostaServer> {
-    const risorsa: string[] = ["tipoIndirizzi"]
-    return this.richiestaGenerica(risorsa, "GET")
   }
 }
