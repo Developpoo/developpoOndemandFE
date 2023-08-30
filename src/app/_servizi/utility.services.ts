@@ -38,7 +38,7 @@ export class UtilityServices {
     /**
      * Funzione che calcola l'hash sha512 della password legata al sale
      * @param password string che rappresenta la password
-     * @param sale string che rappresenta un'altra stringa da legare alla password
+     * @param salt string che rappresenta un'altra stringa da legare alla password
      * @returns string che rappresenta hash sha512 della password unita al sale
      */
     static nascondiPassword(password: string, salt: string): string {
