@@ -42,13 +42,18 @@
                 <ng-template class="saluto" #bloccoIf>Benvenuto</ng-template>
                 <ng-template class="saluto" #bloccoElse>Ciao Utente</ng-template> -->
 
-                <div [appHighlight]="colore" defaultHighlight="blue" class="navbar-nav justify-content-end me-auto" [ngSwitch]="getGreetingMessage()">
+                <div *ngIf="(auth | async)?.tk===null" [appHighlight]="colore" defaultHighlight="blue" class="navbar-nav justify-content-end me-auto" [ngSwitch]="getGreetingMessage()">
                     <div class="nav-link text-white" *ngSwitchCase="'buongiorno'">Buongiorno utente e benvenuto.</div>
                     <div class="nav-link text-white" *ngSwitchCase="'buonPomeriggio'">Buon pomeriggio utente e benvenuto.</div>
                     <div class="nav-link text-white" *ngSwitchCase="'buonasera'">Buonasera utente e benvenuto.</div>
                     <div class="nav-link text-white" *ngSwitchDefault>Ciao utente e benvenuto.</div>
                 </div>
-                  
+                <div *ngIf="(auth | async)?.tk!==null" [appHighlight]="colore" defaultHighlight="blue" class="navbar-nav justify-content-end me-auto" [ngSwitch]="getGreetingMessage()">
+                    <div class="nav-link text-white" *ngSwitchCase="'buongiorno'">Buongiorno {{ (auth | async)?.nome }} e benvenuto.</div>
+                    <div class="nav-link text-white" *ngSwitchCase="'buonPomeriggio'">Buon pomeriggio {{ (auth | async)?.nome }} e benvenuto.</div>
+                    <div class="nav-link text-white" *ngSwitchCase="'buonasera'">Buonasera {{ (auth | async)?.nome }} e benvenuto.</div>
+                    <div class="nav-link text-white" *ngSwitchDefault>Ciao {{ (auth | async)?.nome }} e benvenuto.</div>
+                </div>
                 <!-- MODAL -->
                 <app-modal #modalComponent></app-modal>
 

@@ -15,6 +15,8 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
+  // GENERE FILM
+
   /**
    * Funzione per chiamare l'elenco dei generi dei Film
    * 
@@ -68,6 +70,8 @@ export class ApiService {
     return this.richiestaGenerica(risorsa, "GET");
   }
 
+  // TIPOLOGIE INDIRIZZI - RECAPITI
+
   /**
      * Funzione richiamare elenco Tipo Indirizzi
      * 
@@ -78,6 +82,17 @@ export class ApiService {
     const risorsa: string[] = ["tipoIndirizzi"]
     return this.richiestaGenerica(risorsa, "GET")
   }
+
+    /**
+     * Funzione richiamare elenco Tipo Indirizzo
+     * 
+     * @returns Observable
+     */
+
+    public getTipoIndirizzo(id: string): Observable<IRispostaServer> {
+      const risorsa: string[] = ["tipoIndirizzi", id]
+      return this.richiestaGenerica(risorsa, "GET")
+    }
 
   //###########################################################################
 
@@ -97,7 +112,7 @@ export class ApiService {
   }
 
   /**
-     * @param risorsa (string!number)[] Risorsa di cui voglio sapere i dati 
+     * @param risorsa (string | number)[] Risorsa di cui voglio sapere i dati 
      * @param tipo string GET | POST | PUT | DELETE tipo di chiamata Http
      * @param parametri Oblect |null Parametri da passare all'endpoint
      * @returns Observable
@@ -127,7 +142,7 @@ export class ApiService {
 
       case "PUT": 
       if (parametri !== null) {
-        // console.log("Passo da qui 4")
+        // console.log("Passo da qui 3")
         return this.http.put<IRispostaServer>(url, parametri).pipe(tap(x => console.log("SERVICE MODIFCA", x)))
       } else {
         const objErrore = { data: null, message: null, error: "NO_PARAMETRI" }
@@ -137,12 +152,12 @@ export class ApiService {
         break
 
       case "DELETE": 
-      // console.log("PASSO DA QUI 5")
+      // console.log("PASSO DA QUI 4")
         return this.http.delete<IRispostaServer>(url)
         break
 
       default: 
-      // console.log("Passo da qui 3")
+      // console.log("Passo da qui 5")
         return this.http.get<IRispostaServer>(url)
         break
     }

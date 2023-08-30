@@ -83,7 +83,7 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
 
   esci(): void {
     const auth: Auth = {
-      idLingua: 1,
+      idLingua: null,
       tk: null,
       nome: null,
       idUserRole: null,
@@ -137,7 +137,7 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
           const tk: string = rit.data.token
           const contenutoToken = UtilityServices.leggiToken(tk)
           const auth: Auth = {
-            idLingua: 1,
+            idLingua: contenutoToken.data.idLingua,
             tk: rit.data.token,
             nome: contenutoToken.data.nome,
             idUserRole: contenutoToken.data.idUserRole,
@@ -156,7 +156,7 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
       error: (err) => {
         console.error("ERRORE", err)
         const auth: Auth = {
-          idLingua: 1,
+          idLingua: null,
           tk: null,
           nome: null,
           idUserRole: null,

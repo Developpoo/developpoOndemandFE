@@ -1,5 +1,5 @@
 export type Auth = {
-    idLingua: number,
+    idLingua: number | null,
     tk: string | null,
     nome: string | null,
     idUserRole: number | null,

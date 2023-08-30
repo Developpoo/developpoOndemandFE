@@ -16,8 +16,6 @@ export class NavbarComponent {
 
   // isVisible:boolean = false;
 
-  currentTime: Date = new Date();
-
   // getGreetingMessage(): string {
   //   const currentHour = this.currentTime.getHours();
     
@@ -29,6 +27,8 @@ export class NavbarComponent {
   //     return 'Buona serata!';
   //   }
   // }
+
+  currentTime: Date = new Date();
 
   getGreetingMessage(): string {
     const currentHour = this.currentTime.getHours();
@@ -58,8 +58,11 @@ export class NavbarComponent {
 
   closeResult = '';
   content="";
+  auth!: BehaviorSubject<Auth>
 
-	constructor(private modalService: NgbModal, private authService: AuthService) {}
+	constructor(private modalService: NgbModal, private authService: AuthService) {
+    this.auth = this.authService.leggiObsAuth()
+  }
 
   ngOnInit(): void {
   }
