@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy{
    esci(): void {
     const auth: Auth = {
       idLingua: null,
-      tk: null,
+      token: null,
       nome: null,
       idUserRole: null,
       idUserStatus: null,
@@ -98,11 +98,11 @@ export class LoginComponent implements OnInit, OnDestroy{
       next: (rit) => {
         // console.log("RITORNO", rit)
         if (rit.data !== null) {
-          const tk: string = rit.data.token
-          const contenutoToken = UtilityServices.leggiToken(tk)
+          const token: string = rit.data.token
+          const contenutoToken = UtilityServices.leggiToken(token)
           const auth: Auth = {
             idLingua: contenutoToken.data.idLingua,
-            tk: rit.data.token,
+            token: rit.data.token,
             nome: contenutoToken.data.nome,
             idUserRole: contenutoToken.data.idUserRole,
             idUserStatus: contenutoToken.data.idUserStatus,
@@ -121,7 +121,7 @@ export class LoginComponent implements OnInit, OnDestroy{
         console.error("ERRORE", err)
         const auth: Auth = {
           idLingua: null,
-          tk: null,
+          token: null,
           nome: null,
           idUserRole: null,
           idUserStatus: null,

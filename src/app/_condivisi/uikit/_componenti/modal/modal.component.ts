@@ -25,6 +25,9 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
   auth: BehaviorSubject<Auth>
   private distruggi$ = new Subject<void>()
 
+  //Registrazione attiva campi aggiuntivi
+  isRegistrationActive: boolean = false;
+
 	closeResult = '';
   content="";
 
@@ -36,8 +39,15 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router
 		) {
 			this.reactiveForm = this.fb.group({
+      // login
       'utente': ['', [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(40)]],
-      'password': ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
+      'password': ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+
+      // registrazione
+      'utenteSave': [''],
+      'passwordSave': [''],
+      'nome': [''],
+      'cognome': [''],
     })
 
     this.auth = this.authService.leggiObsAuth()
@@ -56,6 +66,7 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.distruggi$.next()
+    this.distruggi$.complete()
   }
   
 	open(content:any):any {
@@ -79,12 +90,33 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
 		}
 	}
 
+  // ########### REGISTRAZIONE ###############
+
+  attivaRegistrazione():void {
+    this.isRegistrationActive = true;
+  }
+
+  disattivaRegistrazione():void{
+    this.isRegistrationActive = false;
+  }
+
+  registrati():void{
+    if (this.reactiveForm.invalid) {
+      console.log("Form di registrazione non valido");
+   } else {
+    let utenteSave = this.reactiveForm.controls['utenteSave'].value;
+    let passwordSave = this.reactiveForm.controls['passwordSave'].value;
+    let nome = this.reactiveForm.controls['nome'].value;
+    let cognome = this.reactiveForm.controls['cognome'].value;
+   }
+  }
+
   // ########### LOGOUT ###############
 
   esci(): void {
     const auth: Auth = {
       idLingua: null,
-      tk: null,
+      token: null,
       nome: null,
       idUserRole: null,
       idUserStatus: null,
@@ -134,11 +166,11 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
       next: (rit) => {
         // console.log("RITORNO", rit)
         if (rit.data !== null) {
-          const tk: string = rit.data.token
-          const contenutoToken = UtilityServices.leggiToken(tk)
+          const token: string = rit.data.token
+          const contenutoToken = UtilityServices.leggiToken(token)
           const auth: Auth = {
             idLingua: contenutoToken.data.idLingua,
-            tk: rit.data.token,
+            token: rit.data.token,
             nome: contenutoToken.data.nome,
             idUserRole: contenutoToken.data.idUserRole,
             idUserStatus: contenutoToken.data.idUserStatus,
@@ -157,7 +189,7 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
         console.error("ERRORE", err)
         const auth: Auth = {
           idLingua: null,
-          tk: null,
+          token: null,
           nome: null,
           idUserRole: null,
           idUserStatus: null,

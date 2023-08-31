@@ -40,7 +40,7 @@ export class AuthService {
         idUserClient: null,
         idUserRole: null,
         idUserStatus: null,
-        tk: null,
+        token: null,
         nome: null,
         ability: null
       }
@@ -56,6 +56,6 @@ export class AuthService {
 
   scriviAuthSuLocalStorage(auth: Auth): void {
     const tmp: string = JSON.stringify(auth) //prendo il valore di auth e lo faccio diventare una stringa json
-    localStorage.setItem("auth", tmp) 
+    localStorage.setItem("auth", tmp) // assegno un chiave valore auth tmp
   }
 }

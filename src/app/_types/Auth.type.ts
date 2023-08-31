@@ -1,6 +1,6 @@
 export type Auth = {
     idLingua: number | null,
-    tk: string | null,
+    token: string | null,
     nome: string | null,
     idUserRole: number | null,
     idUserStatus: number | null,

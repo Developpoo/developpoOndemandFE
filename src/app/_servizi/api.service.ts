@@ -180,12 +180,12 @@ export class ApiService {
   /**
    * Funzione che manda hash utente e hash password cifrata al server
    * @param hashUtente stringa che rappresenta l'utente
-   * @param passwordNascosta stringa che rappresenta l'hash sha512 della password unita al sale
+   * @param hashPassword stringa che rappresenta l'hash sha512 della password unita al sale
    * @returns Observable
    */
 
-  public getLoginFase2(hashUtente: string, passwordNascosta: string): Observable<IRispostaServer> {
-    const risorsa: string[] = ["signClient", hashUtente, passwordNascosta]
+  public getLoginFase2(hashUtente: string, hashPassword: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ["signClient", hashUtente, hashPassword]
     const rit = this.richiestaGenerica(risorsa, "GET")
     return rit
   }
@@ -193,7 +193,7 @@ export class ApiService {
 
   /**
    * Funzione che effettua il Login
-   * @param utente stringa che rappresenta l'utente
+   * @param utente stringa che rappresenta l'utente nel DB auth (hash utente)
    * @param password stringa che rappresenta la password
    * @returns Observable
    */

@@ -4,10 +4,9 @@
 	  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
-		<ng-container *ngIf="(auth | async)?.tk===null">
+		<ng-container *ngIf="(auth | async)?.token===null">
 			<div class="row form-login">
-				
-					<form action="" class="text-primary" name="formLogin" [formGroup]="reactiveForm" (ngSubmit)="accedi()">
+					<form *ngIf="!isRegistrationActive" class="text-primary" name="formLogin" [formGroup]="reactiveForm" (ngSubmit)="accedi()">
 						<!-- <label for="utente" [ngClass]="{'is-invalid':reactiveForm.controls[ 'utente'].errors}">Email</label><br> -->
 						<div class="input-group mb-3 col-12">	
 							<span class="input-group-text"><svg
@@ -47,14 +46,130 @@
 								<span class="visually-hidden">Loading...</span>
 							</div>
 						</button>
-						<!-- <br><br>
-						<div>DEBUG:</div>
-						<div>E' valido reactiveform? {{ reactiveForm.valid | json}}</div> -->
 					</form>
+						<!-- REGISTRAZIONE -->
+							<form *ngIf="isRegistrationActive" class="text-primary row" name="formRegistration" [formGroup]="reactiveForm" (ngSubmit)="registrati()">
+								<div class="col-md-6 col-12 col-sm-12">
+									<label for="utenteSave" class="form-label" [ngClass]="{'is-invalid':reactiveForm.controls['utenteSave'].errors}">Email</label>
+									<input type="text" class="form-control" name="utenteSave" id="utenteSave" title="inserisci la tua email" [ngClass]="{'is-invalid':reactiveForm.controls['utenteSave'].errors}" formControlName="utenteSave">
+								</div>
+								<br><br><br><br>
+								<div class="col-md-6 col-12 col-sm-12">
+									<label for="passwordSave" class="form-label" [ngClass]="{'is-invalid':reactiveForm.controls['passwordSave'].errors}">Password</label>
+									<input type="text" class="form-control" name="passwordSave" id="passwordSave" title="inserisci la tua password" [ngClass]="{'is-invalid':reactiveForm.controls['passwordSave'].errors}" formControlName="passwordSave">
+								</div>
+								<br><br><br><br>
+								<div class="col-md-6 col-12 col-sm-12">
+									<label for="nome" class="form-label" [ngClass]="{'is-invalid':reactiveForm.controls['nome'].errors}">Nome</label>
+									<input type="text" class="form-control" name="nome" id="nome" title="inserisci il tuo nome" [ngClass]="{'is-invalid':reactiveForm.controls['nome'].errors}" formControlName="nome">
+								</div>
+								<br><br><br><br>
+								<div class="col-md-6 col-12 col-sm-12">
+									<label for="cognome" class="form-label" [ngClass]="{'is-invalid':reactiveForm.controls['cognome'].errors}">Cognome</label>
+									<input type="text" class="form-control" name="cognome" id="cognome" title="inserisci il tuo cognome" [ngClass]="{'is-invalid':reactiveForm.controls['cognome'].errors}" formControlName="cognome">
+								</div>
+								<br><br><br><br>
+								<div class="col-md-12 col-12 col-sm-12">
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="flexRadioDefault"
+											id="flexRadioDefault1">
+										<label class="form-check-label" for="flexRadioDefault1">
+											Maschio
+										</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="flexRadioDefault"
+											id="flexRadioDefault2" checked>
+										<label class="form-check-label" for="flexRadioDefault2">
+											Femmina
+										</label>
+									</div>
+								</div>
+								<br><br>
+								<div class="input-group mb-3">
+									<div class="col-12">
+										<label for="codiceFiscale" class="form-label">Codice Fiscale</label>
+										<input type="text" class="form-control" id="codiceFiscale" name="codiceFiscale" title="inserisci il tuo codice fiscale">
+									</div>
+								</div>
+								<br><br><br><br>
+								<div class="col-md-6 col-12 col-sm-12">
+									<label for="validationCustom04" class="form-label">Nazione</label>
+									<select class="form-select" id="validationCustom04">
+										<option selected disabled value="">Scegli</option>
+										<option>Italia</option>
+										<option>Francia</option>
+										<option>U.S.A.</option>
+										<option>Germania</option>
+										<option>Spagna</option>
+										<option>Inghilterra</option>
+									</select>
+								</div>
+								<br><br><br><br>
+								<div class="col-md-6 col-12 col-sm-12">
+									<label for="validationCustom09" class="form-label">Provincia</label>
+									<select class="form-select" id="validationCustom09">
+										<option selected disabled value="">Scegli</option>
+										<option>Palermo</option>
+										<option>Catania</option>
+										<option>Torino</option>
+										<option>Roma</option>
+										<option>Milano</option>
+										<option>Parma</option>
+									</select>
+								</div>
+								<br><br><br><br>
+								<div class="col-md-8 col-12 col-sm-12">
+									<label for="validationCustom03" class="form-label">Città</label>
+									<select class="form-select" id="validationCustom03">
+										<option selected disabled value="">Scegli</option>
+										<option>Palermo</option>
+										<option>Catania</option>
+										<option>Torino</option>
+										<option>Roma</option>
+										<option>Milano</option>
+										<option>Parma</option>
+									</select>
+								</div>
+								<br><br><br><br>
+								<div class="col-md-4 col-12 col-sm-12">
+									<label for="validationCustom05" class="form-label">CAP</label>
+									<input type="text" class="form-control" id="validationCustom05">
+								</div>
+								<br><br><br><br>
+								<div class="col-md-5 col-12 col-sm-12">
+									<label for="validationCustom08" class="form-label">Tipo
+										Indirizzo</label>
+									<select class="form-select" id="validationCustom08">
+										<option selected disabled value="">Scegli</option>
+										<option>Domicilio</option>
+										<option>Residenza Vacanza</option>
+										<option>Indirizzo Spedizioni</option>
+										<option>Ufficio</option>
+										<option>Sede Legale</option>
+										<option>Sede Operativa</option>
+									</select>
+								</div>
+								<br><br><br><br>
+								<div class="col-md-7 col-12 col-sm-12">
+									<label for="validationCustom06" class="form-label">Indirizzo</label>
+									<input type="text" class="form-control" id="validationCustom06">
+								</div>
+								<br><br><br><br>
+								<div class="col-12">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" value="1" name="accettaTermini" id="accettaTermini" title="accetta termini e condizioni" [ngClass]="{'is-invalid':reactiveForm.controls['accettaTermini'].errors}" formControlName="accettaTermini">
+										<label class="form-check-label" for="accettaTermini" [ngClass]="{'is-invalid':reactiveForm.controls['accettaTermini'].errors}">
+											Accetta Termini e Condizioni
+										</label>
+									</div>
+								</div>
+							</form>
+	
 			</div>
 		</ng-container>
-		
-		<ng-container *ngIf="(auth | async)?.tk!==null">
+	
+		<ng-container *ngIf="(auth | async)?.token!==null">
 			<div class="row form-login">
 				<div class="col-4">
 					Ciao {{ (auth | async)?.nome }}
@@ -64,16 +179,27 @@
 		<!-- <div class="text-primary">Sto controllando? {{ stoControllando | json}}</div> -->
 	</div>
 	<div class="modal-footer">
-		<button type="submit" class="btn btn-primary" (click)="esci()">
-			Esci
+		<button *ngIf="(auth | async)?.token!==null" type="submit" class="btn btn-primary" (click)="esci()">
+			Logout
 			<div class="spinner-border spinner-border-sm text-warning" role="status" *ngIf="stoControllando">
 				<span class="visually-hidden">Loading...</span>
 			</div>
 		</button>
-	  <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Chiudi</button>
+		<button *ngIf="(auth | async)?.token===null && !isRegistrationActive" type="button" class="btn btn-primary" (click)="attivaRegistrazione()">Registrati</button>
+	  <button *ngIf="(auth | async)?.token===null && isRegistrationActive" type="button" class="btn btn-primary" (click)="registrati()">Registra</button>
+	  <button *ngIf="(auth | async)?.token===null && isRegistrationActive" type="button" class="btn btn-primary" (click)="disattivaRegistrazione()">Login</button>
+	  <button *ngIf="(auth | async)?.token===null || (auth | async)?.token!==null" type="button" class="btn btn-primary" (click)="modal.close('Save click')">Chiudi</button>
 	</div>
   </ng-template>
-  <button class="btn btn-lg btn-outline-light" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" (click)="open(content)">Accedi
+  <button *ngIf="(auth | async)?.token===null" class="btn btn-lg btn-outline-light" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" (click)="open(content)">Accedi
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-shield-lock" viewBox="0 0 16 16">
+        <path
+            d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z" />
+        <path
+            d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415z" />
+    </svg>
+</button>
+<button *ngIf="(auth | async)?.token!==null" class="btn btn-lg btn-outline-light" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" (click)="esci()">Logout
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-shield-lock" viewBox="0 0 16 16">
         <path
             d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z" />

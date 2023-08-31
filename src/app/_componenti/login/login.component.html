@@ -1,4 +1,4 @@
-<ng-container *ngIf="(auth | async)?.tk===null">
+<ng-container *ngIf="(auth | async)?.token===null">
     <div class="row form-login">
         <div class="col-4">
             <form name="formLogin" [formGroup]="reactiveForm" (ngSubmit)="accedi()">
@@ -24,13 +24,13 @@
     </div>
 </ng-container>
 
-<ng-container *ngIf="(auth | async)?.tk!==null">
+<ng-container *ngIf="(auth | async)?.token!==null">
     <div class="row form-login">
         <div class="col-4">
             Benvenuto {{ (auth | async)?.nome }}
-            <br>
-            <button type="submit" class="btn btn-primary" (click)="esci()">
-                Esci
+            <br> <br>
+            <button *ngIf="(auth | async)?.token!==null" type="submit" class="btn btn-primary" (click)="esci()">
+                Logout
                 <div class="spinner-border spinner-border-sm text-warning" role="status" *ngIf="stoControllando">
                     <span class="visually-hidden">Loading...</span>
                 </div>
