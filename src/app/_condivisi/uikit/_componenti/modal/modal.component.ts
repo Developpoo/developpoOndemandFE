@@ -2,13 +2,17 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BehaviorSubject, Observable, Observer, Subject, catchError, delay, of, take, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Observer, Subject, catchError, delay, map, of, take, takeUntil } from 'rxjs';
 import { NavbarComponent } from 'src/app/_componenti/navbar/navbar.component';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { AuthService } from 'src/app/_servizi/auth.service';
 import { UtilityServices } from 'src/app/_servizi/utility.services';
 import { Auth } from 'src/app/_types/Auth.type';
+import { Comune } from 'src/app/_types/Comune.type';
+import { Nazione } from 'src/app/_types/Nazione.type';
+import { TipoIndirizzo } from 'src/app/_types/TipoIndirizzo.type';
+import { TipoRecapito } from 'src/app/_types/TipoRecapito.type';
 
 @Component({
   selector: 'app-modal',
@@ -25,8 +29,26 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
   auth: BehaviorSubject<Auth>
   private distruggi$ = new Subject<void>()
 
-  //Registrazione attiva campi aggiuntivi
+  //Registrazione campi aggiuntivi
   isRegistrationActive: boolean = false;
+  registrationForm :FormGroup
+
+  //TipoIndirizzi
+  elencoTipoIndirizzi$:Observable<IRispostaServer>
+  datiTipoIndirizzo: TipoIndirizzo[]=[]
+
+  //TipoRecapiti
+  elencoTipoRecapiti$:Observable<IRispostaServer>
+  datiTipoRecapito: TipoRecapito[]=[]
+
+  //Nazioni
+  nazioni$:Observable<IRispostaServer>
+  datiNazione: Nazione[]=[]
+
+  //Comuni - Regioni - cap
+  comuni$:Observable<IRispostaServer>
+  datiComune: Comune[]=[]
+  regioniComuni: { [regione: string]: Comune[] } = {};
 
 	closeResult = '';
   content="";
@@ -42,20 +64,66 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
       // login
       'utente': ['', [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(40)]],
       'password': ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+    }),
 
+    this.registrationForm  = this.fb.group({
       // registrazione
-      'utenteSave': [''],
-      'passwordSave': [''],
-      'nome': [''],
-      'cognome': [''],
+      'utenteSave': ['', [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(40)]],
+      'passwordSave': ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+      'nome': ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      'cognome': ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      'codiceFiscale': ['', [ Validators.pattern('^[A-Z0-9]{16}$')]],
+      'accettaTermini': [false, Validators.requiredTrue]
     })
 
     this.auth = this.authService.leggiObsAuth()
     console.log("AUTH", this.auth)
-		}
+    
+    this.elencoTipoIndirizzi$= this.api.getTipoIndirizzi()
+    this.elencoTipoRecapiti$= this.api.getTipoRecapiti()
+    this.nazioni$= this.api.getNazioni()
+    this.comuni$= this.api.getComuni()
+  }
 
   ngOnInit(): void {
-  this.open(this.content)
+     this.open(this.content)
+
+     this.nazioni$.pipe(
+      map(x=>x.data)
+     ).subscribe({
+      next: x => this.datiNazione=x
+     })
+
+     this.comuni$.pipe(
+      map(x => x.data)
+    ).subscribe({
+      next: comuni => {
+        for (const comune of comuni) {
+          if (!this.regioniComuni[comune.regione]) {
+            this.regioniComuni[comune.regione] = [];
+          }
+          this.regioniComuni[comune.regione].push(comune);
+        }
+      }
+    })    
+
+    this.comuni$.pipe(
+      map(x=>x.data)
+     ).subscribe({
+      next: x => this.datiComune=x
+     })
+
+     this.elencoTipoIndirizzi$.pipe(
+      map(x=>x.data)
+     ).subscribe({
+      next: x => this.datiTipoIndirizzo=x
+     })
+
+     this.elencoTipoRecapiti$.pipe(
+      map(x=>x.data)
+     ).subscribe({
+      next: x => this.datiTipoRecapito=x
+     })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -101,13 +169,14 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   registrati():void{
-    if (this.reactiveForm.invalid) {
+    if (this.registrationForm.invalid) {
       console.log("Form di registrazione non valido");
    } else {
-    let utenteSave = this.reactiveForm.controls['utenteSave'].value;
-    let passwordSave = this.reactiveForm.controls['passwordSave'].value;
-    let nome = this.reactiveForm.controls['nome'].value;
-    let cognome = this.reactiveForm.controls['cognome'].value;
+    let utenteSave = this.registrationForm.controls['utenteSave'].value;
+    let passwordSave = this.registrationForm.controls['passwordSave'].value;
+    let nome = this.registrationForm.controls['nome'].value;
+    let cognome = this.registrationForm.controls['cognome'].value;
+    let accettaTermini = this.registrationForm.controls['accettaTermini'].value;
    }
   }
 
@@ -139,7 +208,7 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
       let password = this.reactiveForm.controls["password"].value
       this.stoControllando = true
       this.obsLogin(utente, password).subscribe(this.osservoLogin())
-      // console.log("ACCEDI", utente, password)
+      console.log("ACCEDI", utente, password)
     }
   }
 
@@ -164,10 +233,10 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
   private osservoLogin() {
     const osservatore: Observer<any> = {
       next: (rit) => {
-        // console.log("RITORNO", rit)
+        console.log("RITORNO", rit)
         if (rit.data !== null) {
           const token: string = rit.data.token
-          const contenutoToken = UtilityServices.leggiToken(token)
+          const contenutoToken: any = UtilityServices.leggiToken(token)
           const auth: Auth = {
             idLingua: contenutoToken.data.idLingua,
             token: rit.data.token,

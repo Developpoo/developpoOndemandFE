@@ -70,6 +70,32 @@ export class ApiService {
     return this.richiestaGenerica(risorsa, "GET");
   }
 
+  // NAZIONI
+
+  /**
+     * Funzione richiamare elenco Tipo Indirizzi
+     * 
+     * @returns Observable
+     */
+
+  public getNazioni(): Observable<IRispostaServer> {
+    const risorsa: string[] = ["nazioni"]
+    return this.richiestaGenerica(risorsa, "GET")
+  }
+
+    // NAZIONI
+
+  /**
+     * Funzione richiamare elenco Tipo Indirizzi
+     * 
+     * @returns Observable
+     */
+
+  public getComuni(): Observable<IRispostaServer> {
+    const risorsa: string[] = ["comuniItaliani"]
+    return this.richiestaGenerica(risorsa, "GET")
+  }
+
   // TIPOLOGIE INDIRIZZI - RECAPITI
 
   /**
@@ -83,16 +109,58 @@ export class ApiService {
     return this.richiestaGenerica(risorsa, "GET")
   }
 
-    /**
-     * Funzione richiamare elenco Tipo Indirizzo
-     * 
-     * @returns Observable
-     */
+  /**
+   * Funzione richiamare elenco Tipo Indirizzo
+   * 
+   * @returns Observable
+   */
 
-    public getTipoIndirizzo(id: string): Observable<IRispostaServer> {
-      const risorsa: string[] = ["tipoIndirizzi", id]
-      return this.richiestaGenerica(risorsa, "GET")
-    }
+  public getTipoIndirizzo(id: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ["tipoIndirizzi", id]
+    return this.richiestaGenerica(risorsa, "GET")
+  }
+
+  /**
+   * Funzione richiamare elenco Tipo Recapiti
+   * 
+   * @returns Observable
+   */
+
+  public getTipoRecapiti(): Observable<IRispostaServer> {
+    const risorsa: string[] = ["tipoRecapiti"]
+    return this.richiestaGenerica(risorsa, "GET")
+  }
+
+  /**
+   * Funzione richiamare elenco Tipo Recapito
+   * 
+   * @returns Observable
+   */
+
+  public getTipoRecapito(id: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ["tipoRecapito", id]
+    return this.richiestaGenerica(risorsa, "GET")
+  }
+
+  // UPLOAD FILE
+
+  public upload(dati: FormData): Observable<IRispostaServer> {
+    const risorsa: string[] = ["upload"]
+    return this.richiestaGenerica(risorsa, "POST", dati)
+  }
+
+  // REGISTRAZIONE UTENTE
+
+  /**
+   * Funzione per la Registrazione di un Utente
+   * 
+   * @returns Observable
+   */
+
+   public postRegisrazione(): Observable<IRispostaServer> {
+    const risorsa: string[] = ["registrazione"]
+    return this.richiestaGenerica(risorsa, "POST")
+  }
 
   //###########################################################################
 
@@ -121,17 +189,17 @@ export class ApiService {
   protected richiestaGenerica(risorsa: (string | number)[], tipo: ChiamataHTTP, parametri: Object | null = null): Observable<IRispostaServer> {
 
     const url = this.calcolaRisorsa(risorsa)
-    // console.log("Url. ",url)
+    console.log("Url. ",url)
 
     switch (tipo) {
       case "GET": 
-      // console.log("Passo da qui 1")
+      console.log("Passo da qui 1")
         return this.http.get<IRispostaServer>(url)
         break
 
       case "POST": 
       if (parametri !== null) {
-        // console.log("Passo da qui 2")
+        console.log("Passo da qui 2")
         return this.http.post<IRispostaServer>(url, parametri).pipe(tap(x => console.log("SERVICE", x)))
       } else {
         const objErrore = { data: null, message: null, error: "NO_PARAMETRI" }
@@ -142,7 +210,7 @@ export class ApiService {
 
       case "PUT": 
       if (parametri !== null) {
-        // console.log("Passo da qui 3")
+        console.log("Passo da qui 3")
         return this.http.put<IRispostaServer>(url, parametri).pipe(tap(x => console.log("SERVICE MODIFCA", x)))
       } else {
         const objErrore = { data: null, message: null, error: "NO_PARAMETRI" }
@@ -152,12 +220,12 @@ export class ApiService {
         break
 
       case "DELETE": 
-      // console.log("PASSO DA QUI 4")
+      console.log("PASSO DA QUI 4")
         return this.http.delete<IRispostaServer>(url)
         break
 
       default: 
-      // console.log("Passo da qui 5")
+      console.log("Passo da qui 5")
         return this.http.get<IRispostaServer>(url)
         break
     }
@@ -200,10 +268,10 @@ export class ApiService {
   public login(utente: string, password: string): Observable<IRispostaServer> {
     const hashUtente: string = UtilityServices.hash(utente)
     const hashPassword: string = UtilityServices.hash(password)
-    // console.log("HashPassword: ", hashPassword, hashUtente)
+    console.log("HashPassword: ", hashPassword, hashUtente)
     const controllo$ = this.getLoginFase1(hashUtente).pipe(
       take(1),
-      // tap(x => console.log("DatiFase1:", x)),
+      tap(x => console.log("DatiFase1:", x)),
       map((rit: IRispostaServer): string => {
         const sale: string = rit.data.salt
         // console.log ("rit", rit.data)

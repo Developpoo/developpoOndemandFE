@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'novita', loadChildren: () => import('./_pagine/novita/novita.module').then(m => m.NovitaModule) },
   { path: 'chisono', loadChildren: () => import('./_pagine/chisono/chisono.module').then(m => m.ChisonoModule) },
   { path: 'collezioni', loadChildren: () => import('./_pagine/collezioni-film/collezioni-film.module').then(m => m.CollezioniFilmModule) },
+  { path: 'upload', loadChildren: () => import('./_pagine/upload/upload.module').then(m => m.UploadModule) },
   { path: '**',  loadChildren: () => import('./_pagine/not-found404/not-found404.module').then(m => m.NotFound404Module) }
 ];
 
