@@ -1,0 +1,22 @@
+export type ParametriSaveAuth = {
+  idUserClient: number;
+  user: string;
+  password: string;
+  nome: string;
+  cognome: string;
+  sesso: number | null;
+  codiceFiscale: string | null;
+  idNazione: number | null;
+  regione: string | null;
+  idComune: number | null;
+  cap: number | null;
+  idTipoIndirizzo: number | null;
+  indirizzo: string | null;
+  idTipoRecapito: number | null;
+  recapito: string | null;
+  idLingua: number;
+  idUserRole: number | null;
+  idUserStatus: number | null;
+  ability: number[] | null;
+  accettaTermini: number;
+};
