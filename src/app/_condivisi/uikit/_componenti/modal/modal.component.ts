@@ -6,9 +6,9 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   BehaviorSubject,
   Observable,
@@ -22,18 +22,16 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
-import { NavbarComponent } from 'src/app/_componenti/navbar/navbar.component';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { AuthService } from 'src/app/_servizi/auth.service';
+import { PasswordUgualiValidator } from 'src/app/_servizi/custom.validators';
 import { UtilityServices } from 'src/app/_servizi/utility.services';
 import { Auth } from 'src/app/_types/Auth.type';
 import { Comune } from 'src/app/_types/Comune.type';
 import { Lingua } from 'src/app/_types/Lingua.type';
 import { Nazione } from 'src/app/_types/Nazione.type';
 import { ParametriSaveAuth } from 'src/app/_types/ParametriSaveAuth.type';
-import { TipoIndirizzo } from 'src/app/_types/TipoIndirizzo.type';
-import { TipoRecapito } from 'src/app/_types/TipoRecapito.type';
 
 @Component({
   selector: 'app-modal',
@@ -41,31 +39,10 @@ import { TipoRecapito } from 'src/app/_types/TipoRecapito.type';
   styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent implements OnInit, OnChanges, OnDestroy {
+
   @Input('startModal') ogModal: any | null = null;
 
-  //Login
-  stoControllando: boolean = false;
-  reactiveForm: FormGroup;
-  auth: BehaviorSubject<Auth>;
   private distruggi$ = new Subject<void>();
-
-  //Registrazione campi aggiuntivi
-  isRegistrationActive: boolean = false;
-  registrationForm: FormGroup;
-
-  private osservatore = {
-    next: (ritorno: ParametriSaveAuth) => console.log(ritorno),
-    error: (err: string) => console.error(err),
-    complete: () => console.log('Completato'),
-  };
-
-  //TipoIndirizzi
-  elencoTipoIndirizzi$: Observable<IRispostaServer>;
-  datiTipoIndirizzo: TipoIndirizzo[] = [];
-
-  //TipoRecapiti
-  elencoTipoRecapiti$: Observable<IRispostaServer>;
-  datiTipoRecapito: TipoRecapito[] = [];
 
   //Nazioni
   nazioni$: Observable<IRispostaServer>;
@@ -74,14 +51,51 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
   //Comuni - Regioni - cap
   comuni$: Observable<IRispostaServer>;
   datiComune: Comune[] = [];
-  regioniComuni: { [regione: string]: Comune[] } = {};
 
   //Lingua
   lingue$: Observable<IRispostaServer>;
   datiLingua: Lingua[] = [];
 
+  // OPEN
   closeResult = '';
   content = '';
+
+  // FORM PRECOMPILAZIONE
+  // LOGIN
+  loginForm: FormGroup = new FormGroup({
+    utente: new FormControl(''),
+    password: new FormControl('')
+  });
+  stoControllando: boolean = false;
+  auth: BehaviorSubject<Auth> = this.authService.leggiObsAuth()
+
+  // REGISTRAZIONE
+  registrationForm: FormGroup = new FormGroup({
+    user: new FormControl(''),
+    passwordSave: new FormControl(''),
+    confirmPasswordSave: new FormControl(''),
+    nome: new FormControl(''),
+    cognome: new FormControl(''),
+    idLingua: new FormControl(''),
+    sesso: new FormControl(''),
+    dataNascita: new FormControl(''),
+    codiceFiscale: new FormControl(''),
+    idNazione: new FormControl(''),
+    idComune: new FormControl(''),
+    cap: new FormControl(''),
+    indirizzo: new FormControl(''),
+    recapito: new FormControl(''),
+    accettaTermini: new FormControl('')
+  });
+  isRegistrationActive: boolean = false;
+  PasswordValidator: boolean = false
+
+  // OSSERVATORE
+  private osservatore = {
+    next: (ritorno: ParametriSaveAuth) => console.log(ritorno),
+    error: (err: string) => console.error(err),
+    complete: () => console.log('Completato'),
+  };
 
   constructor(
     private modalService: NgbModal,
@@ -90,78 +104,40 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
     private api: ApiService,
     private router: Router
   ) {
-    (this.reactiveForm = this.fb.group({
-      // login
-      utente: [
-        '',
-        [
-          Validators.required,
-          Validators.email,
-          Validators.minLength(5),
-          Validators.maxLength(40),
-        ],
-      ],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(20),
-        ],
-      ],
-    })),
-      (this.registrationForm = this.fb.group({
-        // registrazione
-        user: [
-          '',
-          [
-            Validators.required,
-            Validators.email,
-            Validators.minLength(5),
-            Validators.maxLength(40),
-          ],
-        ],
-        passwordSave: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(6),
-            Validators.maxLength(20),
-          ],
-        ],
-        nome: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(30),
-          ],
-        ],
-        cognome: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(30),
-          ],
-        ],
-        lingueModal: ['', [Validators.required]],
-        codiceFiscale: ['', [Validators.pattern('^[A-Z0-9]{16}$')]],
-        accettaTermini: [false, Validators.requiredTrue],
-      }));
-
-    this.auth = this.authService.leggiObsAuth();
-    console.log('AUTH', this.auth);
-
-    this.elencoTipoIndirizzi$ = this.api.getTipoIndirizzi();
-    this.elencoTipoRecapiti$ = this.api.getTipoRecapiti();
-    this.nazioni$ = this.api.getNazioni();
-    this.comuni$ = this.api.getComuni();
-    this.lingue$ = this.api.getLingue();
+    this.nazioni$ = this.api.getNazioni()
+    this.comuni$ = this.api.getComuni()
+    this.lingue$ = this.api.getLingue()
   }
 
   ngOnInit(): void {
     this.open(this.content);
+
+    // login
+    this.loginForm = this.fb.group({
+      utente: ['', [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(40)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+    });
+
+    // registrazione
+    this.registrationForm = this.fb.group({
+      user: ['', [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(40)]],
+      passwordSave: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+      confirmPasswordSave: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+      nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      cognome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      idLingua: [null, [Validators.required]],
+      sesso: [null, [Validators.required]],
+      dataNascita: [null, [Validators.required]],
+      codiceFiscale: [null, [Validators.required, Validators.pattern('^([A-Z]{6})([0-9]{2})([A-Z]{2})([0-9]{3})([A-Z]{1})$')]],
+      idNazione: [null, [Validators.required]],
+      idComune: [null, [Validators.required]],
+      cap: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      indirizzo: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+      recapito: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      accettaTermini: [false, Validators.requiredTrue],
+    }, {
+      validator: PasswordUgualiValidator('passwordSave', 'confirmPasswordSave')
+    });
 
     this.lingue$.pipe(map((x) => x.data)).subscribe({
       next: (x) => (this.datiLingua = x),
@@ -171,27 +147,21 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
       next: (x) => (this.datiNazione = x),
     });
 
+    // this.comuni$.pipe(map((x) => x.data)).subscribe({
+    //   next: (comuni) => {
+    //     for (const comune of comuni) {
+    //       if (!this.regioniComuni[comune.regione]) {
+    //         this.regioniComuni[comune.regione] = [];
+    //       }
+    //       this.regioniComuni[comune.regione].push(comune);
+    //     }
+    //   },
+    // });
+
     this.comuni$.pipe(map((x) => x.data)).subscribe({
-      next: (comuni) => {
-        for (const comune of comuni) {
-          if (!this.regioniComuni[comune.regione]) {
-            this.regioniComuni[comune.regione] = [];
-          }
-          this.regioniComuni[comune.regione].push(comune);
-        }
+      next: (x) => {
+        this.datiComune = x;
       },
-    });
-
-    this.comuni$.pipe(map((x) => x.data)).subscribe({
-      next: (x) => (this.datiComune = x),
-    });
-
-    this.elencoTipoIndirizzi$.pipe(map((x) => x.data)).subscribe({
-      next: (x) => (this.datiTipoIndirizzo = x),
-    });
-
-    this.elencoTipoRecapiti$.pipe(map((x) => x.data)).subscribe({
-      next: (x) => (this.datiTipoRecapito = x),
     });
   }
 
@@ -239,35 +209,39 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
     this.isRegistrationActive = false;
   }
 
-  registrati(): void {
+  registra(): void {
     if (this.registrationForm.invalid) {
       console.log('Form di registrazione non valido');
       return;
+    } else {
+      console.log('Form di registrazione valido');
+
+      const parametro: Partial<ParametriSaveAuth> = {
+        user: this.registrationForm.controls['user'].value,
+        password: this.registrationForm.controls['passwordSave'].value,
+        nome: this.registrationForm.controls['nome'].value,
+        cognome: this.registrationForm.controls['cognome'].value,
+        sesso: this.registrationForm.controls['sesso'].value || null,
+        dataNascita:
+          this.registrationForm.controls['dataNascita'].value || null,
+        codiceFiscale:
+          this.registrationForm.controls['codiceFiscale'].value || null,
+        idNazione: this.registrationForm.controls['idNazione'].value || null,
+        regione: this.registrationForm.controls['regione'].value || null,
+        idComune: this.registrationForm.controls['idComune'].value || null,
+        cap: this.registrationForm.controls['cap'].value || null,
+        idTipoIndirizzo:
+          this.registrationForm.controls['idTipoIndirizzo'].value || null,
+        indirizzo: this.registrationForm.controls['indirizzo'].value || null,
+        idTipoRecapito:
+          this.registrationForm.controls['idTipoRecapito'].value || null,
+        recapito: this.registrationForm.controls['recapito'].value || null,
+        idLingua: this.registrationForm.controls['lingua'].value,
+        accettaTermini: this.registrationForm.controls['accettaTermini'].value,
+      }
+
+      this.obsAddUserClient(parametro).subscribe(this.osservatore);
     }
-
-    const parametro: Partial<ParametriSaveAuth> = {
-      idUserStatus: 1,
-      idLingua: this.registrationForm.controls['idLingua'].value,
-      nome: this.registrationForm.controls['nome'].value,
-      cognome: this.registrationForm.controls['cognome'].value,
-      sesso: this.registrationForm.controls['sesso'].value || null,
-      codiceFiscale:
-        this.registrationForm.controls['codiceFiscale'].value || null,
-      idNazione: this.registrationForm.controls['idNazione'].value || null,
-      regione: this.registrationForm.controls['regione'].value || null,
-      idComune: this.registrationForm.controls['idComune'].value || null,
-      accettaTermini: this.registrationForm.controls['accettaTermini'].value,
-      user: this.registrationForm.controls['user'].value,
-      cap: this.registrationForm.controls['cap'].value || null,
-      idTipoIndirizzo:
-        this.registrationForm.controls['idTipoIndirizzo'].value || null,
-      indirizzo: this.registrationForm.controls['indirizzo'].value || null,
-      idTipoRecapito:
-        this.registrationForm.controls['idTipoRecapito'].value || null,
-      recapito: this.registrationForm.controls['recapito'].value || null,
-    };
-
-    this.obsAddUserClient(parametro).subscribe(this.osservatore);
   }
 
   obsAddUserClient(dati: Partial<ParametriSaveAuth>) {
@@ -300,11 +274,11 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
   // ########### LOGIN ###############
 
   accedi(): void {
-    if (this.reactiveForm.invalid) {
+    if (this.loginForm.invalid) {
       console.log('FORM NON VALIDO');
     } else {
-      let utente = this.reactiveForm.controls['utente'].value;
-      let password = this.reactiveForm.controls['password'].value;
+      let utente = this.loginForm.controls['utente'].value;
+      let password = this.loginForm.controls['password'].value;
       this.stoControllando = true;
       this.obsLogin(utente, password).subscribe(this.osservoLogin());
       console.log('ACCEDI', utente, password);
