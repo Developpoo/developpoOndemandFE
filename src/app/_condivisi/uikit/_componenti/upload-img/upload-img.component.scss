@@ -1,0 +1,26 @@
+.areaDrop {
+    min-width: 200px;
+    min-height: 150px;
+    border: 1px dashed red;
+    background-color: beige;
+    font-size: 2em;
+    padding-top: 30px;
+
+    // &:hover {
+    //     background-color: red;
+    // }
+
+}
+
+
+.dragdrop-hover {
+    background-color: yellowgreen;
+}
+
+.errore {
+    color: red;
+}
+
+.ok {
+    color: green;
+}

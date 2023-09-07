@@ -11,6 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './_condivisi/uikit/_componenti/modal/modal.component';
 import { OffcanvasComponent } from './_condivisi/uikit/_componenti/offcanvas/offcanvas.component';
 import { HighlightDirective } from './_direttive/highlight.directive';
+import { UploadImgComponent } from './_condivisi/uikit/_componenti/upload-img/upload-img.component';
+import { DragdropDirective } from './_direttive/dragdrop.directive';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { HighlightDirective } from './_direttive/highlight.directive';
     ModalComponent,
     OffcanvasComponent,
     HighlightDirective,
+    UploadImgComponent,
+    DragdropDirective,
   ],
   imports: [
     BrowserModule,

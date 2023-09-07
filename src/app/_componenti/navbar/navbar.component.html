@@ -3,7 +3,7 @@
         <a class="navbar-brand" href="javascript:void(0)" title="Vai alla Home" [routerLink]="['/']"><img
                 src="../../../assets/img/icon/icons8-movie-theater-50.png" alt="logo"></a>
         <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
-            <app-offcanvas #offcanvasComponent></app-offcanvas>
+        <app-offcanvas #offcanvasComponent></app-offcanvas>
         <div class="offcanvas offcanvas-start " data-bs-hideresize="true" id="navbarOffcanvas">
             <div class="offcanvas-header bg-primary">
                 <h5 class="offcanvas-title" id="ofFcanvasLabel">MENU</h5>
@@ -36,22 +36,32 @@
                         <a class="nav-link" href="javascript:void(0)" title="Vai alla Contatti"
                             [routerLink]="['/contatti']" [routerLinkActive]="['attivo']">Contatti</a>
                     </li>
+                    <li class="nav-item" *ngIf="(auth | async)?.token!==null">
+                        <a class="nav-link" href="javascript:void(0)" title="Vai alla Contatti"
+                            [routerLink]="['/login']" [routerLinkActive]="['attivo']">Account</a>
+                    </li>
                 </ul>
                 <!-- SALUTO LOGIN -->
                 <!-- <ng-template *ngIf="isVisible; then bloccoIf else bloccoElse"></ng-template>
                 <ng-template class="saluto" #bloccoIf>Benvenuto</ng-template>
                 <ng-template class="saluto" #bloccoElse>Ciao Utente</ng-template> -->
 
-                <div *ngIf="(auth | async)?.token===null" [appHighlight]="colore" defaultHighlight="blue" class="navbar-nav justify-content-end me-auto" [ngSwitch]="getGreetingMessage()">
+                <div *ngIf="(auth | async)?.token===null" [appHighlight]="colore" defaultHighlight="blue"
+                    class="navbar-nav justify-content-end me-auto" [ngSwitch]="getGreetingMessage()">
                     <div class="nav-link text-white" *ngSwitchCase="'buongiorno'">Buongiorno utente e benvenuto.</div>
-                    <div class="nav-link text-white" *ngSwitchCase="'buonPomeriggio'">Buon pomeriggio utente e benvenuto.</div>
+                    <div class="nav-link text-white" *ngSwitchCase="'buonPomeriggio'">Buon pomeriggio utente e
+                        benvenuto.</div>
                     <div class="nav-link text-white" *ngSwitchCase="'buonasera'">Buonasera utente e benvenuto.</div>
                     <div class="nav-link text-white" *ngSwitchDefault>Ciao utente e benvenuto.</div>
                 </div>
-                <div *ngIf="(auth | async)?.token!==null" [appHighlight]="colore" defaultHighlight="blue" class="navbar-nav justify-content-end me-auto" [ngSwitch]="getGreetingMessage()">
-                    <div class="nav-link text-white" *ngSwitchCase="'buongiorno'">Buongiorno {{ (auth | async)?.nome }} e benvenuto.</div>
-                    <div class="nav-link text-white" *ngSwitchCase="'buonPomeriggio'">Buon pomeriggio {{ (auth | async)?.nome }} e benvenuto.</div>
-                    <div class="nav-link text-white" *ngSwitchCase="'buonasera'">Buonasera {{ (auth | async)?.nome }} e benvenuto.</div>
+                <div *ngIf="(auth | async)?.token!==null" [appHighlight]="colore" defaultHighlight="blue"
+                    class="navbar-nav justify-content-end me-auto" [ngSwitch]="getGreetingMessage()">
+                    <div class="nav-link text-white" *ngSwitchCase="'buongiorno'">Buongiorno {{ (auth | async)?.nome }}
+                        e benvenuto.</div>
+                    <div class="nav-link text-white" *ngSwitchCase="'buonPomeriggio'">Buon pomeriggio {{ (auth |
+                        async)?.nome }} e benvenuto.</div>
+                    <div class="nav-link text-white" *ngSwitchCase="'buonasera'">Buonasera {{ (auth | async)?.nome }} e
+                        benvenuto.</div>
                     <div class="nav-link text-white" *ngSwitchDefault>Ciao {{ (auth | async)?.nome }} e benvenuto.</div>
                 </div>
                 <!-- MODAL -->
@@ -61,4 +71,3 @@
         </div>
     </div>
 </nav>
-

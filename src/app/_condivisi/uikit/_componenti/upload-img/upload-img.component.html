@@ -1,0 +1,25 @@
+<br>
+<div class="container">
+    <h1>UPLOADS IMG</h1>
+    <form name="formDiInvio" (ngSubmit)="invia(form1)" #form1 [formGroup]="reactiveForm">
+        <div class="areaDrop text-center" id="areaDrop" appDragdrop(alRilascio)="alRilascio($event)"
+            (click)="fileInput.click()">
+            <input type="file" #fileInput multiple (change)="onChangeInputFile($event)" hidden
+                formControlName="fileDaCaricare">
+            Trascina qui i tuoi file
+        </div>
+        <p class="errore" *ngIf="errore!==''"> {{errore}}</p>
+        <p class="ok" *ngIf="fileOk">Files caricati correttamente</p>
+    </form>
+    <div class="listaFile row" *ngFor="let file of daCaricare">
+        <div class="col-8">{{file.name}}</div>
+        <div class="col-4">
+            <button type="button" class="btn btn-danger" (click)="elimina(file)">Elimina</button>
+        </div>
+    </div>
+    <hr>
+    <button type="submit" class="btn btn-primary" form="formDiInvio"
+        [disabled]="daCaricare.length<=0 || reactiveForm.errors!==null">Invia
+        Files</button>
+    <p *ngIf=" erroreForm!==null" class="errore">{{ erroreForm | json}}</p>
+</div>

@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Observer, Subject, catchError, delay, of, take, takeUntil } from 'rxjs';
+import { UploadImgComponent } from 'src/app/_condivisi/uikit/_componenti/upload-img/upload-img.component';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { AuthService } from 'src/app/_servizi/auth.service';
@@ -13,10 +14,10 @@ import { Auth } from 'src/app/_types/Auth.type';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, OnDestroy{
+export class LoginComponent implements OnInit, OnDestroy {
 
   stoControllando: boolean = false
-  reactiveForm: FormGroup
+  loginForm: FormGroup
   auth: BehaviorSubject<Auth>
   private distruggi$ = new Subject<void>()
 
@@ -25,8 +26,8 @@ export class LoginComponent implements OnInit, OnDestroy{
     private authService: AuthService,
     private api: ApiService,
     private router: Router
-  ){
-    this.reactiveForm = this.fb.group({
+  ) {
+    this.loginForm = this.fb.group({
       'utente': ['', [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(40)]],
       'password': ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
     })
@@ -36,16 +37,16 @@ export class LoginComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    
+
   }
 
   ngOnDestroy(): void {
     this.distruggi$.next()
   }
 
-   // ########### LOGOUT ###############
+  // ########### LOGOUT ###############
 
-   esci(): void {
+  esci(): void {
     const auth: Auth = {
       idLingua: null,
       token: null,
@@ -55,7 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy{
       idUserClient: null,
       ability: null
     };
-    
+
     this.authService.settaObsAuth(auth); // Reset dell'oggetto Auth
     this.authService.scriviAuthSuLocalStorage(auth); // Rimuovi l'oggetto Auth dal local storage
     this.router.navigateByUrl('/login'); // Reindirizza l'utente alla pagina di login
@@ -64,11 +65,11 @@ export class LoginComponent implements OnInit, OnDestroy{
   // ########### LOGIN ###############
 
   accedi(): void {
-    if (this.reactiveForm.invalid) {
+    if (this.loginForm.invalid) {
       console.log("FORM NON VALIDO")
     } else {
-      let utente = this.reactiveForm.controls["utente"].value
-      let password = this.reactiveForm.controls["password"].value
+      let utente = this.loginForm.controls["utente"].value
+      let password = this.loginForm.controls["password"].value
       this.stoControllando = true
       this.obsLogin(utente, password).subscribe(this.osservoLogin())
       // console.log("ACCEDI", utente, password)
@@ -92,7 +93,7 @@ export class LoginComponent implements OnInit, OnDestroy{
     )
   }
 
-// ############# OBSERVER LOGIM ##############
+  // ############# OBSERVER LOGIM ##############
   private osservoLogin() {
     const osservatore: Observer<any> = {
       next: (rit) => {

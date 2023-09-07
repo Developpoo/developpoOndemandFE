@@ -5,6 +5,7 @@ export type ParametriSaveAuth = {
   nome: string;
   cognome: string;
   sesso: number | null;
+  dataNascita: Date | null;
   codiceFiscale: string | null;
   idNazione: number | null;
   regione: string | null;

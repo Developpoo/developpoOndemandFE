@@ -11,14 +11,21 @@ import { Auth } from 'src/app/_types/Auth.type';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
+  //  RICHIAMO MODAL
+  @Output("avviaModal") selezionaEvent = new EventEmitter()
+  @ViewChild(ModalComponent) modalComponent!: ModalComponent;
 
-  colore:string = ''
+  closeResult = '';
+  content = "";
+  auth!: BehaviorSubject<Auth>
+
+  colore: string = ''
 
   // isVisible:boolean = false;
 
   // getGreetingMessage(): string {
   //   const currentHour = this.currentTime.getHours();
-    
+
   //   if (currentHour >= 0 && currentHour < 12) {
   //     return 'Buongiorno!';
   //   } else if (currentHour >= 12 && currentHour < 18) {
@@ -33,41 +40,33 @@ export class NavbarComponent {
   getGreetingMessage(): string {
     const currentHour = this.currentTime.getHours();
     let greetingMessage: string;
-  
+
     switch (true) {
-      case currentHour >= 0 && currentHour < 15:
+      case currentHour >= 7 && currentHour < 15:
         greetingMessage = 'buongiorno';
         break;
       case currentHour >= 15 && currentHour < 19:
         greetingMessage = 'buonPomeriggio';
         break;
-        case currentHour >= 19 && currentHour < 22:
+      case currentHour >= 19 && currentHour < 23:
         greetingMessage = 'buonasera';
         break;
       default:
         greetingMessage = 'salve';
         break;
     }
-  
     return greetingMessage;
   }
-  
-  //  RICHIAMO MODAL
-  @Output("avviaModal") selezionaEvent = new EventEmitter()
-  @ViewChild(ModalComponent) modalComponent!: ModalComponent;
 
-  closeResult = '';
-  content="";
-  auth!: BehaviorSubject<Auth>
 
-	constructor(private modalService: NgbModal, private authService: AuthService) {
+  constructor(private modalService: NgbModal, private authService: AuthService) {
     this.auth = this.authService.leggiObsAuth()
   }
 
   ngOnInit(): void {
   }
 
-	goModal(modal: any): void {
-		this.modalComponent.open(modal)
+  goModal(modal: any): void {
+    this.modalComponent.open(modal)
   }
 }

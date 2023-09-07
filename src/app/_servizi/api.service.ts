@@ -13,7 +13,7 @@ import { ParametriSaveAuth } from '../_types/ParametriSaveAuth.type';
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // GENERE FILM
 
@@ -155,6 +155,13 @@ export class ApiService {
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
+  // CERCA USER ESISTENTE
+
+  public getSearchUserClient(id: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ['searchUserClient', id];
+    return this.richiestaGenerica(risorsa, 'GET');
+  }
+
   // UPLOAD FILE
 
   public upload(dati: FormData): Observable<IRispostaServer> {
@@ -177,58 +184,6 @@ export class ApiService {
     return this.richiestaGenerica(risorsa, 'POST', parametri);
   }
 
-  /**
-   * Funzione per la Registrazione di un Utente su Auth
-   *
-   * @returns Observable
-   */
-
-  public postRegistrazioneAuth(
-    parametri: Partial<ParametriSaveAuth>
-  ): Observable<IRispostaServer> {
-    const risorsa: string[] = ['auth']; //creare api
-    return this.richiestaGenerica(risorsa, 'POST', parametri);
-  }
-
-  /**
-   * Funzione per la Registrazione di un Utente su Password
-   *
-   * @returns Observable
-   */
-
-  public postRegistrazionePassword(
-    parametri: Partial<ParametriSaveAuth>
-  ): Observable<IRispostaServer> {
-    const risorsa: string[] = ['password']; //creare api
-    return this.richiestaGenerica(risorsa, 'POST', parametri);
-  }
-
-  /**
-   * Funzione per la Registrazione di un Utente su Indirizzo
-   *
-   * @returns Observable
-   */
-
-  public postRegistrazioneIndirizzo(
-    parametri: Partial<ParametriSaveAuth>
-  ): Observable<IRispostaServer> {
-    const risorsa: string[] = ['indirizzi'];
-    return this.richiestaGenerica(risorsa, 'POST', parametri);
-  }
-
-  /**
-   * Funzione per la Registrazione di un Utente su Recapito
-   *
-   * @returns Observable
-   */
-
-  public postRegistrazioneRecapito(
-    parametri: Partial<ParametriSaveAuth>
-  ): Observable<IRispostaServer> {
-    const risorsa: string[] = ['recapiti'];
-    return this.richiestaGenerica(risorsa, 'POST', parametri);
-  }
-
   //###########################################################################
 
   /**
@@ -242,7 +197,7 @@ export class ApiService {
     const versione: string = 'v1';
     let url = server + '/' + versione + '/';
     // risorsa.forEach(x => { url = url + x + "/" })
-    url = url + risorsa.join('/');
+    url = url + risorsa.join('/'); //risorsa.join prende l'array e l'unisce
     return url;
   }
 
@@ -268,8 +223,9 @@ export class ApiService {
         break;
 
       case 'POST':
+        // return this.http.post<IRispostaServer>(url, parametri);
         if (parametri !== null) {
-          console.log('Passo da qui 2');
+          console.log('Passo da qui 2', url);
           return this.http
             .post<IRispostaServer>(url, parametri)
             .pipe(tap((x) => console.log('SERVICE', x)));
