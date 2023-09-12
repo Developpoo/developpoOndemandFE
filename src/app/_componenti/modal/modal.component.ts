@@ -1,46 +1,106 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ModalDismissReasons, NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  BehaviorSubject,
-  Observable,
-  Observer,
-  Subject,
-  catchError,
-  delay,
-  map,
-  of,
-  take,
-  takeUntil,
-  tap,
-} from 'rxjs';
-import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
-import { ApiService } from 'src/app/_servizi/api.service';
-import { AuthService } from 'src/app/_servizi/auth.service';
-import { PasswordUgualiValidator } from 'src/app/_servizi/custom.validators';
-import { UtilityServices } from 'src/app/_servizi/utility.services';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Auth } from 'src/app/_types/Auth.type';
+import { BehaviorSubject, Observable, Observer, Subject, catchError, delay, map, of, take, takeUntil, tap } from 'rxjs';
+import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
+import { Nazione } from 'src/app/_types/Nazione.type';
 import { Comune } from 'src/app/_types/Comune.type';
 import { Lingua } from 'src/app/_types/Lingua.type';
-import { Nazione } from 'src/app/_types/Nazione.type';
 import { ParametriSaveAuth } from 'src/app/_types/ParametriSaveAuth.type';
+import { AuthService } from 'src/app/_servizi/auth.service';
+import { ApiService } from 'src/app/_servizi/api.service';
+import { Router } from '@angular/router';
+import { PasswordUgualiValidator } from 'src/app/_servizi/custom.validators';
+import { UtilityServices } from 'src/app/_servizi/utility.services';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
+  standalone: true,
+  imports: [MatButtonModule, MatDialogModule, MatTooltipModule, MatIconModule, CommonModule],
 })
-export class ModalComponent implements OnInit, OnChanges, OnDestroy {
+export class ModalComponent {
 
-  @Input('startModal') ogModal: any | null = null;
+
+  auth: BehaviorSubject<Auth> = this.authService.leggiObsAuth()
+
+  constructor(
+    public dialog: MatDialog,
+    private authService: AuthService,
+    private router: Router
+  ) { }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(ModalComponentForm);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  // // ########### LOGOUT ###############
+
+  esci(): void {
+    const auth: Auth = {
+      idLingua: null,
+      token: null,
+      nome: null,
+      idUserRole: null,
+      idUserStatus: null,
+      idUserClient: null,
+      ability: null,
+    };
+
+    this.authService.settaObsAuth(auth);
+    this.authService.scriviAuthSuLocalStorage(auth);
+    this.router.navigateByUrl('/login');
+  }
+}
+
+
+
+@Component({
+  selector: 'app-modal-form',
+  templateUrl: './modal.component.form.html',
+  styleUrls: ['./modal.component.scss'],
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSlideToggleModule,
+    MatProgressSpinnerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule
+  ],
+})
+export class ModalComponentForm implements OnInit, OnDestroy {
+  hide = true;
+  isChecked = false;
 
   private distruggi$ = new Subject<void>();
 
@@ -55,10 +115,6 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
   //Lingua
   lingue$: Observable<IRispostaServer>;
   datiLingua: Lingua[] = [];
-
-  // OPEN
-  closeResult = '';
-  content = '';
 
   // FORM PRECOMPILAZIONE
   // LOGIN
@@ -97,20 +153,26 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
     complete: () => console.log('Completato'),
   };
 
+  // formGroup = this._formBuilder.group({
+  //   acceptTerms: [false, Validators.requiredTrue],
+  // });
+
   constructor(
-    private modalService: NgbModal,
+    // private _formBuilder: FormBuilder,
     private fb: FormBuilder,
     private authService: AuthService,
     private api: ApiService,
-    private router: Router
-  ) {
+    private router: Router) {
     this.nazioni$ = this.api.getNazioni()
     this.comuni$ = this.api.getComuni()
     this.lingue$ = this.api.getLingue()
   }
 
+  // alertFormValues(formGroup: FormGroup) {
+  //   alert(JSON.stringify(formGroup.value, null, 2));
+  // }
+
   ngOnInit(): void {
-    this.open(this.content);
 
     // login
     this.loginForm = this.fb.group({
@@ -128,12 +190,12 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
       idLingua: [null, [Validators.required]],
       sesso: [null, [Validators.required]],
       dataNascita: [null, [Validators.required]],
-      codiceFiscale: [null, [Validators.required, Validators.pattern('^([A-Z]{6})([0-9]{2})([A-Z]{2})([0-9]{3})([A-Z]{1})$')]],
+      codiceFiscale: [null, [Validators.pattern('^([A-Z]{6})([0-9]{2})([A-Z]{2})([0-9]{3})([A-Z]{1})$')]],
       idNazione: [null, [Validators.required]],
       idComune: [null, [Validators.required]],
       cap: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       indirizzo: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-      recapito: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      recapito: ['', [Validators.required, Validators.pattern('^[0-9]+$')], Validators.minLength(7), Validators.maxLength(12)],
       accettaTermini: [false, Validators.requiredTrue],
     }, {
       validator: PasswordUgualiValidator('passwordSave', 'confirmPasswordSave')
@@ -147,17 +209,6 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
       next: (x) => (this.datiNazione = x),
     });
 
-    // this.comuni$.pipe(map((x) => x.data)).subscribe({
-    //   next: (comuni) => {
-    //     for (const comune of comuni) {
-    //       if (!this.regioniComuni[comune.regione]) {
-    //         this.regioniComuni[comune.regione] = [];
-    //       }
-    //       this.regioniComuni[comune.regione].push(comune);
-    //     }
-    //   },
-    // });
-
     this.comuni$.pipe(map((x) => x.data)).subscribe({
       next: (x) => {
         this.datiComune = x;
@@ -165,38 +216,9 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['startModal'].currentValue) {
-      this.open(this.ogModal);
-    }
-  }
-
   ngOnDestroy(): void {
     this.distruggi$.next();
     this.distruggi$.complete();
-  }
-
-  open(content: any): any {
-    this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
   }
 
   // ########### REGISTRAZIONE ###############
@@ -210,7 +232,7 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   registra(): void {
-    if (this.registrationForm.invalid) {
+    if (this.registrationForm.invalid === true) {
       console.log('Form di registrazione non valido');
       return;
     } else {
@@ -227,16 +249,11 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
         codiceFiscale:
           this.registrationForm.controls['codiceFiscale'].value || null,
         idNazione: this.registrationForm.controls['idNazione'].value || null,
-        regione: this.registrationForm.controls['regione'].value || null,
         idComune: this.registrationForm.controls['idComune'].value || null,
         cap: this.registrationForm.controls['cap'].value || null,
-        idTipoIndirizzo:
-          this.registrationForm.controls['idTipoIndirizzo'].value || null,
         indirizzo: this.registrationForm.controls['indirizzo'].value || null,
-        idTipoRecapito:
-          this.registrationForm.controls['idTipoRecapito'].value || null,
         recapito: this.registrationForm.controls['recapito'].value || null,
-        idLingua: this.registrationForm.controls['lingua'].value,
+        idLingua: this.registrationForm.controls['idLingua'].value,
         accettaTermini: this.registrationForm.controls['accettaTermini'].value,
       }
 
@@ -253,7 +270,7 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  // ########### LOGOUT ###############
+  // // ########### LOGOUT ###############
 
   esci(): void {
     const auth: Auth = {
@@ -266,9 +283,9 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
       ability: null,
     };
 
-    this.authService.settaObsAuth(auth); // Reset dell'oggetto Auth
-    this.authService.scriviAuthSuLocalStorage(auth); // Rimuovi l'oggetto Auth dal local storage
-    this.router.navigateByUrl('/login'); // Reindirizza l'utente alla pagina di login
+    this.authService.settaObsAuth(auth);
+    this.authService.scriviAuthSuLocalStorage(auth);
+    this.router.navigateByUrl('/login');
   }
 
   // ########### LOGIN ###############
@@ -351,4 +368,5 @@ export class ModalComponent implements OnInit, OnChanges, OnDestroy {
     };
     return osservatore;
   }
+
 }

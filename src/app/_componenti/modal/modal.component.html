@@ -1,0 +1,8 @@
+<button *ngIf="(auth | async)?.token === null" mat-stroked-button class="text-white" type="button"
+    (click)="openDialog()">Login
+    <mat-icon>verified_user</mat-icon>
+</button>
+
+<button *ngIf="(auth | async)?.token !== null" mat-stroked-button class="text-white" (click)="esci()">Logout
+    <mat-icon>verified_user</mat-icon>
+</button>

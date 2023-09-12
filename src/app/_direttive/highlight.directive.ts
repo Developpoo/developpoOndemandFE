@@ -8,19 +8,19 @@ export class HighlightDirective {
   @Input() appHighlight = ''
   @Input() defaultHighlight = ''
 
-  constructor(private element: ElementRef) { 
-    
+  constructor(private element: ElementRef) {
+
   }
 
-  @HostListener('mouseenter') onMouseEnter(){
+  @HostListener('mouseenter') onMouseEnter() {
     this.cambiaColore(this.appHighlight || this.defaultHighlight || 'purple')
   }
-  
-  @HostListener('mouseleave') onMouseLeave(){
+
+  @HostListener('mouseleave') onMouseLeave() {
     this.cambiaColore('transparent')
   }
 
-  cambiaColore(colore:string){
+  cambiaColore(colore: string) {
     this.element.nativeElement.style.backgroundColor = colore
   }
 }

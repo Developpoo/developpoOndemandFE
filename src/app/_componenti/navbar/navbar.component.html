@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-primary fixed-top bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand" href="javascript:void(0)" title="Vai alla Home" [routerLink]="['/']"><img
                 src="../../../assets/img/icon/icons8-movie-theater-50.png" alt="logo"></a>
@@ -65,7 +65,7 @@
                     <div class="nav-link text-white" *ngSwitchDefault>Ciao {{ (auth | async)?.nome }} e benvenuto.</div>
                 </div>
                 <!-- MODAL -->
-                <app-modal #modalComponent></app-modal>
+                <app-modal></app-modal>
 
             </div>
         </div>

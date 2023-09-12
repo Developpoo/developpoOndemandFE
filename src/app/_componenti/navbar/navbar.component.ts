@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs';
-import { ModalComponent } from 'src/app/_condivisi/uikit/_componenti/modal/modal.component';
 import { AuthService } from 'src/app/_servizi/auth.service';
 import { Auth } from 'src/app/_types/Auth.type';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-navbar',
@@ -11,29 +11,12 @@ import { Auth } from 'src/app/_types/Auth.type';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  //  RICHIAMO MODAL
-  @Output("avviaModal") selezionaEvent = new EventEmitter()
-  @ViewChild(ModalComponent) modalComponent!: ModalComponent;
 
   closeResult = '';
   content = "";
-  auth!: BehaviorSubject<Auth>
+  auth: BehaviorSubject<Auth> = this.authService.leggiObsAuth()
 
   colore: string = ''
-
-  // isVisible:boolean = false;
-
-  // getGreetingMessage(): string {
-  //   const currentHour = this.currentTime.getHours();
-
-  //   if (currentHour >= 0 && currentHour < 12) {
-  //     return 'Buongiorno!';
-  //   } else if (currentHour >= 12 && currentHour < 18) {
-  //     return 'Buon pomeriggio!';
-  //   } else {
-  //     return 'Buona serata!';
-  //   }
-  // }
 
   currentTime: Date = new Date();
 
@@ -58,15 +41,6 @@ export class NavbarComponent {
     return greetingMessage;
   }
 
+  constructor(private modalService: NgbModal, private authService: AuthService) { }
 
-  constructor(private modalService: NgbModal, private authService: AuthService) {
-    this.auth = this.authService.leggiObsAuth()
-  }
-
-  ngOnInit(): void {
-  }
-
-  goModal(modal: any): void {
-    this.modalComponent.open(modal)
-  }
 }

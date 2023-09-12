@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, concatMap, map, of, take, tap } from 'rxjs';
+import { Observable, catchError, concatMap, map, of, take, tap, throwError } from 'rxjs';
 import { IRispostaServer } from '../_interfacce/IRispostaServer.interface';
 import { Immagine } from '../_types/Immagine.type';
 import { Genere } from '../_types/Genere.type';
 import { Film } from '../_types/Film.types';
 import { ChiamataHTTP } from '../_types/ChiamataHTTP.type';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UtilityServices } from './utility.services';
 import { ParametriSaveAuth } from '../_types/ParametriSaveAuth.type';
 
@@ -26,6 +26,7 @@ export class ApiService {
     const risorsa: string[] = ['category'];
     return this.richiestaGenerica(risorsa, 'GET');
   }
+
 
   /**
    * Funzione per chiamare l'elenco dei Films
@@ -178,8 +179,7 @@ export class ApiService {
    */
 
   public postRegistrazioneUserClient(
-    parametri: Partial<ParametriSaveAuth>
-  ): Observable<IRispostaServer> {
+    parametri: Partial<ParametriSaveAuth>): Observable<IRispostaServer> {
     const risorsa: string[] = ['registrazione'];
     return this.richiestaGenerica(risorsa, 'POST', parametri);
   }
@@ -226,8 +226,7 @@ export class ApiService {
         // return this.http.post<IRispostaServer>(url, parametri);
         if (parametri !== null) {
           console.log('Passo da qui 2', url);
-          return this.http
-            .post<IRispostaServer>(url, parametri)
+          return this.http.post<IRispostaServer>(url, parametri)
             .pipe(tap((x) => console.log('SERVICE', x)));
         } else {
           const objErrore = {
@@ -235,7 +234,7 @@ export class ApiService {
             message: null,
             error: 'NO_PARAMETRI',
           };
-          const obs$ = new Observable<IRispostaServer>((subscriber) =>
+          const obs$ = new Observable<IRispostaServer>(subscriber =>
             subscriber.next(objErrore)
           );
           return obs$;
@@ -245,8 +244,7 @@ export class ApiService {
       case 'PUT':
         if (parametri !== null) {
           console.log('Passo da qui 3');
-          return this.http
-            .put<IRispostaServer>(url, parametri)
+          return this.http.put<IRispostaServer>(url, parametri)
             .pipe(tap((x) => console.log('SERVICE MODIFCA', x)));
         } else {
           const objErrore = {
@@ -333,3 +331,4 @@ export class ApiService {
     return controllo$;
   }
 }
+
