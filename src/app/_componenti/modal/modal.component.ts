@@ -6,7 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -26,6 +26,7 @@ import { Router } from '@angular/router';
 import { PasswordUgualiValidator } from 'src/app/_servizi/custom.validators';
 import { UtilityServices } from 'src/app/_servizi/utility.services';
 import { CommonModule } from '@angular/common';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @Component({
@@ -93,6 +94,8 @@ export class ModalComponent {
     MatNativeDateModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule
@@ -101,6 +104,9 @@ export class ModalComponent {
 export class ModalComponentForm implements OnInit, OnDestroy {
   hide = true;
   isChecked = false;
+  mostraMessaggioErrore = false;
+  colore: string = ''
+
 
   private distruggi$ = new Subject<void>();
 
@@ -190,7 +196,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
       idLingua: [null, [Validators.required]],
       sesso: [null, [Validators.required]],
       dataNascita: [null, [Validators.required]],
-      codiceFiscale: [null, [Validators.pattern('^([A-Z]{6})([0-9]{2})([A-Z]{2})([0-9]{3})([A-Z]{1})$')]],
+      codiceFiscale: [null, [Validators.pattern('^([A-Z]{6})([0-9]{2})([A-Z]{1})([0-9]{2})([A-Z]{1})([0-9]{3})([A-Z]{1})$')]],
       idNazione: [null, [Validators.required]],
       idComune: [null, [Validators.required]],
       cap: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
@@ -293,6 +299,8 @@ export class ModalComponentForm implements OnInit, OnDestroy {
   accedi(): void {
     if (this.loginForm.invalid) {
       console.log('FORM NON VALIDO');
+      this.mostraMessaggioErrore = true;
+      return;
     } else {
       let utente = this.loginForm.controls['utente'].value;
       let password = this.loginForm.controls['password'].value;
@@ -344,6 +352,8 @@ export class ModalComponentForm implements OnInit, OnDestroy {
           this.router.navigateByUrl('/home');
         } else {
           console.log('ERRORE in osservoLogin');
+          this.mostraMessaggioErrore = true;
+          return;
         }
         this.stoControllando = false;
       },
@@ -367,6 +377,11 @@ export class ModalComponentForm implements OnInit, OnDestroy {
       },
     };
     return osservatore;
+  }
+
+  //---------------------------------------------------------------------------------------------------------------
+  get f(): { [key: string]: AbstractControl } {
+    return this.registrationForm.controls;
   }
 
 }

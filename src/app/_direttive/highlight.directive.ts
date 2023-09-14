@@ -13,7 +13,7 @@ export class HighlightDirective {
   }
 
   @HostListener('mouseenter') onMouseEnter() {
-    this.cambiaColore(this.appHighlight || this.defaultHighlight || 'purple')
+    this.cambiaColore(this.appHighlight || this.defaultHighlight || 'orange')
   }
 
   @HostListener('mouseleave') onMouseLeave() {
@@ -21,6 +21,7 @@ export class HighlightDirective {
   }
 
   cambiaColore(colore: string) {
-    this.element.nativeElement.style.backgroundColor = colore
+    // this.element.nativeElement.style.backgroundColor = colore
+    this.element.nativeElement.style.borderBottom = `2px solid ${colore}`
   }
 }

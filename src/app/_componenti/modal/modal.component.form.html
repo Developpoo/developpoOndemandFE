@@ -1,6 +1,15 @@
+<p align="end">
+  <button mat-icon-button matTooltip="Esci" matTooltipPosition="left" mat-dialog-close
+    type="button"><mat-icon>clear</mat-icon></button>
+</p>
 <h2 mat-dialog-title class="text-center">Benvenuto in Developpo Ondemand</h2>
+
 <mat-dialog-content class="mat-typography">
   <!-- LOGIN FORM -->
+  <p align="center">
+    <!-- <mat-spinner *ngIf="stoControllando"></mat-spinner> -->
+    <mat-progress-bar *ngIf="stoControllando" mode="indeterminate"></mat-progress-bar>
+  </p>
   <h3 *ngIf="(auth | async)?.token === null && !isRegistrationActive" align="center">LOGIN</h3>
   <ng-container>
     <form *ngIf="!isRegistrationActive" [formGroup]="loginForm" (ngSubmit)="accedi()" align="center">
@@ -9,7 +18,7 @@
         <mat-label color="primary">USER</mat-label>
         <input matInput type="text" placeholder="Inserisci la tua Mail" name="utente" id="utente"
           formControlName="utente">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        <mat-icon matSuffix>account_circle</mat-icon>
         <!-- <mat-hint>Inserisci la mail con cui ti sei registrato</mat-hint> -->
       </mat-form-field>
       <br>
@@ -23,11 +32,17 @@
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field><br>
+      <!-- BUTTON ACCEDI - REGISTRATI  -->
+      <!-- ACCEDI  -->
       <button *ngIf="(auth | async)?.token === null" mat-button type="submit"
         [disabled]="!loginForm.valid">Accedi</button>
-      <p align="center">
-        <mat-spinner *ngIf="stoControllando"></mat-spinner>
-      </p>
+      <!-- REGISTRATI  -->
+      <button mat-button *ngIf="(auth | async)?.token === null && !isRegistrationActive" type="button"
+        (click)="attivaRegistrazione()">
+        Registrati
+      </button>
+      <p *ngIf="mostraMessaggioErrore && (auth | async)?.token === null" class="text-danger"><br>Login non
+        riuscito.<br><br> Controlla le tue credenziali o crea<br> il tuo account cliccando su registrati.</p>
     </form>
   </ng-container>
   <!-- REGISTRATION FORM -->
@@ -37,15 +52,15 @@
       <p>
         <!-- USER -->
         <mat-form-field color="primary" appearance="fill">
-          <mat-label for="user">USER</mat-label>
+          <mat-label for="user">USER {{f['user'].errors | json}}</mat-label>
           <input matInput type="text" name="user" id="user" title="inserisci la tua email" formControlName="user"
             placeholder="Inserisci la tua mail">
-          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-icon matSuffix>account_circle</mat-icon>
           <mat-hint>Usa la tua mail come User</mat-hint>
         </mat-form-field>
         <!-- PASSWORD -->
         <mat-form-field color="primary">
-          <mat-label for="passwordSave">Password</mat-label>
+          <mat-label for="passwordSave">Password {{f['passwordSave'].errors | json}}</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" placeholder="Inserisci la Password" name="passwordSave"
             id="passwordSave" title="inserisci la tua password" formControlName="passwordSave">
           <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
@@ -60,7 +75,7 @@
         <!-- PASSWORD CONFERMATA -->
         <mat-form-field color="primary">
           <mat-label for="confirmPasswordSave">Conferma la
-            password</mat-label>
+            password {{f['confirmPasswordSave'].errors | json}}</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" placeholder="Conferma la tua password"
             name="confirmPasswordSave" id="confirmPasswordSave" title="conferma la tua password"
             formControlName="confirmPasswordSave">
@@ -77,20 +92,20 @@
       <p>
         <!-- NOME -->
         <mat-form-field color="primary">
-          <mat-label for="nome">Nome</mat-label>
+          <mat-label for="nome">Nome {{f['nome'].errors | json}}</mat-label>
           <input type="text" matInput placeholder="Inserisci il tuo nome" name="nome" id="nome"
             title="inserisci il tuo nome" formControlName="nome">
         </mat-form-field>
         <!-- COGNOME -->
         <mat-form-field color="primary">
-          <mat-label for="cognome">Cognome</mat-label>
+          <mat-label for="cognome">Cognome {{f['cognome'].errors | json}}</mat-label>
           <input type="text" matInput placeholder="Inserisci la tuo cognome" name="cognome" id="cognome"
             formControlName="cognome">
         </mat-form-field>
         <!-- LINGUA  -->
         <mat-form-field color="primary">
           <mat-label for="idLingua">Lingua
-            preferita</mat-label>
+            preferita {{f['idLingua'].errors | json}}</mat-label>
           <ng-container *ngIf="datiLingua.length>=1">
             <mat-select name="idLingua" id="idLingua" title="inserisci la tua lingua preferita"
               formControlName="idLingua">
@@ -107,7 +122,8 @@
       <p>
         <!-- SESSO -->
         <mat-radio-group color="primary" aria-label="Select an option" formControlName="sesso">
-          <mat-label for="sesso" [ngClass]="{'is-invalid': registrationForm.controls['sesso'].errors}">Sesso</mat-label>
+          <mat-label for="sesso" [ngClass]="{'is-invalid': registrationForm.controls['sesso'].errors}">Sesso
+            {{f['sesso'].errors | json}}</mat-label>
           <mat-radio-button value="0">Uomo</mat-radio-button>
           <mat-radio-button value="1">Donna</mat-radio-button>
         </mat-radio-group>
@@ -115,7 +131,7 @@
       <p>
         <!-- DATA DI NASCITA  -->
         <mat-form-field color="primary">
-          <mat-label>Data di nascita</mat-label>
+          <mat-label>Data di nascita {{f['dataNascita'].errors | json}}</mat-label>
           <input matInput [matDatepicker]="picker" placeholder="Data di nascita" formControlName="dataNascita">
           <mat-hint>MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -123,7 +139,7 @@
         </mat-form-field>
         <!-- CODICE FISCALE  -->
         <mat-form-field color="primary">
-          <mat-label for=" codiceFiscale">Codice Fiscale</mat-label>
+          <mat-label for=" codiceFiscale">Codice Fiscale {{f['codiceFiscale'].errors | json}}</mat-label>
           <span matPrefix>+1 &nbsp;</span>
           <input type="text" matInput placeholder="Codice Fiscale" id="codiceFiscale" name="codiceFiscale"
             title="inserisci il tuo codice fiscale" formControlName="codiceFiscale">
@@ -133,13 +149,13 @@
       <p>
         <!-- INDIRIZZO  -->
         <mat-form-field color="primary">
-          <mat-label for="indirizzo">Indirizzo</mat-label>
+          <mat-label for="indirizzo">Indirizzo {{f['indirizzo'].errors | json}}</mat-label>
           <input type="text" matInput placeholder="Indirizzo di Residenza" id="indirizzo" formControlName="indirizzo">
           <mat-icon matSuffix>home</mat-icon>
         </mat-form-field>
         <!-- TELEFONO  -->
         <mat-form-field color="primary">
-          <mat-label for="recapito">Telefono</mat-label>
+          <mat-label for="recapito">Telefono {{f['recapito'].errors | json}}</mat-label>
           <span matPrefix>+39 &nbsp;</span>
           <input type="tel" matInput placeholder="il tuo cellulare" formControlName="recapito">
           <mat-icon matSuffix>phone</mat-icon>
@@ -149,7 +165,7 @@
       <p>
         <!-- CITTA  -->
         <mat-form-field color="primary">
-          <mat-label for="citta">Città</mat-label>
+          <mat-label for="citta">Città {{f['idComune'].errors | json}}</mat-label>
           <ng-container *ngIf="datiComune.length>=1">
             <mat-select id="citta" formControlName="idComune">
               <mat-option *ngFor="let valori of datiComune" [value]="valori.idComune">
@@ -162,7 +178,7 @@
           </ng-container>
         </mat-form-field>
         <!-- NAZIONE  --><mat-form-field color="primary">
-          <mat-label for="nazione">Nazione</mat-label>
+          <mat-label for="nazione">Nazione {{f['idNazione'].errors | json}}</mat-label>
           <ng-container *ngIf="datiNazione.length>=1">
             <mat-select id="nazione" formControlName="idNazione">
               <mat-option *ngFor="let valori of datiNazione" [value]="valori.idNazione">
@@ -176,7 +192,7 @@
         </mat-form-field>
         <!-- CAP  -->
         <mat-form-field color="primary">
-          <mat-label for="cap">Cap</mat-label>
+          <mat-label for="cap">Cap {{f['cap'].errors | json}}</mat-label>
           <input type="text" matInput #postalCode maxlength="5" placeholder="Codice postale" id="cap"
             formControlName="cap">
           <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
@@ -186,33 +202,34 @@
         <!-- ACCETTO TERMINI E CONDIZIONI  -->
         <mat-checkbox [(ngModel)]="isChecked" color="primary" ngModel type="checkbox" name="accettaTermini"
           id="accettaTermini" title="accetta termini e condizioni" formControlName="accettaTermini">Accetta Termini e
-          Condizioni</mat-checkbox>
+          Condizioni {{f['accettaTermini'].errors | json}}</mat-checkbox>
       </p>
-      <button mat-button *ngIf="(auth | async)?.token === null && isRegistrationActive" type="submit"
-        [disabled]="!registrationForm.valid">Registra</button>
+      <!-- BUTTON REGISTRA - TORNA AL LOGIN -->
+      <!-- REGISTRA  -->
+      <!-- [disabled]="!registrationForm.valid" -->
+      <button mat-button *ngIf="(auth | async)?.token === null && isRegistrationActive" type="submit">Registra {{
+        registrationForm.controls['user.valid'] | json}}</button>
+      <!-- TORNA AL LOGIN  -->
+      <button mat-button *ngIf="(auth | async)?.token === null && isRegistrationActive" type="button"
+        (click)="disattivaRegistrazione()">
+        Torna al Login
+      </button>
     </form>
   </ng-container>
   <ng-container *ngIf="(auth | async)?.token !== null">
+    <!-- MESSAGGIO DI LOGIN  -->
     <p mat-dialog-title class="text-center">
-      Ciao <strong>{{ (auth | async)?.nome }}</strong> hai effettuato<br> correttamente il tuo Login naviga<br> pure sul
+      Ciao <strong>{{ (auth | async)?.nome }}</strong> hai effettuato<br> correttamente il tuo Login naviga pure<br> sul
       nostro sito e buona visione
     </p>
+    <!-- BUTTON LOGOUT  -->
     <p align="center">
       <button *ngIf="(auth | async)?.token !== null" mat-stroked-button color="warn"
         (click)="esci()">Logout<mat-icon>verified_user</mat-icon></button>
-
     </p>
   </ng-container>
 </mat-dialog-content>
 <!-- PULSANTI -->
-<mat-dialog-actions align="center">
-  <button mat-button mat-dialog-close>Esci</button>
-  <button mat-button *ngIf="(auth | async)?.token === null && !isRegistrationActive" type="button"
-    (click)="attivaRegistrazione()" [disabled]="loginForm.valid">
-    Registrati
-  </button>
-  <button mat-button *ngIf="(auth | async)?.token === null && isRegistrationActive" type="button"
-    (click)="disattivaRegistrazione()">
-    Torna al Login
-  </button>
+<mat-dialog-actions align="end">
+
 </mat-dialog-actions>

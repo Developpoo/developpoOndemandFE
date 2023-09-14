@@ -5,15 +5,23 @@ import { Immagine } from '../_types/Immagine.type';
 import { Genere } from '../_types/Genere.type';
 import { Film } from '../_types/Film.types';
 import { ChiamataHTTP } from '../_types/ChiamataHTTP.type';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { UtilityServices } from './utility.services';
 import { ParametriSaveAuth } from '../_types/ParametriSaveAuth.type';
+import { HttpHeaders } from '@angular/common/http';
+import { Auth } from '../_types/Auth.type';
+import { AuthService } from './auth.service';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) { }
+
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) { }
 
   // GENERE FILM
 
@@ -214,12 +222,23 @@ export class ApiService {
     parametri: Object | null = null
   ): Observable<IRispostaServer> {
     const url = this.calcolaRisorsa(risorsa);
+
+    const token = this.authService.getToken()
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
     console.log('Url. ', url);
 
     switch (tipo) {
       case 'GET':
         console.log('Passo da qui 1');
-        return this.http.get<IRispostaServer>(url);
+        if (token === null) {
+          return this.http.get<IRispostaServer>(url);
+        } else {
+          return this.http.get<IRispostaServer>(url, { headers: headers });
+        }
         break;
 
       case 'POST':
@@ -325,7 +344,14 @@ export class ApiService {
         return passwordNascosta;
       }),
       concatMap((passwordNascosta: string) => {
-        return this.getLoginFase2(hashUtente, passwordNascosta);
+        return this.getLoginFase2(hashUtente, passwordNascosta).pipe(
+          tap((response: IRispostaServer) => {
+            if (response.data && response.data.token) {
+              // Imposta il token nel servizio AuthService dopo aver ottenuto la risposta dal server.
+              this.authService.setToken(response.data.token);
+            }
+          })
+        );
       })
     );
     return controllo$;

@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'src/app/_servizi/auth.service';
 import { Auth } from 'src/app/_types/Auth.type';
-import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-navbar',
@@ -12,8 +10,6 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class NavbarComponent {
 
-  closeResult = '';
-  content = "";
   auth: BehaviorSubject<Auth> = this.authService.leggiObsAuth()
 
   colore: string = ''
@@ -41,6 +37,6 @@ export class NavbarComponent {
     return greetingMessage;
   }
 
-  constructor(private modalService: NgbModal, private authService: AuthService) { }
+  constructor(private authService: AuthService) { }
 
 }

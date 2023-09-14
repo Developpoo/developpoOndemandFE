@@ -8,6 +8,7 @@ import { Auth } from '../_types/Auth.type';
 export class AuthService {
   static auth: Auth;
   private obsAuth$: BehaviorSubject<Auth>;
+  private token: string | null = null;
 
   constructor() {
     AuthService.auth = this.leggiAuthDaLocalStorage();
@@ -21,6 +22,16 @@ export class AuthService {
   settaObsAuth(dati: Auth): void {
     AuthService.auth = dati;
     this.obsAuth$.next(dati);
+  }
+
+  // Metodo per impostare il token dopo il login
+  setToken(token: string) {
+    this.token = token;
+  }
+
+  // Metodo per ottenere il token
+  getToken(): string | null {
+    return this.token;
   }
 
   /************************************************ */
