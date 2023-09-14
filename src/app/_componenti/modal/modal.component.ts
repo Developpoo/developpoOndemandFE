@@ -27,6 +27,7 @@ import { PasswordUgualiValidator } from 'src/app/_servizi/custom.validators';
 import { UtilityServices } from 'src/app/_servizi/utility.services';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import * as moment from 'moment';
 
 
 @Component({
@@ -244,16 +245,18 @@ export class ModalComponentForm implements OnInit, OnDestroy {
     } else {
       console.log('Form di registrazione valido');
 
+      const dataNascitaFormatted = moment(this.registrationForm.controls['dataNascita'].value).format('YYYY-MM-DD');
+
+
       const parametro: Partial<ParametriSaveAuth> = {
+        idUserStatus: 1,
         user: this.registrationForm.controls['user'].value,
         password: this.registrationForm.controls['passwordSave'].value,
         nome: this.registrationForm.controls['nome'].value,
         cognome: this.registrationForm.controls['cognome'].value,
         sesso: this.registrationForm.controls['sesso'].value || null,
-        dataNascita:
-          this.registrationForm.controls['dataNascita'].value || null,
-        codiceFiscale:
-          this.registrationForm.controls['codiceFiscale'].value || null,
+        dataNascita: dataNascitaFormatted || null,
+        codiceFiscale: this.registrationForm.controls['codiceFiscale'].value || null,
         idNazione: this.registrationForm.controls['idNazione'].value || null,
         idComune: this.registrationForm.controls['idComune'].value || null,
         cap: this.registrationForm.controls['cap'].value || null,
