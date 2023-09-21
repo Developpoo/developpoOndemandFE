@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { Card } from 'src/app/_types/Card.type';
-import { concatMap } from 'rxjs/operators';
+import { catchError, concatMap } from 'rxjs/operators';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-genere',
@@ -11,7 +12,9 @@ import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 })
 export class GenereComponent implements OnInit {
 
+
   generi: Card[] = [];
+  error: string = '';
 
   constructor(private api: ApiService) { }
 
@@ -24,6 +27,9 @@ export class GenereComponent implements OnInit {
               concatMap((fileResponse: IRispostaServer) => {
                 const generiData = generiResponse.data;
                 const fileData = fileResponse.data;
+                console.log('generiData:', generiData);
+                console.log('fileData:', fileData);
+
 
                 const cards: Card[] = [];
 
@@ -56,15 +62,26 @@ export class GenereComponent implements OnInit {
                   }
                 }
                 return cards;
+              }),
+              catchError(error => {
+                this.error = 'PD0001 Errore durante il recupero dei dati: ' + error.message;
+                return throwError(() => new Error(this.error));
               })
             );
+        }),
+        catchError(error => {
+          this.error = 'PD0002 Errore durante il recupero dei dati: ' + error.message;
+          return throwError(() => new Error(this.error));
         })
       )
-      .subscribe((cards: Card) => {
-        // Trasforma generiData in un array di oggetti Card
-        const generiArray: Card[] = [cards];
-        this.generi = generiArray;
+      .subscribe({
+        next: (cards: Card) => {
+          const generiArray: Card[] = [cards];
+          this.generi = generiArray;
+        },
+        error: (error) => {
+          console.error('PD0003 Errore durante la richiesta API:', error);
+        }
       });
-
   }
 }
