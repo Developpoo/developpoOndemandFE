@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, delay } from 'rxjs';
-import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 import { ApiService } from 'src/app/_servizi/api.service';
-import { Bottone } from 'src/app/_types/Bottone.type';
 import { Card } from 'src/app/_types/Card.type';
-import { Immagine } from 'src/app/_types/Immagine.type';
+import { concatMap } from 'rxjs/operators';
+import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 
 @Component({
   selector: 'app-genere',
@@ -13,64 +11,60 @@ import { Immagine } from 'src/app/_types/Immagine.type';
 })
 export class GenereComponent implements OnInit {
 
-  generi: Card[] = []
-  cat$: Observable<IRispostaServer>
+  generi: Card[] = [];
 
-  constructor(private api: ApiService) {
-    this.cat$ = this.api.getGeneri()
-  }
+  constructor(private api: ApiService) { }
 
   ngOnInit(): void {
-    this.cat$.pipe(
-      delay(1000)
-    ).subscribe(this.osservoCat)
+    this.api.getGeneri()
+      .pipe(
+        concatMap((generiResponse: IRispostaServer) => {
+          return this.api.getFile()
+            .pipe(
+              concatMap((fileResponse: IRispostaServer) => {
+                const generiData = generiResponse.data;
+                const fileData = fileResponse.data;
+
+                const cards: Card[] = [];
+
+                for (let i = 0; i < generiData.length; i++) {
+                  const genere = generiData[i];
+                  const idFile = genere.idFile;
+
+                  const file = fileData.find((item: { idFile: number; }) => item.idFile === idFile);
+
+                  if (file !== null) {
+                    const card: Card = {
+                      immagine: {
+                        idFile: file.idFile,
+                        src: file.src,
+                        alt: file.alt,
+                        title: file.title
+                      },
+                      titolo: genere.nome,
+                      descrizione: '',
+                      bottone: {
+                        testo: "Visualizza",
+                        title: "Visualizza",
+                        icona: genere.icona,
+                        tipo: "button",
+                        emitId: null,
+                        link: "/genere/" + genere.idCategory
+                      }
+                    };
+                    cards.push(card);
+                  }
+                }
+                return cards;
+              })
+            );
+        })
+      )
+      .subscribe((cards: Card) => {
+        // Trasforma generiData in un array di oggetti Card
+        const generiArray: Card[] = [cards];
+        this.generi = generiArray;
+      });
+
   }
-
-  // getGeneri() {
-  //   this.api.getGeneri().subscribe((response) => {
-  //     this.generi = response.data;
-  //   });
-  // }
-
-  //########################################
-  // Observer
-  //########################################
-
-  private osservoCat() {
-    return {
-      next: (rit: IRispostaServer) => {
-        console.log("NEXT", rit)
-        const elementi = rit.data
-        for (let i = 0; i < elementi.length; i++) {
-          const tmpImg: Immagine = elementi[i].img
-          // const tmpImg: Immagine = {
-          //   src: elementi[i].img.src,
-          //   alt: elementi[i].img.alt
-          // }
-
-          const bott: Bottone = {
-            testo: "Visualizza",
-            title: "Visualizza " + elementi[i].nome,
-            icona: null,
-            tipo: "button",
-            emitId: null,
-            link: "/genere/" + elementi[i].id
-          }
-          const card: Card = {
-            immagine: tmpImg,
-            titolo: elementi[i].nome,
-            descrizione: '',
-            bottone: bott
-          }
-          this.generi.push(card)
-        }
-      },
-      error: (err: any) => {
-        console.error("ERRORE", err)
-      },
-      complete: () => { console.log("%c COMPLETATO", "color:#00AA00") }
-    }
-  }
-
-
 }

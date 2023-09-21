@@ -33,14 +33,16 @@ export class CollezioniFilmComponent implements OnInit {
   private osservoCat() {
     return {
       next: (rit: IRispostaServer) => {
-        // console.log("NEXT", rit)
+        console.log("NEXT", rit)
         const elementi = rit.data
         for (let i = 0; i < elementi.length; i++) {
-          const tmpImg: Immagine = elementi[i].img
-          // const tmpImg: Immagine = {
-          //   src: elementi[i].img.src,
-          //   alt: elementi[i].img.alt
-          // }
+          // const tmpImg: Immagine = elementi[i].img
+          const tmpImg: Immagine = {
+            idFile: elementi[i].idFile,
+            src: elementi[i].src,
+            alt: elementi[i].alt,
+            title: elementi[i].title
+          }
           const bott: Bottone = {
             testo: "Visualizza",
             title: "Visualizza " + elementi[i].nome,

@@ -44,4 +44,5 @@ export class UtilityServices {
     const hash: string = sha512(tmp);
     return hash;
   }
+
 }

@@ -23,13 +23,23 @@ export class ApiService {
     private authService: AuthService
   ) { }
 
-  // GENERE FILM
+  // GENERE FILM e GENERI
 
   /**
    * Funzione per chiamare l'elenco dei generi dei Film
    *
    * @returns Observable
    */
+  public getFile(): Observable<IRispostaServer> {
+    const risorsa: string[] = ['file'];
+    return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+  /**
+ * Funzione per chiamare l'elenco dei generi dei Film
+ *
+ * @returns Observable
+ */
   public getGeneri(): Observable<IRispostaServer> {
     const risorsa: string[] = ['category'];
     return this.richiestaGenerica(risorsa, 'GET');
@@ -166,8 +176,8 @@ export class ApiService {
 
   // CERCA USER ESISTENTE
 
-  public getSearchUserClient(idUserClient: string): Observable<IRispostaServer> {
-    const risorsa: string[] = ['searchUserClient', idUserClient];
+  public getSearchUserClient(auth: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ['searchUserClient', auth];
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
@@ -224,6 +234,7 @@ export class ApiService {
     const url = this.calcolaRisorsa(risorsa);
 
     const token = this.authService.getToken()
+    // const obsAuth$ = this.authService.leggiObsAuth()
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

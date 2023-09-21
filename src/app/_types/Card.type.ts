@@ -8,3 +8,7 @@ export type Card = {
     descrizione: string | null,
     bottone?: Bottone
 }
+
+
+// this.auth = this.authService.leggiObsAuth()
+// console.log("AUTH", this.auth)
