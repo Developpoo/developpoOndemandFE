@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary" id="menuPrincipale">
     <div class="container-fluid">
         <a class="navbar-brand" href="javascript:void(0)" title="Vai alla Home" [routerLink]="['/']"><img
                 src="../../../assets/img/icon/icons8-movie-theater-50.png" alt="logo"></a>
@@ -47,7 +47,7 @@
                 <ng-template class="saluto" #bloccoElse>Ciao Utente</ng-template> -->
 
                 <div *ngIf="(auth | async)?.token===null" [appHighlight]="colore" defaultHighlight="white"
-                    class="navbar-nav justify-content-end me-auto" [ngSwitch]="getGreetingMessage()">
+                    class="navbar-nav justify-content-end me-auto text-center" [ngSwitch]="getGreetingMessage()">
                     <div class="nav-link text-white" *ngSwitchCase="'buongiorno'">Buongiorno utente e benvenuto.</div>
                     <div class="nav-link text-white" *ngSwitchCase="'buonPomeriggio'">Buon pomeriggio utente e
                         benvenuto.</div>
@@ -55,7 +55,7 @@
                     <div class="nav-link text-white" *ngSwitchDefault>Ciao utente e benvenuto.</div>
                 </div>
                 <div *ngIf="(auth | async)?.token!==null" [appHighlight]="colore" defaultHighlight="white"
-                    class="navbar-nav justify-content-end me-auto" [ngSwitch]="getGreetingMessage()">
+                    class="navbar-nav justify-content-end me-auto text-center" [ngSwitch]="getGreetingMessage()">
                     <div class="nav-link text-white" *ngSwitchCase="'buongiorno'">Buongiorno {{ (auth | async)?.nome }}
                         e benvenuto.</div>
                     <div class="nav-link text-white" *ngSwitchCase="'buonPomeriggio'">Buon pomeriggio {{ (auth |

@@ -8,8 +8,6 @@ export type Film = {
     regista: string,
     attori: string,
     anno: number,
-    idImg?: string | null,
-    idFilmato?: string | null,
-    idTrailer?: string |null,
+    icona: string | null,
     watch: number
 }

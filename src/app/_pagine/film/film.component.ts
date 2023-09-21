@@ -51,11 +51,11 @@ export class FilmComponent implements OnInit, OnDestroy {
         this.films = []
         const elementi = rit.data
         for (let i = 0; i < elementi.length; i++) {
-          const tmpImg: Immagine = {
-            // const tmpImg:Immagine=elementi[i].img 
-            src: elementi[i].img.src,
-            alt: elementi[i].img.alt
-          }
+          const tmpImg: Immagine = elementi[i].img
+          // const tmpImg: Immagine = {
+          // src: elementi[i].img.src,
+          // alt: elementi[i].img.alt
+          // }
           const card: Card = {
             immagine: tmpImg,
             descrizione: elementi[i].descrizione,

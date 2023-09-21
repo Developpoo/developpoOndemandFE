@@ -63,8 +63,8 @@ export class ApiService {
    * @param id id identificativo del Film scelto
    * @returns Observable
    */
-  public getFilm(id: number): Observable<IRispostaServer> {
-    const risorsa: (string | number)[] = ['film', id];
+  public getFilm(idFilm: number): Observable<IRispostaServer> {
+    const risorsa: (string | number)[] = ['film', idFilm];
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
@@ -74,8 +74,8 @@ export class ApiService {
    * @param id id identificativo dellla Genere Scelto
    * @returns Observable
    */
-  public getGenere(id: number): Observable<IRispostaServer> {
-    const risorsa: (string | number)[] = ['category', id];
+  public getGenere(idCategory: number): Observable<IRispostaServer> {
+    const risorsa: (string | number)[] = ['category', idCategory];
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
@@ -137,8 +137,8 @@ export class ApiService {
    * @returns Observable
    */
 
-  public getTipoIndirizzo(id: string): Observable<IRispostaServer> {
-    const risorsa: string[] = ['tipoIndirizzi', id];
+  public getTipoIndirizzo(idTipoIndirizzo: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ['tipoIndirizzi', idTipoIndirizzo];
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
@@ -159,15 +159,15 @@ export class ApiService {
    * @returns Observable
    */
 
-  public getTipoRecapito(id: string): Observable<IRispostaServer> {
-    const risorsa: string[] = ['tipoRecapito', id];
+  public getTipoRecapito(idTipoRecapito: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ['tipoRecapito', idTipoRecapito];
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
   // CERCA USER ESISTENTE
 
-  public getSearchUserClient(id: string): Observable<IRispostaServer> {
-    const risorsa: string[] = ['searchUserClient', id];
+  public getSearchUserClient(idUserClient: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ['searchUserClient', idUserClient];
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
@@ -245,8 +245,13 @@ export class ApiService {
         // return this.http.post<IRispostaServer>(url, parametri);
         if (parametri !== null) {
           console.log('Passo da qui 2', url);
-          return this.http.post<IRispostaServer>(url, parametri)
-            .pipe(tap((x) => console.log('SERVICE', x)));
+          if (token === null) {
+            return this.http.post<IRispostaServer>(url, parametri)
+              .pipe(tap((x) => console.log('SERVICE', x)));
+          } else {
+            return this.http.post<IRispostaServer>(url, parametri, { headers: headers })
+              .pipe(tap((x) => console.log('SERVICE HEADERS', x)));;
+          }
         } else {
           const objErrore = {
             data: null,
@@ -263,8 +268,13 @@ export class ApiService {
       case 'PUT':
         if (parametri !== null) {
           console.log('Passo da qui 3');
-          return this.http.put<IRispostaServer>(url, parametri)
-            .pipe(tap((x) => console.log('SERVICE MODIFCA', x)));
+          if (token === null) {
+            return this.http.put<IRispostaServer>(url, parametri)
+              .pipe(tap((x) => console.log('SERVICE MODIFCA', x)));
+          } else {
+            return this.http.put<IRispostaServer>(url, parametri, { headers: headers })
+              .pipe(tap((x) => console.log('SERVICE MODIFCA HEADERS', x)));;
+          }
         } else {
           const objErrore = {
             data: null,
@@ -280,7 +290,11 @@ export class ApiService {
 
       case 'DELETE':
         console.log('PASSO DA QUI 4');
-        return this.http.delete<IRispostaServer>(url);
+        if (token === null) {
+          return this.http.delete<IRispostaServer>(url);
+        } else {
+          return this.http.delete<IRispostaServer>(url, { headers: headers });
+        }
         break;
 
       default:

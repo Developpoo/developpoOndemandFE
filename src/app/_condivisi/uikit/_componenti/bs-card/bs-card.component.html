@@ -1,6 +1,6 @@
 <div class="card">
     <img *ngIf="card.immagine!==null && card.immagine!==undefined" [src]="card.immagine.src" class="card-img-top"
-        [alt]="card.immagine.alt">
+        [alt]="card.immagine.alt" [title]="card.immagine.title">
     <div class="card-body">
         <h5 *ngIf="card.titolo!==null && card.titolo!==undefined" class="card-title">{{ card.titolo }}</h5>
         <p class="card-text">{{ card.descrizione }}</p>

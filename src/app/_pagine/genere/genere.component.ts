@@ -42,11 +42,12 @@ export class GenereComponent implements OnInit {
         console.log("NEXT", rit)
         const elementi = rit.data
         for (let i = 0; i < elementi.length; i++) {
-          // const tmpImg:Immagine=elementi[i].img // se non ci fosse un fake DB si sarebbe adoperato questa stringa
-          const tmpImg: Immagine = {
-            src: elementi[i].img.src,
-            alt: elementi[i].img.alt
-          }
+          const tmpImg: Immagine = elementi[i].img
+          // const tmpImg: Immagine = {
+          //   src: elementi[i].img.src,
+          //   alt: elementi[i].img.alt
+          // }
+
           const bott: Bottone = {
             testo: "Visualizza",
             title: "Visualizza " + elementi[i].nome,

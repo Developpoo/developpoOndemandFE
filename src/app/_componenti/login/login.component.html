@@ -1,41 +1,26 @@
-<br><br><br>
-<ng-container *ngIf="(auth | async)?.token===null">
-    <div class="row form-login">
-        <div class="col-12">
-            <form name="formLogin" [formGroup]="loginForm" (ngSubmit)="accedi()">
-                <label for="utente" [ngClass]="{'is-invalid':loginForm.controls[ 'utente'].errors}">Utente</label><br>
-                <input type="text" name="utente" id="utente" formControlName="utente"
-                    [ngClass]="{'is-invalid':loginForm.controls['utente'].errors}"><br>
-                <label for="password"
-                    [ngClass]="{'is-invalid':loginForm.controls['password'].errors}">Password</label><br>
-                <input type="password" name="password" id="password" formControlName="password"
-                    [ngClass]="{'is-invalid':loginForm.controls['password'].errors}"><br><br>
-                <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">
-                    Accedi
-                    <div class="spinner-border spinner-border-sm text-warning" role="status" *ngIf="stoControllando">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </button>
-                <!-- <br>
-                <div>DEBUG:</div>
-                <div>E' valido reactiveform? {{ reactiveForm.valid | json}}</div> -->
-            </form>
-        </div>
+<ng-container *ngIf="(auth | async)?.token!==null">
+    <div class="col-12 text-center benvenuto">
+        Benvenuto nel tuo Account {{ (auth | async)?.nome }}
+        <br> <br>
+        <app-modal></app-modal>
     </div>
 </ng-container>
-
-<ng-container *ngIf="(auth | async)?.token!==null">
-    <div class="row form-login">
-        <div class="col-12">
-            Benvenuto {{ (auth | async)?.nome }}
-            <br> <br>
-            <button *ngIf="(auth | async)?.token!==null" type="submit" class="btn btn-primary" (click)="esci()">
-                Logout
-                <div class="spinner-border spinner-border-sm text-warning" role="status" *ngIf="stoControllando">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </button>
-        </div>
+<ng-container *ngIf="(auth | async)?.token===null">
+    <div class="col-12 text-center benvenuto">
+        Benvenuto!! Entra nel tuo account o registrati
+        <br> <br>
+        <app-modal></app-modal>
     </div>
 </ng-container>
 <!-- <div>Sto controllando? {{ stoControllando | json}}</div> -->
+<hr>
+<!-- <ng-container *ngIf="(auth | async)?.token!==null">
+    <button mat-fab extended color="primary">
+        <mat-icon>favorite</mat-icon>
+        Primary
+    </button>
+
+</ng-container> -->
+<ng-container>
+    <!-- <app-upload-img></app-upload-img> -->
+</ng-container>

@@ -12,7 +12,7 @@ import { OffcanvasComponent } from './_condivisi/uikit/_componenti/offcanvas/off
 import { HighlightDirective } from './_direttive/highlight.directive';
 import { UploadImgComponent } from './_condivisi/uikit/_componenti/upload-img/upload-img.component';
 import { DragdropDirective } from './_direttive/dragdrop.directive';
-import { ModalComponent } from './_componenti/modal/modal.component';
+import { ModalComponent, ModalComponentForm } from './_componenti/modal/modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -36,7 +36,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ModalComponent
+    ModalComponent,
+    ModalComponentForm
   ]
 })
 export class AppModule { }

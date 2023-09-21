@@ -150,8 +150,9 @@ export class ModalComponentForm implements OnInit, OnDestroy {
     recapito: new FormControl(''),
     accettaTermini: new FormControl('')
   });
-  isRegistrationActive: boolean = false;
+  isRegistrationActive: boolean = false
   PasswordValidator: boolean = false
+  isRegistrationComplete: boolean = false
 
   // OSSERVATORE
   private osservatore = {
@@ -240,13 +241,13 @@ export class ModalComponentForm implements OnInit, OnDestroy {
 
   registra(): void {
     if (this.registrationForm.invalid === true) {
-      console.log('Form di registrazione non valido');
+      console.log('Form di registrazione non valido', this.registrationForm);
+      this.isRegistrationComplete = false
       return;
     } else {
-      console.log('Form di registrazione valido');
+      console.log('Form di registrazione valido', this.registrationForm);
 
       const dataNascitaFormatted = moment(this.registrationForm.controls['dataNascita'].value).format('YYYY-MM-DD');
-
 
       const parametro: Partial<ParametriSaveAuth> = {
         idUserStatus: 1,
@@ -267,6 +268,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
       }
 
       this.obsAddUserClient(parametro).subscribe(this.osservatore);
+      this.isRegistrationComplete = true
     }
   }
 
@@ -352,7 +354,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
           };
           this.authService.settaObsAuth(auth);
           this.authService.scriviAuthSuLocalStorage(auth);
-          this.router.navigateByUrl('/home');
+          this.router.navigateByUrl('/login');
         } else {
           console.log('ERRORE in osservoLogin');
           this.mostraMessaggioErrore = true;
@@ -386,5 +388,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
   get f(): { [key: string]: AbstractControl } {
     return this.registrationForm.controls;
   }
+
+
 
 }

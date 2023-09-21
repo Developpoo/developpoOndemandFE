@@ -1,9 +1,14 @@
 <p align="end">
-  <button mat-icon-button matTooltip="Esci" matTooltipPosition="left" mat-dialog-close
+  <button *ngIf="(auth | async)?.token === null && isRegistrationActive" mat-icon-button matTooltip="Login"
+    matTooltipPosition="left" type="button" (click)="disattivaRegistrazione()"><mat-icon>home</mat-icon></button>
+  <button mat-icon-button matTooltip="Esci" matTooltipPosition="below" mat-dialog-close
     type="button"><mat-icon>clear</mat-icon></button>
 </p>
 <h2 mat-dialog-title class="text-center">Benvenuto in Developpo Ondemand</h2>
-
+<!-- MESSAGGIO DI REGISTRAZIONE  -->
+<p *ngIf="isRegistrationComplete" mat-dialog-title class="text-center text-danger">
+  Ciao la tua registrazione è andata a buon fine<br> torna al Login per accedere alla navigazione
+</p>
 <mat-dialog-content class="mat-typography">
   <!-- LOGIN FORM -->
   <p align="center">
@@ -128,18 +133,19 @@
       <p>
         <!-- SESSO -->
         <!-- {{f['sesso'].errors | json}} -->
+        <!-- [ngClass]="{'is-invalid': registrationForm.controls['sesso'].errors}" -->
         <mat-radio-group color="primary" aria-label="Select an option" formControlName="sesso">
-          <mat-label for="sesso" [ngClass]="{'is-invalid': registrationForm.controls['sesso'].errors}">Sesso</mat-label>
+          <mat-label for="sesso">Sesso</mat-label>
           <mat-radio-button value="0">Uomo</mat-radio-button>
           <mat-radio-button value="1">Donna</mat-radio-button>
         </mat-radio-group>
       </p>
       <p>
         <!-- DATA DI NASCITA  -->
-        <!-- {{f['dataNascita'].errors | json}} -->
+        {{f['dataNascita'].valid | json}}
         <mat-form-field color="primary">
           <mat-label>Data di nascita</mat-label>
-          <input matInput [matDatepicker]="picker" placeholder="Data di nascita" formControlName="dataNascita">
+          <input matInput [matDatepicker]="picker" placeholder="Mese/Giorno/Anno" formControlName="dataNascita">
           <mat-hint>MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
@@ -216,14 +222,17 @@
       <p>
         <!-- ACCETTO TERMINI E CONDIZIONI  -->
         <!-- {{f['accettaTermini'].errors | json}} -->
-        <mat-checkbox [(ngModel)]="isChecked" color="primary" ngModel type="checkbox" name="accettaTermini"
+        <!-- <mat-checkbox [(ngModel)]="isChecked" color="primary" ngModel type="checkbox" name="accettaTermini"
           id="accettaTermini" title="accetta termini e condizioni" formControlName="accettaTermini">Accetta Termini e
+          Condizioni</mat-checkbox> -->
+        <mat-checkbox color="primary" type="checkbox" name="accettaTermini" id="accettaTermini"
+          title="accetta termini e condizioni" formControlName="accettaTermini">Accetta Termini e
           Condizioni</mat-checkbox>
       </p>
       <!-- BUTTON REGISTRA - TORNA AL LOGIN -->
       <!-- REGISTRA  -->
-      <!-- [disabled]="!registrationForm.valid" -->
-      <!-- {{ registrationForm.controls['user.valid'] | json}} -->
+      <!-- [disabled]="!registrationForm.valid" da capire perchè non funziona il disabled sul tasto registra -->
+      <!-- {{ registrationForm.valid | json}} -->
       <button mat-button *ngIf="(auth | async)?.token === null && isRegistrationActive" type="submit">Registra</button>
       <!-- TORNA AL LOGIN  -->
       <button mat-button *ngIf="(auth | async)?.token === null && isRegistrationActive" type="button"

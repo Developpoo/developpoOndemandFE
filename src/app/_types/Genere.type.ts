@@ -1,6 +1,10 @@
+import { Immagine } from "./Immagine.type"
 
 export type Genere = {
     idCategory: number,
+    idFile: number,
+    img: Immagine
     nome: string,
-    watch?: number
+    icona: string,
+    watch: number
 }

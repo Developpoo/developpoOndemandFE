@@ -5,7 +5,7 @@ export type Bottone = {
     testo: string,
     title: string,
     icona: string | null,
-    tipo: TipoBottone,
+    tipo?: TipoBottone,
     link: string | null,
-    emitId: number | null
+    emitId: number | null // un id per il button per l'eventuale categoria
 }
