@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './_componenti/navbar/navbar.component';
 import { FooterComponent } from './_componenti/footer/footer.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './_componenti/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OffcanvasComponent } from './_condivisi/uikit/_componenti/offcanvas/offcanvas.component';
@@ -14,6 +14,7 @@ import { UploadImgComponent } from './_condivisi/uikit/_componenti/upload-img/up
 import { DragdropDirective } from './_direttive/dragdrop.directive';
 import { ModalComponent, ModalComponentForm } from './_componenti/modal/modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthInterceptor } from './_interceptor/auth.interceptor.interceptor';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     UploadImgComponent,
     DragdropDirective,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,

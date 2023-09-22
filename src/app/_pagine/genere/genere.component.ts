@@ -85,3 +85,78 @@ export class GenereComponent implements OnInit {
       });
   }
 }
+
+
+// export function inizioApp(configService: AppConfigService) {
+
+//   return () => new Observable((subscriber) => {
+//     configService.caricaJSON().pipe(
+//       map(valore => {
+//         AppConfigService.settings = <IAppConfig>valore;
+//         return valore;
+//       }),
+//       concatMap(() => {
+//         const apinConf$ = apiConfigurazione(configService);
+//         const apiLng$ = apiLingue(configService);
+//         const apiContattiRuoli$ = apiContattiRuoli(configService);
+//         const apiContattiStati$ = apiContattiStati(configService);
+//         const apiTipiIndirizzi$ = apiTipiIndirizzi(configService);
+//         const apiTipiRecapiti$ = apiTipiRecapiti(configService);
+//         const apiTraduzioni$ = apiTraduzioni(configService);
+//         return combineLatest([apinConf$,apiLng$, apiContattiRuoli$, apiContattiStati$, apiTipiIndirizzi$, apiTipiRecapiti$, apiTraduzioni$ ]);
+
+
+//       })
+//     ).subscribe({
+//       next: () => {
+//         subscriber.complete();
+//       },
+//       error: (err) => { console.error(err) },
+//       complete: () => { }
+//     });
+//   });
+// }
+
+
+// // [
+// cat: {
+//   idCat:...
+//   nome:...
+//   file[è
+//   ]
+
+
+// }
+// ]
+
+
+// import { from, of } from 'rxjs';
+// import { concatMap, delay } from 'rxjs/operators';
+
+// // Simuliamo una funzione che esegue una chiamata HTTP ritardata
+// function fetchData(url) {
+//   // Simuliamo una chiamata HTTP con un ritardo casuale
+//   const delayTime = Math.random() * 2000;
+//   return of(`Dati da ${url}`).pipe(delay(delayTime));
+// }
+
+// // Esempio di concatenazione di tre operazioni utilizzando concatMap
+// const urls = ['api/endpoint1', 'api/endpoint2', 'api/endpoint3'];
+
+// from(urls)
+//   .pipe(
+//     concatMap(url => fetchData(url)),
+//     concatMap(result => {
+//       // Esegui un'altra operazione utilizzando il risultato precedente
+//       const modifiedResult = `Modificato: ${result}`;
+//       return of(modifiedResult).pipe(delay(1000)); // Simula un altro ritardo
+//     }),
+//     concatMap(finalResult => {
+//       // Esegui un'altra operazione utilizzando il risultato modificato
+//       const additionalOperation = `Aggiuntivo: ${finalResult}`;
+//       return of(additionalOperation);
+//     })
+//   )
+//   .subscribe(data => {
+//     console.log(data);
+//   });

@@ -220,100 +220,53 @@ export class ApiService {
   }
 
   /**
-   * @param risorsa (string | number)[] Risorsa di cui voglio sapere i dati
-   * @param tipo string GET | POST | PUT | DELETE tipo di chiamata Http
-   * @param parametri Oblect |null Parametri da passare all'endpoint
-   * @returns Observable
-   */
+      * 
+      * @param risorsa (string|number)[]  Risorsa di cui voglio sapere i dati
+      * @param tipo string GET | PUT | POST | DELETE tipo di chiamata HTTP
+      * @param parametri Objct | null Parametri da passare all'endpoint
+      * @returns Observable
+      */
+  protected richiestaGenerica(risorsa: (string | number)[], tipo: ChiamataHTTP, parametri: Object | null = null): Observable<IRispostaServer> {
 
-  protected richiestaGenerica(
-    risorsa: (string | number)[],
-    tipo: ChiamataHTTP,
-    parametri: Object | null = null
-  ): Observable<IRispostaServer> {
-    const url = this.calcolaRisorsa(risorsa);
+    const url = this.calcolaRisorsa(risorsa)
 
-    const token = this.authService.getToken()
-    // const obsAuth$ = this.authService.leggiObsAuth()
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-    console.log('Url. ', url);
 
     switch (tipo) {
-      case 'GET':
-        console.log('Passo da qui 1');
-        if (token === null) {
-          return this.http.get<IRispostaServer>(url);
-        } else {
-          return this.http.get<IRispostaServer>(url, { headers: headers });
-        }
-        break;
+      case "GET": console.log("PASSO GET",)
+        return this.http.get<IRispostaServer>(url)
+        break
 
-      case 'POST':
-        // return this.http.post<IRispostaServer>(url, parametri);
-        if (parametri !== null) {
-          console.log('Passo da qui 2', url);
-          if (token === null) {
-            return this.http.post<IRispostaServer>(url, parametri)
-              .pipe(tap((x) => console.log('SERVICE', x)));
-          } else {
-            return this.http.post<IRispostaServer>(url, parametri, { headers: headers })
-              .pipe(tap((x) => console.log('SERVICE HEADERS', x)));;
-          }
-        } else {
-          const objErrore = {
-            data: null,
-            message: null,
-            error: 'NO_PARAMETRI',
-          };
-          const obs$ = new Observable<IRispostaServer>(subscriber =>
-            subscriber.next(objErrore)
-          );
-          return obs$;
-        }
-        break;
+      case "POST": if (parametri !== null) {
+        console.log("PASSO POST", url)
+        return this.http.post<IRispostaServer>(url, parametri).pipe(tap(x => console.log("SERVICE", x)))
+      } else {
+        const objErrore = { data: null, message: null, error: "NO_PARAMETRI" }
+        const obs$ = new Observable<IRispostaServer>(subscriber => subscriber.next(objErrore))
+        return obs$
+      }
+        break
 
-      case 'PUT':
-        if (parametri !== null) {
-          console.log('Passo da qui 3');
-          if (token === null) {
-            return this.http.put<IRispostaServer>(url, parametri)
-              .pipe(tap((x) => console.log('SERVICE MODIFCA', x)));
-          } else {
-            return this.http.put<IRispostaServer>(url, parametri, { headers: headers })
-              .pipe(tap((x) => console.log('SERVICE MODIFCA HEADERS', x)));;
-          }
-        } else {
-          const objErrore = {
-            data: null,
-            message: null,
-            error: 'NO_PARAMETRI',
-          };
-          const obs$ = new Observable<IRispostaServer>((subscriber) =>
-            subscriber.next(objErrore)
-          );
-          return obs$;
-        }
-        break;
+      case "PUT": if (parametri !== null) {
+        console.log("PASSO PUT", url)
+        return this.http.put<IRispostaServer>(url, parametri).pipe(tap(x => console.log("SERVICE", x)))
+      } else {
+        const objErrore = { data: null, message: null, error: "NO_PARAMETRI" }
+        const obs$ = new Observable<IRispostaServer>(subscriber => subscriber.next(objErrore))
+        return obs$
+      }
+        break
 
-      case 'DELETE':
-        console.log('PASSO DA QUI 4');
-        if (token === null) {
-          return this.http.delete<IRispostaServer>(url);
-        } else {
-          return this.http.delete<IRispostaServer>(url, { headers: headers });
-        }
-        break;
+      case "DELETE": console.log("PASSO DELETE", url)
+        return this.http.delete<IRispostaServer>(url)
+        break
 
-      default:
-        console.log('Passo da qui 5');
-        return this.http.get<IRispostaServer>(url);
-        break;
+      default: console.log("PASSO DEFAULT")
+        return this.http.get<IRispostaServer>(url)
+        break
     }
+
   }
+
 
   //###### FASE LOGIN ##################
 
@@ -369,17 +322,35 @@ export class ApiService {
         return passwordNascosta;
       }),
       concatMap((passwordNascosta: string) => {
-        return this.getLoginFase2(hashUtente, passwordNascosta).pipe(
-          tap((response: IRispostaServer) => {
-            if (response.data && response.data.token) {
-              // Imposta il token nel servizio AuthService dopo aver ottenuto la risposta dal server.
-              this.authService.setToken(response.data.token);
-            }
-          })
-        );
+        return this.getLoginFase2(hashUtente, passwordNascosta)
       })
     );
     return controllo$;
   }
+
+  //  /**
+  //     * Funzione che effettua il login
+  //     * @param utente  Stringa che rappresenta l'utente
+  //     * @param password Stringa che rappresenta la password
+  //     * @returns Observable<IRispostaServer>
+  //     */
+  //  public login(utente: string, password: string): Observable<IRispostaServer> {
+  //   const hashUtente: string = UtilityServices.hash(utente)
+  //   const hashPassword: string = UtilityServices.hash(password)
+  //   const controllo$ = this.getLoginFase1(hashUtente)
+  //     .pipe(
+  //       take(1),
+  //       tap(x => console.log("DATI:", x)),
+  //       map((rit: IRispostaServer): string => {
+  //         const salt: string = rit.data.sale
+  //         const passwordNascosta = UtilityServices.nascondiPassword(hashPassword, salt)
+  //         return passwordNascosta
+  //       }),
+  //       concatMap((rit: string) => {
+  //         return this.getLoginFase2(hashUtente, rit)
+  //       })
+  //     )
+  //   return controllo$
+  // }
 }
 
