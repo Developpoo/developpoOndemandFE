@@ -9,9 +9,10 @@ export class UtilityServices {
   // }
 
   /**
-   * Funzione che crea hash sha512 di una stringa
-   * @param str una stringa da cifrare
-   * @returns stringa cifrata
+   * Funzione che calcola l'hash SHA-512 di una stringa.
+   *
+   * @param str Una stringa da cifrare.
+   * @returns La stringa cifrata in formato SHA-512.
    */
   static hash(str: string): string {
     const tmp = sha512(str);
@@ -19,9 +20,11 @@ export class UtilityServices {
   }
 
   /**
-   * Funzione che leggi i dati dal token
-   * @param token string che rappresenta il token
-   * @returns un oggetto (da migliorare questa documentazione)
+   * Funzione che legge i dati dal token JWT (JSON Web Token).
+   *
+   * @param token Una stringa che rappresenta il token JWT.
+   * @returns Un oggetto contenente i dati estratti dal token.
+   *          Restituisce null se il token non è valido o non può essere letto.
    */
   static leggiToken(token: string): any {
     try {
@@ -34,10 +37,11 @@ export class UtilityServices {
   }
 
   /**
-   * Funzione che calcola l'hash sha512 della password legata al sale
-   * @param password string che rappresenta la password
-   * @param salt string che rappresenta un'altra stringa da legare alla password
-   * @returns string che rappresenta hash sha512 della password unita al sale
+   * Funzione che calcola l'hash SHA-512 della password concatenata con il sale.
+   *
+   * @param password Una stringa che rappresenta la password.
+   * @param salt Una stringa che rappresenta un valore aggiuntivo da concatenare alla password.
+   * @returns La stringa che rappresenta l'hash SHA-512 della password concatenata con il sale.
    */
   static nascondiPassword(password: string, salt: string): string {
     const tmp: string = salt + password;

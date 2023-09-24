@@ -38,8 +38,7 @@ import * as moment from 'moment';
   imports: [MatButtonModule, MatDialogModule, MatTooltipModule, MatIconModule, CommonModule],
 })
 export class ModalComponent {
-
-
+  // BehaviorSubject per gestire lo stato di autenticazione
   auth: BehaviorSubject<Auth> = this.authService.leggiObsAuth()
 
   constructor(
@@ -48,6 +47,7 @@ export class ModalComponent {
     private router: Router
   ) { }
 
+  // Apre una finestra di dialogo
   openDialog() {
     const dialogRef = this.dialog.open(ModalComponentForm);
 
@@ -56,8 +56,7 @@ export class ModalComponent {
     });
   }
 
-  // // ########### LOGOUT ###############
-
+  // Effettua il logout dell'utente
   esci(): void {
     const auth: Auth = {
       idLingua: null,
@@ -112,14 +111,17 @@ export class ModalComponentForm implements OnInit, OnDestroy {
   private distruggi$ = new Subject<void>();
 
   //Nazioni
+  // Observable per dati delle Nazioni
   nazioni$: Observable<IRispostaServer>;
   datiNazione: Nazione[] = [];
 
   //Comuni - Regioni - cap
+  // Observable per dati dei Comuni - Regioni - CAP
   comuni$: Observable<IRispostaServer>;
   datiComune: Comune[] = [];
 
   //Lingua
+  // Observable per dati delle Lingue
   lingue$: Observable<IRispostaServer>;
   datiLingua: Lingua[] = [];
 
@@ -161,10 +163,6 @@ export class ModalComponentForm implements OnInit, OnDestroy {
     complete: () => console.log('Completato'),
   };
 
-  // formGroup = this._formBuilder.group({
-  //   acceptTerms: [false, Validators.requiredTrue],
-  // });
-
   constructor(
     // private _formBuilder: FormBuilder,
     private fb: FormBuilder,
@@ -176,19 +174,14 @@ export class ModalComponentForm implements OnInit, OnDestroy {
     this.lingue$ = this.api.getLingue()
   }
 
-  // alertFormValues(formGroup: FormGroup) {
-  //   alert(JSON.stringify(formGroup.value, null, 2));
-  // }
-
   ngOnInit(): void {
-
-    // login
+    // Login Form
     this.loginForm = this.fb.group({
       utente: ['', [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(40)]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
     });
 
-    // registrazione
+    // Registration Form
     this.registrationForm = this.fb.group({
       user: ['', [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(40)]],
       passwordSave: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
@@ -206,17 +199,21 @@ export class ModalComponentForm implements OnInit, OnDestroy {
       recapito: ['', [Validators.required, Validators.pattern('^[0-9]+$')], Validators.minLength(7), Validators.maxLength(12)],
       accettaTermini: [false, Validators.requiredTrue],
     }, {
+      // Validatore per conferma password
       validator: PasswordUgualiValidator('passwordSave', 'confirmPasswordSave')
     });
 
+    // Carica dati delle lingue
     this.lingue$.pipe(map((x) => x.data)).subscribe({
       next: (x) => (this.datiLingua = x),
     });
 
+    // Carica dati delle nazioni
     this.nazioni$.pipe(map((x) => x.data)).subscribe({
       next: (x) => (this.datiNazione = x),
     });
 
+    // Carica dati dei comuni
     this.comuni$.pipe(map((x) => x.data)).subscribe({
       next: (x) => {
         this.datiComune = x;
@@ -230,15 +227,17 @@ export class ModalComponentForm implements OnInit, OnDestroy {
   }
 
   // ########### REGISTRAZIONE ###############
-
+  // Attiva il form di registrazione
   attivaRegistrazione(): void {
     this.isRegistrationActive = true;
   }
 
+  // Disattiva il form di registrazione
   disattivaRegistrazione(): void {
     this.isRegistrationActive = false;
   }
 
+  // Registra un utente
   registra(): void {
     if (this.registrationForm.invalid === true) {
       console.log('Form di registrazione non valido', this.registrationForm);
@@ -247,6 +246,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
     } else {
       console.log('Form di registrazione valido', this.registrationForm);
 
+      // Formattazione data di nascita
       const dataNascitaFormatted = moment(this.registrationForm.controls['dataNascita'].value).format('YYYY-MM-DD');
 
       const parametro: Partial<ParametriSaveAuth> = {
@@ -272,6 +272,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
     }
   }
 
+  // Observable per la registrazione di un utente
   obsAddUserClient(dati: Partial<ParametriSaveAuth>) {
     return this.api.postRegistrazioneUserClient(dati).pipe(
       take(1),
@@ -282,7 +283,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
   }
 
   // // ########### LOGOUT ###############
-
+  // Effettua il logout dell'utente
   esci(): void {
     const auth: Auth = {
       idLingua: null,
@@ -300,7 +301,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
   }
 
   // ########### LOGIN ###############
-
+  // Effettua l'accesso dell'utente
   accedi(): void {
     if (this.loginForm.invalid) {
       console.log('FORM NON VALIDO');
@@ -315,6 +316,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
     }
   }
 
+  // Observable per l'accesso dell'utente
   private obsLogin(
     utente: string,
     password: string
@@ -336,6 +338,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
   }
 
   // ############# OBSERVER LOGIN ##############
+  // Gestione dell'accesso dell'utente
   private osservoLogin() {
     const osservatore: Observer<any> = {
       next: (rit) => {
@@ -385,6 +388,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
   }
 
   //---------------------------------------------------------------------------------------------------------------
+  // Restituisce i controlli del form di registrazione
   get f(): { [key: string]: AbstractControl } {
     return this.registrationForm.controls;
   }

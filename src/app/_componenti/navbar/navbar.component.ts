@@ -9,13 +9,23 @@ import { Auth } from 'src/app/_types/Auth.type';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-
+  // BehaviorSubject che contiene le informazioni sull'autenticazione dell'utente
   auth: BehaviorSubject<Auth> = this.authService.leggiObsAuth()
-
+  // Variabile per il colore dell'elemento grafico
   colore: string = ''
-
+  // Oggetto che rappresenta l'orario corrente
   currentTime: Date = new Date();
 
+  /**
+* Costruttore del componente NavbarComponent.
+* @param authService Servizio di autenticazione per gestire lo stato dell'utente.
+*/
+  constructor(private authService: AuthService) { }
+
+  /**
+ * Ottiene un messaggio di saluto in base all'orario corrente.
+ * @returns Messaggio di saluto (buongiorno, buon pomeriggio, buonasera o salve).
+ */
   getGreetingMessage(): string {
     const currentHour = this.currentTime.getHours();
     let greetingMessage: string;
@@ -36,7 +46,4 @@ export class NavbarComponent {
     }
     return greetingMessage;
   }
-
-  constructor(private authService: AuthService) { }
-
 }

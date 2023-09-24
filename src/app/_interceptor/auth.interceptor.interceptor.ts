@@ -19,20 +19,28 @@ export class AuthInterceptor implements HttpInterceptor {
     this.auth = this.authService.leggiObsAuth();
   }
 
+  /**
+ * Intercepta le richieste HTTP in uscita e aggiunge l'header "Authorization" con il token dell'utente (se presente) prima di inviare la richiesta.
+ * @param request La richiesta HTTP originale.
+ * @param next Il gestore della richiesta HTTP successiva.
+ * @returns Un'observable contenente l'evento HTTP risultante dalla richiesta modificata.
+ */
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let richiestaModificata: HttpRequest<any>
 
 
     const utenteToken = this.auth.value.token
     if (utenteToken !== null) {
+      // Clona la richiesta originale e aggiunge l'header "Authorization" con il token dell'utente.
       richiestaModificata = request.clone({
         headers: new HttpHeaders().set("Authorization", `Bearer ${utenteToken}`)
         // headers: new HttpHeaders().set("Authorization", "Basic " + btoa("0:" + utenteToken))
       });
     } else {
+      // Se l'utente non ha un token, utilizza la richiesta originale senza alcuna modifica.
       richiestaModificata = request
     }
-
+    // Inoltra la richiesta modificata al gestore successivo.
     return next.handle(richiestaModificata)
   }
 }

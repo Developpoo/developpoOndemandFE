@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { Card } from 'src/app/_types/Card.type';
-import { catchError, concatMap } from 'rxjs/operators';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
-import { throwError } from 'rxjs';
+import { Observable, Observer, concatMap, delay, map, of } from 'rxjs';
+import { CategoryFile } from 'src/app/_types/CategoryFile.type';
+import { File } from 'src/app/_types/File.type';
+import { Bottone } from 'src/app/_types/Bottone.type';
 
 @Component({
   selector: 'app-genere',
@@ -12,151 +14,114 @@ import { throwError } from 'rxjs';
 })
 export class GenereComponent implements OnInit {
 
+  generi: Card[] = []; // Un array per immagazzinare i dati dei generi
+  error: string = ''; // Variabile per gestire gli errori
+  cat: any; // Contiene i dati dei generi
+  file: any; // Contiene i dati dei file
+  dati: any; // Contiene i dati combinati dei generi e dei file
+  cat$: Observable<IRispostaServer>
 
-  generi: Card[] = [];
-  error: string = '';
-
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService) {
+    this.cat$ = this.dati
+  }
 
   ngOnInit(): void {
-    this.api.getGeneri()
+    const oss: Observer<any> = {
+      next: (rit) => {
+        this.dati = rit;
+        console.log(this.dati);
+        // Aggiungi qui la logica per gestire i dati ottenuti, se necessario
+      },
+      error: (err) => {
+        console.error(err);
+        this.error = 'Errore durante la richiesta API: ' + err.message;
+      },
+      complete: () => console.log("Completo")
+    }
+
+    const obs$: Observable<any> = this.getGeneri()
       .pipe(
-        concatMap((generiResponse: IRispostaServer) => {
-          return this.api.getFile()
-            .pipe(
-              concatMap((fileResponse: IRispostaServer) => {
-                const generiData = generiResponse.data;
-                const fileData = fileResponse.data;
-                console.log('generiData:', generiData);
-                console.log('fileData:', fileData);
-
-
-                const cards: Card[] = [];
-
-                for (let i = 0; i < generiData.length; i++) {
-                  const genere = generiData[i];
-                  const idFile = genere.idFile;
-
-                  const file = fileData.find((item: { idFile: number; }) => item.idFile === idFile);
-
-                  if (file !== null) {
-                    const card: Card = {
-                      immagine: {
-                        idFile: file.idFile,
-                        src: file.src,
-                        alt: file.alt,
-                        title: file.title
-                      },
-                      titolo: genere.nome,
-                      descrizione: '',
-                      bottone: {
-                        testo: "Visualizza",
-                        title: "Visualizza",
-                        icona: genere.icona,
-                        tipo: "button",
-                        emitId: null,
-                        link: "/genere/" + genere.idCategory
-                      }
-                    };
-                    cards.push(card);
-                  }
-                }
-                return cards;
-              }),
-              catchError(error => {
-                this.error = 'PD0001 Errore durante il recupero dei dati: ' + error.message;
-                return throwError(() => new Error(this.error));
-              })
-            );
+        map((ris) => {
+          this.cat = ris.data;
+          return ris
         }),
-        catchError(error => {
-          this.error = 'PD0002 Errore durante il recupero dei dati: ' + error.message;
-          return throwError(() => new Error(this.error));
+        concatMap((ris: IRispostaServer, index: number): Observable<IRispostaServer> => {
+          return this.getFile()
+        }),
+        map((ris) => {
+          this.file = ris.data;
+          let dati: CategoryFile[] = []
+          for (let i = 0; i < ris.data.length; i++) {
+            const item = ris.data[i]
+            const obj = this.cat?.find((elemento: { id: number; }) => elemento.id === item.idCat)
+            const tmp: CategoryFile = {
+              idFile: item.idFile,
+              nome: item.nome,
+              idCategory: obj
+            }
+            dati.push(tmp);
+          }
+          return dati;
         })
-      )
-      .subscribe({
-        next: (cards: Card) => {
-          const generiArray: Card[] = [cards];
-          this.generi = generiArray;
-        },
-        error: (error) => {
-          console.error('PD0003 Errore durante la richiesta API:', error);
+      );
+
+    obs$.subscribe(oss);
+
+    this.cat$.pipe(
+      delay(1000)
+    ).subscribe(this.osservoCat())
+  }
+
+  getGeneri(): Observable<IRispostaServer> {
+    return this.api.getGeneri();
+  }
+
+  getFile(): Observable<IRispostaServer> {
+    return this.api.getFile();
+  }
+
+  //########################################
+  // Observer
+  //########################################
+
+  private osservoCat() {
+    return {
+      next: (rit: IRispostaServer) => {
+        console.log("NEXT", rit)
+        const elementi = rit.data
+        for (let i = 0; i < elementi.length; i++) {
+          // const tmpImg: Immagine = elementi[i].img
+          const tmpImg: File = {
+            idFile: elementi[i].idFile,
+            idTipo: 1,
+            src: elementi[i].src,
+            alt: elementi[i].alt,
+            title: elementi[i].title,
+            nome: '',
+            descrizione: '',
+            formato: ''
+          }
+          const bott: Bottone = {
+            testo: "Visualizza",
+            title: "Visualizza " + elementi[i].nome,
+            icona: null,
+            tipo: "button",
+            emitId: null,
+            link: "/collezioni/elenco/" + elementi[i].id
+          }
+          const card: Card = {
+            immagine: tmpImg,
+            descrizione: '',
+            titolo: elementi[i].nome,
+            bottone: bott
+          }
+          this.generi.push(card)
         }
-      });
+      },
+      error: (err: any) => {
+        console.error("ERRORE", err)
+      },
+      complete: () => { console.log("%c COMPLETATO", "color:#00AA00") }
+    }
   }
 }
-
-
-// export function inizioApp(configService: AppConfigService) {
-
-//   return () => new Observable((subscriber) => {
-//     configService.caricaJSON().pipe(
-//       map(valore => {
-//         AppConfigService.settings = <IAppConfig>valore;
-//         return valore;
-//       }),
-//       concatMap(() => {
-//         const apinConf$ = apiConfigurazione(configService);
-//         const apiLng$ = apiLingue(configService);
-//         const apiContattiRuoli$ = apiContattiRuoli(configService);
-//         const apiContattiStati$ = apiContattiStati(configService);
-//         const apiTipiIndirizzi$ = apiTipiIndirizzi(configService);
-//         const apiTipiRecapiti$ = apiTipiRecapiti(configService);
-//         const apiTraduzioni$ = apiTraduzioni(configService);
-//         return combineLatest([apinConf$,apiLng$, apiContattiRuoli$, apiContattiStati$, apiTipiIndirizzi$, apiTipiRecapiti$, apiTraduzioni$ ]);
-
-
-//       })
-//     ).subscribe({
-//       next: () => {
-//         subscriber.complete();
-//       },
-//       error: (err) => { console.error(err) },
-//       complete: () => { }
-//     });
-//   });
-// }
-
-
-// // [
-// cat: {
-//   idCat:...
-//   nome:...
-//   file[è
-//   ]
-
-
-// }
-// ]
-
-
-// import { from, of } from 'rxjs';
-// import { concatMap, delay } from 'rxjs/operators';
-
-// // Simuliamo una funzione che esegue una chiamata HTTP ritardata
-// function fetchData(url) {
-//   // Simuliamo una chiamata HTTP con un ritardo casuale
-//   const delayTime = Math.random() * 2000;
-//   return of(`Dati da ${url}`).pipe(delay(delayTime));
-// }
-
-// // Esempio di concatenazione di tre operazioni utilizzando concatMap
-// const urls = ['api/endpoint1', 'api/endpoint2', 'api/endpoint3'];
-
-// from(urls)
-//   .pipe(
-//     concatMap(url => fetchData(url)),
-//     concatMap(result => {
-//       // Esegui un'altra operazione utilizzando il risultato precedente
-//       const modifiedResult = `Modificato: ${result}`;
-//       return of(modifiedResult).pipe(delay(1000)); // Simula un altro ritardo
-//     }),
-//     concatMap(finalResult => {
-//       // Esegui un'altra operazione utilizzando il risultato modificato
-//       const additionalOperation = `Aggiuntivo: ${finalResult}`;
-//       return of(additionalOperation);
-//     })
-//   )
-//   .subscribe(data => {
-//     console.log(data);
-//   });

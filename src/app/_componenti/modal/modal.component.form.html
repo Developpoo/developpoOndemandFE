@@ -6,7 +6,7 @@
 </p>
 <h2 mat-dialog-title class="text-center">Benvenuto in Developpo Ondemand</h2>
 <!-- MESSAGGIO DI REGISTRAZIONE  -->
-<p *ngIf="isRegistrationComplete" mat-dialog-title class="text-center text-danger">
+<p *ngIf="isRegistrationComplete && (auth | async)?.token === null" mat-dialog-title class="text-center text-danger">
   Ciao la tua registrazione è andata a buon fine<br> torna al Login per accedere alla navigazione
 </p>
 <mat-dialog-content class="mat-typography">

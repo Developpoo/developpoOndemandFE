@@ -12,7 +12,12 @@ import { HttpHeaders } from '@angular/common/http';
 import { Auth } from '../_types/Auth.type';
 import { AuthService } from './auth.service';
 
-
+/**
+ * Servizio per la gestione delle chiamate API al server.
+ * Questo servizio fornisce funzioni per effettuare richieste HTTP a diverse risorse sul server.
+ *
+ * @@Injectable({ providedIn: 'root' })
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -23,7 +28,7 @@ export class ApiService {
     private authService: AuthService
   ) { }
 
-  // GENERE FILM e GENERI
+  // METODI PER LE CHIAMATE API
 
   /**
    * Funzione per chiamare l'elenco dei generi dei Film
@@ -205,10 +210,11 @@ export class ApiService {
   //###########################################################################
 
   /**
-   * @param risorsa (string|number)[]
-   * @returns string stringa che rappresenta l'endpoint del serve
-   */
-
+ * Calcola l'URL completo per una risorsa data.
+ *
+ * @param risorsa Array di stringhe e numeri che rappresenta la risorsa desiderata.
+ * @returns Una stringa che rappresenta l'URL completo per la risorsa.
+ */
   protected calcolaRisorsa(risorsa: (string | number)[]): string {
     const server: string =
       'https://www.developpo.com/developpoOndemandBE/public/api'; //http://127.0.0.1:8000/api dopo modifica con proxy
@@ -220,16 +226,16 @@ export class ApiService {
   }
 
   /**
-      * 
-      * @param risorsa (string|number)[]  Risorsa di cui voglio sapere i dati
-      * @param tipo string GET | PUT | POST | DELETE tipo di chiamata HTTP
-      * @param parametri Objct | null Parametri da passare all'endpoint
-      * @returns Observable
-      */
+   * Effettua una richiesta HTTP generica al server.
+   *
+   * @param risorsa Array di stringhe e numeri che rappresenta la risorsa desiderata.
+   * @param tipo Tipo di richiesta HTTP (GET, POST, PUT, DELETE).
+   * @param parametri Parametri da passare all'endpoint (opzionale).
+   * @returns Un Observable che contiene la risposta del server.
+   */
   protected richiestaGenerica(risorsa: (string | number)[], tipo: ChiamataHTTP, parametri: Object | null = null): Observable<IRispostaServer> {
 
     const url = this.calcolaRisorsa(risorsa)
-
 
     switch (tipo) {
       case "GET": console.log("PASSO GET",)
@@ -264,18 +270,17 @@ export class ApiService {
         return this.http.get<IRispostaServer>(url)
         break
     }
-
   }
 
 
   //###### FASE LOGIN ##################
 
   /**
-   * Funzione che manda l'untente al server per l'autenticazioni
-   * @param hashUtente stringa che rappresenta l'utente
-   * @returns  Observable
+   * Funzione per inviare la richiesta di autenticazione dell'utente al server.
+   *
+   * @param hashUtente Una stringa che rappresenta l'utente (hash utente).
+   * @returns Un Observable contenente la risposta del server.
    */
-
   public getLoginFase1(hashUtente: string): Observable<IRispostaServer> {
     const risorsa: string[] = ['signClient', hashUtente];
     const rit = this.richiestaGenerica(risorsa, 'GET');
@@ -283,12 +288,12 @@ export class ApiService {
   }
 
   /**
-   * Funzione che manda hash utente e hash password cifrata al server
-   * @param hashUtente stringa che rappresenta l'utente
-   * @param hashPassword stringa che rappresenta l'hash sha512 della password unita al sale
-   * @returns Observable
+   * Funzione per inviare al server l'hash dell'utente e l'hash cifrato della password.
+   *
+   * @param hashUtente Una stringa che rappresenta l'utente (hash utente).
+   * @param hashPassword Una stringa che rappresenta l'hash SHA-512 della password unita al sale.
+   * @returns Un Observable contenente la risposta del server.
    */
-
   public getLoginFase2(
     hashUtente: string,
     hashPassword: string
@@ -299,10 +304,11 @@ export class ApiService {
   }
 
   /**
-   * Funzione che effettua il Login
-   * @param utente stringa che rappresenta l'utente nel DB auth (hash utente)
-   * @param password stringa che rappresenta la password
-   * @returns Observable
+   * Funzione che effettua il login dell'utente.
+   *
+   * @param utente Una stringa che rappresenta l'utente nel database di autenticazione (hash utente).
+   * @param password Una stringa che rappresenta la password.
+   * @returns Un Observable contenente la risposta del server.
    */
   public login(utente: string, password: string): Observable<IRispostaServer> {
     const hashUtente: string = UtilityServices.hash(utente);
@@ -312,11 +318,11 @@ export class ApiService {
       take(1),
       tap((x) => console.log('DatiFase1:', x)),
       map((rit: IRispostaServer): string => {
-        const sale: string = rit.data.salt;
+        const salt: string = rit.data.salt;
         // console.log ("rit", rit.data)
         const passwordNascosta = UtilityServices.nascondiPassword(
           hashPassword,
-          sale
+          salt
         );
         // console.log ("hash", passwordNascosta, "sale", sale)
         return passwordNascosta;
@@ -327,30 +333,5 @@ export class ApiService {
     );
     return controllo$;
   }
-
-  //  /**
-  //     * Funzione che effettua il login
-  //     * @param utente  Stringa che rappresenta l'utente
-  //     * @param password Stringa che rappresenta la password
-  //     * @returns Observable<IRispostaServer>
-  //     */
-  //  public login(utente: string, password: string): Observable<IRispostaServer> {
-  //   const hashUtente: string = UtilityServices.hash(utente)
-  //   const hashPassword: string = UtilityServices.hash(password)
-  //   const controllo$ = this.getLoginFase1(hashUtente)
-  //     .pipe(
-  //       take(1),
-  //       tap(x => console.log("DATI:", x)),
-  //       map((rit: IRispostaServer): string => {
-  //         const salt: string = rit.data.sale
-  //         const passwordNascosta = UtilityServices.nascondiPassword(hashPassword, salt)
-  //         return passwordNascosta
-  //       }),
-  //       concatMap((rit: string) => {
-  //         return this.getLoginFase2(hashUtente, rit)
-  //       })
-  //     )
-  //   return controllo$
-  // }
 }
 
