@@ -217,7 +217,7 @@ export class ApiService {
  */
   protected calcolaRisorsa(risorsa: (string | number)[]): string {
     const server: string =
-      'https://www.developpo.com/developpoOndemandBE/public/api'; //http://127.0.0.1:8000/api dopo modifica con proxy
+      'https://www.developpo.com/developpoOndemandBE/public/api';
     const versione: string = 'v1';
     let url = server + '/' + versione + '/';
     // risorsa.forEach(x => { url = url + x + "/" })
@@ -313,7 +313,7 @@ export class ApiService {
   public login(utente: string, password: string): Observable<IRispostaServer> {
     const hashUtente: string = UtilityServices.hash(utente);
     const hashPassword: string = UtilityServices.hash(password);
-    console.log('HashPassword: ', hashPassword, hashUtente);
+    // console.log('HashPassword: ', hashPassword, hashUtente);
     const controllo$ = this.getLoginFase1(hashUtente).pipe(
       take(1),
       tap((x) => console.log('DatiFase1:', x)),

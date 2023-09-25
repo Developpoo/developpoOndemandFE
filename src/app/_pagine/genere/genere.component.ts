@@ -2,10 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { Card } from 'src/app/_types/Card.type';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
-import { Observable, Observer, concatMap, delay, map, of } from 'rxjs';
-import { CategoryFile } from 'src/app/_types/CategoryFile.type';
-import { File } from 'src/app/_types/File.type';
+import { Observable } from 'rxjs';
+import { concatMap, map, catchError, tap } from 'rxjs/operators';
 import { Bottone } from 'src/app/_types/Bottone.type';
+import { CategoryFile } from 'src/app/_types/CategoryFile.type';
+import { Genere } from 'src/app/_types/Genere.type';
+import { File } from 'src/app/_types/File.type';
+import { Immagine } from 'src/app/_types/Immagine.type';
 
 @Component({
   selector: 'app-genere',
@@ -14,114 +17,131 @@ import { Bottone } from 'src/app/_types/Bottone.type';
 })
 export class GenereComponent implements OnInit {
 
-  generi: Card[] = []; // Un array per immagazzinare i dati dei generi
-  error: string = ''; // Variabile per gestire gli errori
-  cat: any; // Contiene i dati dei generi
-  file: any; // Contiene i dati dei file
-  dati: any; // Contiene i dati combinati dei generi e dei file
-  cat$: Observable<IRispostaServer>
+  generi: Card[] = [];
+  error: string = '';
+  dati: any;
+  cat$!: Observable<IRispostaServer>;
 
-  constructor(private api: ApiService) {
-    this.cat$ = this.dati
-  }
+  constructor(private api: ApiService) { }
 
   ngOnInit(): void {
-    const oss: Observer<any> = {
-      next: (rit) => {
-        this.dati = rit;
-        console.log(this.dati);
-        // Aggiungi qui la logica per gestire i dati ottenuti, se necessario
+    // Concatena le chiamate API e gestisci gli errori
+    this.cat$ = this.getGeneri().pipe(
+      concatMap((catData) => {
+        return this.getFile().pipe(
+          map((fileData) => {
+            try {
+              // Verifica la validità JSON
+              const catDataJson = JSON.parse(JSON.stringify(catData));
+              const fileDataJson = JSON.parse(JSON.stringify(fileData));
+
+              // Combina i dati e crea le Card
+              this.dati = this.combinaDati(catDataJson.data, fileDataJson.data);
+              this.generi = this.creaCardDaDati(this.dati);
+
+              // Restituisci catDataJson per passarlo alla successiva sottoscrizione
+              return catDataJson;
+            } catch (e) {
+              console.error("Errore durante l'analisi della risposta da getFile()");
+              this.error = 'Errore durante la richiesta API: risposta non valida';
+              throw e; // Rilancia l'errore per gestirlo nella sottoscrizione successiva
+            }
+          }),
+          catchError((err) => {
+            console.error(err);
+            this.error = 'Errore durante la richiesta API: ' + err.message;
+            throw err;
+          })
+        );
+      })
+    );
+
+    // Sottoscrizione all'Observable
+    this.cat$.subscribe({
+      next: (response) => {
+        console.log("Risposta HTTP:", response);
+        // Continua con l'analisi dei dati
+        // Assicurati che l'array generi sia popolato
+        console.log("Generi:", this.generi);
       },
       error: (err) => {
         console.error(err);
         this.error = 'Errore durante la richiesta API: ' + err.message;
       },
       complete: () => console.log("Completo")
-    }
-
-    const obs$: Observable<any> = this.getGeneri()
-      .pipe(
-        map((ris) => {
-          this.cat = ris.data;
-          return ris
-        }),
-        concatMap((ris: IRispostaServer, index: number): Observable<IRispostaServer> => {
-          return this.getFile()
-        }),
-        map((ris) => {
-          this.file = ris.data;
-          let dati: CategoryFile[] = []
-          for (let i = 0; i < ris.data.length; i++) {
-            const item = ris.data[i]
-            const obj = this.cat?.find((elemento: { id: number; }) => elemento.id === item.idCat)
-            const tmp: CategoryFile = {
-              idFile: item.idFile,
-              nome: item.nome,
-              idCategory: obj
-            }
-            dati.push(tmp);
-          }
-          return dati;
-        })
-      );
-
-    obs$.subscribe(oss);
-
-    this.cat$.pipe(
-      delay(1000)
-    ).subscribe(this.osservoCat())
+    });
   }
 
+  // Metodo per ottenere i dati dei generi da un'API
   getGeneri(): Observable<IRispostaServer> {
-    return this.api.getGeneri();
+    return this.api.getGeneri().pipe(
+      tap((response) => {
+        console.log("Risposta HTTP per Generi:", response);
+      })
+    );
   }
 
+  // Metodo per ottenere i dati dei file da un'API
   getFile(): Observable<IRispostaServer> {
-    return this.api.getFile();
+    return this.api.getFile().pipe(
+      tap((response) => {
+        console.log("Risposta HTTP per File:", response);
+      })
+    );
   }
 
-  //########################################
-  // Observer
-  //########################################
-
-  private osservoCat() {
-    return {
-      next: (rit: IRispostaServer) => {
-        console.log("NEXT", rit)
-        const elementi = rit.data
-        for (let i = 0; i < elementi.length; i++) {
-          // const tmpImg: Immagine = elementi[i].img
-          const tmpImg: File = {
-            idFile: elementi[i].idFile,
-            idTipo: 1,
-            src: elementi[i].src,
-            alt: elementi[i].alt,
-            title: elementi[i].title,
-            nome: '',
-            descrizione: '',
-            formato: ''
-          }
-          const bott: Bottone = {
-            testo: "Visualizza",
-            title: "Visualizza " + elementi[i].nome,
-            icona: null,
-            tipo: "button",
-            emitId: null,
-            link: "/collezioni/elenco/" + elementi[i].id
-          }
-          const card: Card = {
-            immagine: tmpImg,
-            descrizione: '',
-            titolo: elementi[i].nome,
-            bottone: bott
-          }
-          this.generi.push(card)
-        }
-      },
-      error: (err: any) => {
-        console.error("ERRORE", err)
-      },
-      complete: () => { console.log("%c COMPLETATO", "color:#00AA00") }
+  // Metodo per combinare i dati dei generi e dei file
+  private combinaDati(catData: Genere[], fileData: any[]): CategoryFile[] {
+    const datiCombinati: CategoryFile[] = [];
+    for (const categoria of catData) {
+      const fileCorrispondente = fileData.find((file) => file.idFile === categoria.idFile);
+      if (fileCorrispondente) {
+        datiCombinati.push({
+          idFile: fileCorrispondente.idFile,
+          nome: categoria.nome,
+          idCategory: categoria,
+          src: fileCorrispondente.src,
+          alt: fileCorrispondente.alt,
+          title: fileCorrispondente.title,
+        });
+      }
     }
+    console.log("stampa datiCombinati", datiCombinati);
+    return datiCombinati;
   }
+
+
+  // Metodo per creare le Card dai dati combinati
+  private creaCardDaDati(dati: any[]): Card[] {
+    const generi: Card[] = [];
+    for (const dato of dati) {
+      const tmpImg: Immagine = {
+        idFile: dato.idFile,
+        src: dato.src,
+        alt: dato.alt,
+        title: dato.title
+      };
+      const bottone: Bottone = {
+        testo: "Visualizza",
+        title: "Visualizza " + dato.nome,
+        icona: dato.idCategory.icona,
+        tipo: "button",
+        emitId: null,
+        link: "/genere/" + dato.idCategory
+      };
+      const card: Card = {
+        immagine: tmpImg,
+        descrizione: '',
+        titolo: dato.nome,
+        bottone: bottone
+      };
+      generi.push(card);
+
+      // Aggiungi un log per verificare ogni card creata
+      console.log("Card creata:", card);
+    }
+    console.log("Dati delle card:", generi);
+    return generi;
+  }
+
 }

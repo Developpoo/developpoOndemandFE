@@ -304,7 +304,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
   // Effettua l'accesso dell'utente
   accedi(): void {
     if (this.loginForm.invalid) {
-      console.log('FORM NON VALIDO');
+      // console.log('FORM NON VALIDO');
       this.mostraMessaggioErrore = true;
       return;
     } else {
@@ -312,7 +312,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
       let password = this.loginForm.controls['password'].value;
       this.stoControllando = true;
       this.obsLogin(utente, password).subscribe(this.osservoLogin());
-      console.log('ACCEDI', utente, password);
+      // console.log('ACCEDI', utente, password);
     }
   }
 

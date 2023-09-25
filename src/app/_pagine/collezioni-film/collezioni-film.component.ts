@@ -21,9 +21,7 @@ export class CollezioniFilmComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cat$.pipe(
-      delay(1000)
-    ).subscribe(this.osservoCat())
+    this.cat$.pipe().subscribe(this.osservoCat())
   }
 
   //########################################
