@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject, concatMap, delay, map, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, concatMap, delay, map, switchMap, takeUntil, tap } from 'rxjs';
+import { IRispostaFilm } from 'src/app/_interfacce/IRispostaFilm.interface';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 import { ApiService } from 'src/app/_servizi/api.service';
+import { Bottone } from 'src/app/_types/Bottone.type';
 import { Card } from 'src/app/_types/Card.type';
 import { Immagine } from 'src/app/_types/Immagine.type';
 
@@ -13,17 +15,13 @@ import { Immagine } from 'src/app/_types/Immagine.type';
 })
 export class FilmComponent implements OnInit, OnDestroy {
 
-  films: Card[] = []
+  films: Card[] = [];
   private distruggi$ = new Subject<void>()
 
-  constructor(private api: ApiService, private route: ActivatedRoute) {
-
-  }
+  constructor(private api: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.recuperaDati().pipe(
-      delay(1000)
-    ).subscribe(this.osservoFilms())
+    this.recuperaDati().subscribe(this.osservoFilms())
   }
 
   ngOnDestroy(): void {
@@ -31,11 +29,13 @@ export class FilmComponent implements OnInit, OnDestroy {
   }
 
   private recuperaDati(): Observable<IRispostaServer> {
+    console.log("ROUTE", this.route.params)
     return this.route.params.pipe(
-      map(x => x['idFilm']),
+      map(x => x['id']),
       tap(x => console.log("%c Recupero ID " + x, "color:0000AA")),
       concatMap((x: string, index: number): Observable<IRispostaServer> => {
-        return this.api.getFilmsDaGenere(parseInt(x))
+        return this.api.getFilmsDaGenere(+(x))
+        // return this.api.getFilmsFile()
       }),
       takeUntil(this.distruggi$)
     )
@@ -48,25 +48,107 @@ export class FilmComponent implements OnInit, OnDestroy {
   private osservoFilms() {
     return {
       next: (rit: IRispostaServer) => {
-        this.films = []
-        const elementi = rit.data
-        for (let i = 0; i < elementi.length; i++) {
-          const tmpImg: Immagine = elementi[i].img
-          // const tmpImg: Immagine = {
-          // src: elementi[i].img.src,
-          // alt: elementi[i].img.alt
-          // }
-          const card: Card = {
-            immagine: tmpImg,
-            descrizione: elementi[i].descrizione,
-            titolo: elementi[i].titolo,
-            bottone: undefined
+        console.log("Funzione 'next' chiamata con la risposta", rit);
+        this.films = [];
+
+        // Verifica se 'data' esiste e ha una lunghezza prima di iterare
+        if (rit.data && rit.data.length > 0) {
+          const elementi = rit.data;
+          for (let i = 0; i < elementi.length; i++) {
+
+            console.log("ELEMENTI", elementi)
+
+            const tmpImg: Immagine = {
+              idFile: elementi[i].idFile,
+              src: elementi[i].src,
+              alt: elementi[i].alt,
+              title: elementi[i].title
+            }
+            const bottone: Bottone = {
+              testo: "Visualizza",
+              title: "Visualizza " + elementi[i].nome,
+              icona: elementi[i].icona,
+              tipo: "button",
+              emitId: null,
+              link: "/genere/" + elementi[i].idFilm
+            }
+            const card: Card = {
+              immagine: tmpImg,
+              descrizione: elementi[i].descrizione,
+              titolo: elementi[i].titolo,
+              bottone: bottone
+
+            }
+            this.films.push(card)
           }
-          this.films.push(card)
+        } else {
+          console.log("L'array 'elementi' è vuoto o indefinito.");
         }
       },
       error: (err: any) => console.error("Errore", err),
       complete: () => { console.log("%c COMPLETATO", "color:#00AA00") }
     }
   }
+
+
+
+  // id: string | null
+  // films: Card[] = [];
+  // film$!: Observable<IRispostaServer>
+
+  // constructor(private api: ApiService, private route: ActivatedRoute) {
+  //   this.id = this.route.snapshot.paramMap.get("id")
+  //   if (this.id !== null) {
+  //     this.film$ = this.api.getFilmFile(+(this.id))
+  //   } else {
+  //     console.log("ID", this.id)
+  //   }
+  // }
+
+  // ngOnInit(): void {
+  //   if (this.film$) {
+  //     this.film$.subscribe(this.osservoFilms());
+  //   } else {
+  //     console.log("film$", this.film$)
+  //   }
+  // }
+
+  // ngOnDestroy(): void {
+
+  // }
+
+  // // OBSERVER
+
+  // private osservoFilms() {
+  //   return {
+  //     next: (rit: IRispostaServer) => {
+  //       const elementi = rit.data
+  //       for (let i = 0; i < elementi.length; i++) {
+  //         const tmpImg: Immagine = {
+  //           idFile: elementi[i].idFile,
+  //           src: elementi[i].src,
+  //           alt: elementi[i].alt,
+  //           title: elementi[i].title
+  //         }
+  //         const bottone: Bottone = {
+  //           testo: "Visualizza",
+  //           title: "Visualizza " + elementi[i].nome,
+  //           icona: elementi[i].icona,
+  //           tipo: "button",
+  //           emitId: null,
+  //           link: "/genere/" + elementi[i].idFilm
+  //         }
+  //         const card: Card = {
+  //           immagine: tmpImg,
+  //           descrizione: elementi[i].descrizione,
+  //           titolo: elementi[i].titolo,
+  //           bottone: bottone
+  //         }
+  //         this.films.push(card)
+  //       }
+  //     },
+  //     error: (err: any) => console.error("Errore", err),
+  //     complete: () => console.log("%C Completato", "color: 00AA00")
+  //   }
+  // }
 }

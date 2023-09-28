@@ -62,31 +62,54 @@ export class ApiService {
   }
 
   /**
-   * Funzione ritorna l'elenco dei Films appartamenti ad un genere
-   *
-   * @param idCategory id della Categoria scelta
-   * @returns Observable
-   */
-  public getFilmsDaGenere(idCategory: number): Observable<IRispostaServer> {
-    const risorsa: (string | number)[] = ['category', idCategory, 'film'];
-    return this.richiestaGenerica(risorsa, 'GET');
-  }
-
-  /**
-   * La funzione ritorna i dati di un singolo Film
-   *
-   * @param id id identificativo del Film scelto
-   * @returns Observable
-   */
+ * La funzione ritorna i dati di un singolo Film
+ *
+ * @param idFilm id identificativo del Film scelto
+ * @returns Observable
+ */
   public getFilm(idFilm: number): Observable<IRispostaServer> {
     const risorsa: (string | number)[] = ['film', idFilm];
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
   /**
+ * Funzione per chiamare l'elenco dei Films unità ai File associati
+ *
+ * @returns Observable
+ */
+  public getFilmsFile(): Observable<IRispostaServer> {
+    const risorsa: string[] = ['filmFile'];
+    return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+  /**
+* La funzione ritorna i dati di un singolo Film
+*
+* @param idFilm id identificativo del Film scelto
+* @returns Observable
+*/
+  public getFilmFile(idFilm: number): Observable<IRispostaServer> {
+    const risorsa: (string | number)[] = ['filmFile', idFilm];
+    return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+  /**
+   * Funzione ritorna l'elenco dei Films appartamenti ad un genere
+   *
+   * @param idCategory id della Categoria scelta
+   * @returns Observable
+   */
+  public getFilmsDaGenere(idCategory: number): Observable<IRispostaServer> {
+    const risorsa: (string | number)[] = ['film', 'category', idCategory];
+    return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+
+
+  /**
    * La funzione ritorna i dati di un singola Categoria
    *
-   * @param id id identificativo dellla Genere Scelto
+   * @param idCategory id identificativo dellla Genere Scelto
    * @returns Observable
    */
   public getGenere(idCategory: number): Observable<IRispostaServer> {

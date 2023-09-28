@@ -4,9 +4,13 @@ import { CollezioniFilmComponent } from './collezioni-film.component';
 
 const routes: Routes = [
   {
-    path: '', component: CollezioniFilmComponent,
+    path: '',
+    component: CollezioniFilmComponent,
     children: [
-      { path: 'elenco/:idFilm', loadChildren: () => import('../film/film.module').then(m => m.FilmModule) }
+      {
+        path: 'elenco/:id',
+        loadChildren: () => import('../film/film.module').then(m => m.FilmModule)
+      }
     ]
   }
 ];

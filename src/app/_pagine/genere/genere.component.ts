@@ -58,14 +58,14 @@ export class GenereComponent implements OnInit {
 
     // Sottoscrizione all'Observable
     this.cat$.subscribe({
-      next: (response) => {
-        console.log("Risposta HTTP:", response);
+      next: (response: IRispostaServer): void => {
+        console.log("NEXT HTTP:", response);
         // Continua con l'analisi dei dati
         // Assicurati che l'array generi sia popolato
-        console.log("Generi:", this.generi);
+        console.log("NEXT Generi:", this.generi);
       },
-      error: (err) => {
-        console.error(err);
+      error: (err: any) => {
+        console.error("ERRORE", err);
         this.error = 'Errore durante la richiesta API: ' + err.message;
       },
       complete: () => console.log("Completo")
@@ -127,7 +127,7 @@ export class GenereComponent implements OnInit {
         icona: dato.idCategory.icona,
         tipo: "button",
         emitId: null,
-        link: "/genere/" + dato.idCategory
+        link: "/genere/" + dato.idCategory.idCategory
       };
       const card: Card = {
         immagine: tmpImg,
@@ -137,7 +137,6 @@ export class GenereComponent implements OnInit {
       };
       generi.push(card);
 
-      // Aggiungi un log per verificare ogni card creata
       console.log("Card creata:", card);
     }
     console.log("Dati delle card:", generi);
@@ -145,3 +144,4 @@ export class GenereComponent implements OnInit {
   }
 
 }
+

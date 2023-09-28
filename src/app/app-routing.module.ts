@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'contatti', loadChildren: () => import('./_pagine/contatti/contatti.module').then(m => m.ContattiModule) },
   { path: 'serietv', loadChildren: () => import('./_pagine/serie-tv/serie-tv.module').then(m => m.SerieTVModule) },
   { path: 'genere', loadChildren: () => import('./_pagine/genere/genere.module').then(m => m.GenereModule) },
-  { path: 'genere/:idFilm', loadChildren: () => import('./_pagine/film/film.module').then(m => m.FilmModule) },
+  { path: 'genere/:id', loadChildren: () => import('./_pagine/film/film.module').then(m => m.FilmModule) },
   // { path: 'genere', component: GenereComponent, children:[
   //   {path: ':idFilm', component: FilmComponent}
   // ] },
