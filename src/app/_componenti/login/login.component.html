@@ -12,8 +12,8 @@
         <app-modal></app-modal>
     </div>
 </ng-container>
+<br>
 <!-- <div>Sto controllando? {{ stoControllando | json}}</div> -->
-<hr>
 <!-- <ng-container *ngIf="(auth | async)?.token!==null">
     <button mat-fab extended color="primary">
         <mat-icon>favorite</mat-icon>
@@ -23,4 +23,8 @@
 </ng-container> -->
 <ng-container>
     <!-- <app-upload-img></app-upload-img> -->
+</ng-container>
+
+<ng-container *ngIf="(auth | async)?.token!==null">
+    <app-database></app-database>
 </ng-container>

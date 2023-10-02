@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, concatMap, delay, map, switchMap, takeUntil, tap } from 'rxjs';
-import { IRispostaFilm } from 'src/app/_interfacce/IRispostaFilm.interface';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { Bottone } from 'src/app/_types/Bottone.type';
@@ -90,65 +89,4 @@ export class FilmComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-  // id: string | null
-  // films: Card[] = [];
-  // film$!: Observable<IRispostaServer>
-
-  // constructor(private api: ApiService, private route: ActivatedRoute) {
-  //   this.id = this.route.snapshot.paramMap.get("id")
-  //   if (this.id !== null) {
-  //     this.film$ = this.api.getFilmFile(+(this.id))
-  //   } else {
-  //     console.log("ID", this.id)
-  //   }
-  // }
-
-  // ngOnInit(): void {
-  //   if (this.film$) {
-  //     this.film$.subscribe(this.osservoFilms());
-  //   } else {
-  //     console.log("film$", this.film$)
-  //   }
-  // }
-
-  // ngOnDestroy(): void {
-
-  // }
-
-  // // OBSERVER
-
-  // private osservoFilms() {
-  //   return {
-  //     next: (rit: IRispostaServer) => {
-  //       const elementi = rit.data
-  //       for (let i = 0; i < elementi.length; i++) {
-  //         const tmpImg: Immagine = {
-  //           idFile: elementi[i].idFile,
-  //           src: elementi[i].src,
-  //           alt: elementi[i].alt,
-  //           title: elementi[i].title
-  //         }
-  //         const bottone: Bottone = {
-  //           testo: "Visualizza",
-  //           title: "Visualizza " + elementi[i].nome,
-  //           icona: elementi[i].icona,
-  //           tipo: "button",
-  //           emitId: null,
-  //           link: "/genere/" + elementi[i].idFilm
-  //         }
-  //         const card: Card = {
-  //           immagine: tmpImg,
-  //           descrizione: elementi[i].descrizione,
-  //           titolo: elementi[i].titolo,
-  //           bottone: bottone
-  //         }
-  //         this.films.push(card)
-  //       }
-  //     },
-  //     error: (err: any) => console.error("Errore", err),
-  //     complete: () => console.log("%C Completato", "color: 00AA00")
-  //   }
-  // }
 }

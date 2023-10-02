@@ -15,6 +15,7 @@ import { DragdropDirective } from './_direttive/dragdrop.directive';
 import { ModalComponent, ModalComponentForm } from './_componenti/modal/modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './_interceptor/auth.interceptor.interceptor';
+import { DatabaseComponent } from './_componenti/database/database.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AuthInterceptor } from './_interceptor/auth.interceptor.interceptor';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ModalComponent,
-    ModalComponentForm
+    ModalComponentForm,
+    DatabaseComponent
   ]
 })
 export class AppModule { }

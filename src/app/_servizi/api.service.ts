@@ -31,6 +31,36 @@ export class ApiService {
   // METODI PER LE CHIAMATE API
 
   /**
+   * Funzione per chiamare l'elenco degli utenti
+   *
+   * @returns Observable
+   */
+  public getUserClient(): Observable<IRispostaServer> {
+    const risorsa: string[] = ['userClient'];
+    return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+  /**
+ * Funzione per chiamare l'elenco degli utenti
+ *
+ * @returns Observable
+ */
+  public getUserAuth(): Observable<IRispostaServer> {
+    const risorsa: string[] = ['userAuth'];
+    return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+  /**
+* Funzione per chiamare l'elenco delle Password
+*
+* @returns Observable
+*/
+  public getUserPassword(): Observable<IRispostaServer> {
+    const risorsa: string[] = ['userPassword'];
+    return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+  /**
    * Funzione per chiamare l'elenco dei generi dei Film
    *
    * @returns Observable
@@ -89,7 +119,7 @@ export class ApiService {
 * @returns Observable
 */
   public getFilmFile(idFilm: number): Observable<IRispostaServer> {
-    const risorsa: (string | number)[] = ['filmFile', idFilm];
+    const risorsa: (string | number)[] = ['film', idFilm];
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
