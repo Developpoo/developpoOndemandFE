@@ -1,3 +1,4 @@
+// Import delle librerie e dei moduli necessari
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -11,8 +12,6 @@ import { UserClientAuthPassword } from 'src/app/_types/UserClientAuthPassword.ty
 import { UserAuth } from 'src/app/_types/UserAuth.type';
 import { UserClient } from 'src/app/_types/UserClient.type';
 import { UserPassword } from 'src/app/_types/UserPassword.type';
-import * as sha512 from 'crypto-js/sha512';
-
 
 @Component({
   selector: 'app-database',
@@ -52,14 +51,13 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     console.log('ngOnInit is called');
 
     // Ottieni i dati degli utenti dal server e gestisci gli errori se si verificano
-    this.utentiDB$ = this.getUserData().pipe(
+    this.getUserData().pipe(
       concatMap((data) => {
         const utentiDB = this.combinaDati(data);
-
-        // Assegna i dati combinati alla sorgente dati della tabella
-        this.dataSource.data = utentiDB;
-
-        return this.api.getUserPassword();
+        this.dataSource.data = utentiDB; // Assegna i dati combinati alla sorgente dati della tabella
+        return this.api.getUserPassword().pipe(
+          map((passwordData) => passwordData)
+        );
       }),
       catchError((error) => {
         // Gestisci gli errori e assegna un messaggio di errore
@@ -67,7 +65,9 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
         this.error = 'Errore durante la richiesta API: ' + error.message;
         return throwError(error);
       })
-    );
+    ).subscribe(() => {
+      // La sorgente dati della tabella è stata aggiornata con successo
+    });
   }
 
   // Metodo per ottenere tutti i dati necessari da tutte e tre le API
@@ -99,9 +99,9 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
   // Metodo per combinare i dati 
   private combinaDati(data: any): IPeriodicElement[] {
     console.log('combinaDati is called');
-    const authData: UserAuth[] = data.authData;
-    const clientData: UserClient[] = data.clientData;
-    const passwordData: UserPassword[] = data.passwordData;
+    const authData: UserAuth[] = data.authData.data; // Accedi all'array di authData
+    const clientData: UserClient[] = data.clientData.data; // Accedi all'array di clientData
+    const passwordData: UserPassword[] = data.passwordData.data; // Accedi all'array di passwordData
 
     // Implementa la logica per combinare i dati e creare un array di IPeriodicElement
     const datiCombinati: IPeriodicElement[] = [];
@@ -126,4 +126,5 @@ export class DatabaseComponent implements AfterViewInit, OnInit {
     console.log("datiCombinati:", datiCombinati);
     return datiCombinati;
   }
+
 }

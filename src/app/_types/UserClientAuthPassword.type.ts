@@ -3,13 +3,7 @@ import { UserClient } from "./UserClient.type"
 import { UserPassword } from "./UserPassword.type"
 
 export type UserClientAuthPassword = {
-    idUserClient: UserClient | undefined,
-    idUserAuth: UserAuth | undefined,
-    idUserPassword: UserPassword | undefined,
-    nome: string,
-    cognome: string,
-    sesso: number,
-    codiceFiscale: string,
-    user: string,
-    password: string
+    authData: UserAuth[]; // Assicurati che 'authData' abbia lo stesso nome del campo nei dati API
+    clientData: UserClient[]; // Assicurati che 'clientData' abbia lo stesso nome del campo nei dati API
+    passwordData: UserPassword[]; // Assicurati che 'passwordData' abbia lo stesso nome del campo nei dati API
 }

@@ -1,9 +1,9 @@
 export interface IPeriodicElement {
     idUserAuth: number;
+    user: string;
     nome: string;
     cognome: string;
-    sesso: number;
+    sesso: string | number;
     codiceFiscale: string;
-    user: string;
     password: string;
 }
