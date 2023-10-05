@@ -1,5 +1,5 @@
 export type File = {
-    // idCategory: number,
+    idCategory: number,
     idFile: number,
     idTipo: number,
     nome: string,

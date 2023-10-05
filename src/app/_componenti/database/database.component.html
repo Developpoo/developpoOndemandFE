@@ -5,7 +5,7 @@
             UTENTI
         </ng-template>
         <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource">
+            <table mat-table [dataSource]="dataSourceUtente">
 
                 <!-- ID Utente Column -->
                 <ng-container matColumnDef="idUserAuth">
@@ -25,6 +25,24 @@
                     <td mat-cell *matCellDef="let element"> {{element.cognome}} </td>
                 </ng-container>
 
+                <!-- Stato Column -->
+                <ng-container matColumnDef="idUserStatus">
+                    <th mat-header-cell *matHeaderCellDef> Stato </th>
+                    <td mat-cell *matCellDef="let element"> {{element.idUserStatus}} </td>
+                </ng-container>
+
+                <!-- Lingua Column -->
+                <ng-container matColumnDef="idLingua">
+                    <th mat-header-cell *matHeaderCellDef> Lingua</th>
+                    <td mat-cell *matCellDef="let element"> {{element.idLingua}} </td>
+                </ng-container>
+
+                <!-- Data di nascita Column -->
+                <ng-container matColumnDef="dataNascita">
+                    <th mat-header-cell *matHeaderCellDef> Data di nascita</th>
+                    <td mat-cell *matCellDef="let element"> {{element.dataNascita}} </td>
+                </ng-container>
+
                 <!-- Sesso Column -->
                 <ng-container matColumnDef="sesso">
                     <th mat-header-cell *matHeaderCellDef> Sesso </th>
@@ -35,6 +53,24 @@
                 <ng-container matColumnDef="codiceFiscale">
                     <th mat-header-cell *matHeaderCellDef> Codice Fiscale </th>
                     <td mat-cell *matCellDef="let element"> {{element.codiceFiscale}} </td>
+                </ng-container>
+
+                <!-- Nazione Column -->
+                <ng-container matColumnDef="idNazione">
+                    <th mat-header-cell *matHeaderCellDef> Nazione</th>
+                    <td mat-cell *matCellDef="let element"> {{element.idNazione}} </td>
+                </ng-container>
+
+                <!-- Comune Column -->
+                <ng-container matColumnDef="idComune">
+                    <th mat-header-cell *matHeaderCellDef> Comune</th>
+                    <td mat-cell *matCellDef="let element"> {{element.idComune}} </td>
+                </ng-container>
+
+                <!-- Accetta Termini e Condizioni Column -->
+                <ng-container matColumnDef="accettaTermini">
+                    <th mat-header-cell *matHeaderCellDef> Termini</th>
+                    <td mat-cell *matCellDef="let element"> {{element.accettaTermini}} </td>
                 </ng-container>
 
                 <!-- User Mail Column -->
@@ -49,11 +85,11 @@
                     <td mat-cell *matCellDef="let element"> {{element.password}} </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsUtenti"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsUtenti;"></tr>
             </table>
 
-            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            <mat-paginator #paginatorUtente [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons
                 aria-label="Select page of periodic elements">
             </mat-paginator>
         </div>
@@ -64,7 +100,65 @@
             <mat-icon class="tab-icon">category</mat-icon>
             CATEGORIE
         </ng-template>
-        Content 2
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSourceCategory">
+
+                <!-- idCategory Column -->
+                <ng-container matColumnDef="idCategory">
+                    <th mat-header-cell *matHeaderCellDef> ID.Cat </th>
+                    <td mat-cell *matCellDef="let element"> {{element.idCategory}} </td>
+                </ng-container>
+
+                <!-- Nome Column -->
+                <ng-container matColumnDef="nome">
+                    <th mat-header-cell *matHeaderCellDef> Nome </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+                </ng-container>
+
+                <!-- idFile Column -->
+                <ng-container matColumnDef="idFile">
+                    <th mat-header-cell *matHeaderCellDef> ID.File </th>
+                    <td mat-cell *matCellDef="let element"> {{element.idFile}} </td>
+                </ng-container>
+
+                <!-- src Column -->
+                <ng-container matColumnDef="src">
+                    <th mat-header-cell *matHeaderCellDef> src </th>
+                    <td mat-cell *matCellDef="let element"> {{element.src}} </td>
+                </ng-container>
+
+                <!-- alt Column -->
+                <ng-container matColumnDef="alt">
+                    <th mat-header-cell *matHeaderCellDef> alt</th>
+                    <td mat-cell *matCellDef="let element"> {{element.alt}} </td>
+                </ng-container>
+
+                <!-- title Column -->
+                <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef> title</th>
+                    <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                </ng-container>
+
+                <!-- icona Column -->
+                <ng-container matColumnDef="icona">
+                    <th mat-header-cell *matHeaderCellDef> icona </th>
+                    <td mat-cell *matCellDef="let element"> {{element.icona}} </td>
+                </ng-container>
+
+                <!-- watch Column -->
+                <ng-container matColumnDef="watch">
+                    <th mat-header-cell *matHeaderCellDef> watch </th>
+                    <td mat-cell *matCellDef="let element"> {{element.watch}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsCategory"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsCategory;"></tr>
+            </table>
+
+            <mat-paginator #paginatorCategory [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+            </mat-paginator>
+        </div>
     </mat-tab>
 
     <mat-tab>
@@ -72,7 +166,151 @@
             <mat-icon class="tab-icon">movie</mat-icon>
             FILM
         </ng-template>
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSourceFilm">
 
-        Content 3
+                <!-- idFilm Column -->
+                <ng-container matColumnDef="idFilm">
+                    <th mat-header-cell *matHeaderCellDef> ID.Film </th>
+                    <td mat-cell *matCellDef="let element"> {{element.idFilm}} </td>
+                </ng-container>
+
+                <!-- titolo Column -->
+                <ng-container matColumnDef="titolo">
+                    <th mat-header-cell *matHeaderCellDef> Titolo </th>
+                    <td mat-cell *matCellDef="let element"> {{element.titolo}} </td>
+                </ng-container>
+
+                <!-- descrizione Column -->
+                <ng-container matColumnDef="descrizione">
+                    <th mat-header-cell *matHeaderCellDef> Descrizione </th>
+                    <td mat-cell *matCellDef="let element"> {{element.descrizione}} </td>
+                </ng-container>
+
+                <!-- durata Column -->
+                <ng-container matColumnDef="durata">
+                    <th mat-header-cell *matHeaderCellDef> Durata </th>
+                    <td mat-cell *matCellDef="let element"> {{element.durata}} </td>
+                </ng-container>
+
+                <!-- regista Column -->
+                <ng-container matColumnDef="regista">
+                    <th mat-header-cell *matHeaderCellDef> Regista</th>
+                    <td mat-cell *matCellDef="let element"> {{element.regista}} </td>
+                </ng-container>
+
+                <!-- attori Column -->
+                <ng-container matColumnDef="attori">
+                    <th mat-header-cell *matHeaderCellDef> Attori</th>
+                    <td mat-cell *matCellDef="let element"> {{element.attori}} </td>
+                </ng-container>
+
+                <!-- icona Column -->
+                <ng-container matColumnDef="icona">
+                    <th mat-header-cell *matHeaderCellDef> Icona </th>
+                    <td mat-cell *matCellDef="let element"> {{element.icona}} </td>
+                </ng-container>
+
+                <!-- anno Column -->
+                <ng-container matColumnDef="anno">
+                    <th mat-header-cell *matHeaderCellDef> Anno </th>
+                    <td mat-cell *matCellDef="let element"> {{element.anno}} </td>
+                </ng-container>
+
+                <!-- watch Column -->
+                <ng-container matColumnDef="watch">
+                    <th mat-header-cell *matHeaderCellDef> Watch </th>
+                    <td mat-cell *matCellDef="let element"> {{element.watch}} </td>
+                </ng-container>
+
+                <!-- idFile Column -->
+                <!-- <ng-container matColumnDef="idFile">
+                    <th mat-header-cell *matHeaderCellDef> ID.File </th>
+                    <td mat-cell *matCellDef="let element"> {{element.idFile}} </td>
+                </ng-container> -->
+
+                <!-- idTipoFile Column -->
+                <!-- <ng-container matColumnDef="idTipoFile">
+                    <th mat-header-cell *matHeaderCellDef> ID.TipoFile </th>
+                    <td mat-cell *matCellDef="let element"> {{element.idTipoFile}} </td>
+                </ng-container> -->
+
+                <!-- src Column -->
+                <!-- <ng-container matColumnDef="src">
+                    <th mat-header-cell *matHeaderCellDef> src </th>
+                    <td mat-cell *matCellDef="let element"> {{element.src}} </td>
+                </ng-container> -->
+
+                <!-- alt Column -->
+                <!-- <ng-container matColumnDef="alt">
+                    <th mat-header-cell *matHeaderCellDef> alt </th>
+                    <td mat-cell *matCellDef="let element"> {{element.alt}} </td>
+                </ng-container> -->
+
+                <!-- title Column -->
+                <!-- <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef> title </th>
+                    <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                </ng-container> -->
+
+                <!-- Colonna per ID File -->
+                <ng-container matColumnDef="file_idFile">
+                    <th mat-header-cell *matHeaderCellDef> ID.File </th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngFor="let file of element.files">
+                            {{ file.idFile }}<br>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <!-- Colonna per ID Tipo File -->
+                <ng-container matColumnDef="file_idTipoFile">
+                    <th mat-header-cell *matHeaderCellDef> ID.TipoFile </th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngFor="let file of element.files">
+                            {{ file.idTipoFile }}<br>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <!-- Colonna per SRC del File -->
+                <ng-container matColumnDef="file_src">
+                    <th mat-header-cell *matHeaderCellDef> SRC </th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngFor="let file of element.files">
+                            {{ file.src }}<br>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <!-- Colonna per ALT del File -->
+                <ng-container matColumnDef="file_alt">
+                    <th mat-header-cell *matHeaderCellDef> ALT </th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngFor="let file of element.files">
+                            {{ file.alt }}<br>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <!-- Colonna per TITLE del File -->
+                <ng-container matColumnDef="file_title">
+                    <th mat-header-cell *matHeaderCellDef> TITLE </th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngFor="let file of element.files">
+                            {{ file.title }}<br>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsFilm"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsFilm;"></tr>
+            </table>
+
+            <mat-paginator #paginatorFilm [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+            </mat-paginator>
+        </div>
     </mat-tab>
 </mat-tab-group>

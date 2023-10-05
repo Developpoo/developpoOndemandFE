@@ -41,7 +41,7 @@ export class FilmComponent implements OnInit, OnDestroy {
   }
 
   //########################################
-  // Observer
+  // Observer FILMS
   //########################################
 
   private osservoFilms() {

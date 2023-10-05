@@ -1,7 +1,7 @@
 export type UserClient = {
     idUserClient: number;
-    idUserStatus?: number;
-    idLingua?: number;
+    idUserStatus: number;
+    idLingua: number;
     nome: string;
     cognome: string;
     sesso: number;
