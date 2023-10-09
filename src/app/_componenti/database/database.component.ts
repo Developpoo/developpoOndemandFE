@@ -30,7 +30,6 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
   // Definizione delle colonne da visualizzare nella tabella Category
   displayedColumnsCategory: string[] = ['idCategory', 'idFile', 'nome', 'src', 'alt', 'title', 'icona', 'watch',];
   // Definizione delle colonne da visualizzare nella tabella Film
-  // displayedColumnsFilm: string[] = ['idFilm', 'titolo', 'descrizione', 'durata', 'regista', 'attori', 'icona', 'anno', 'watch', 'idFile', 'idTipoFile', 'src', 'alt', 'title'];
   displayedColumnsFilm: string[] = [
     'idFilm',
     'titolo',
@@ -41,19 +40,25 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
     'icona',
     'anno',
     'watch',
-    'file_idFile',
-    'file_idTipoFile',
-    'file_src',
-    'file_alt',
-    'file_title'
+    'idFile1',
+    'idTipoFile1',
+    'src1',
+    'alt1',
+    'title1',
+    'idFile2',
+    'idTipoFile2',
+    'src2',
+    'alt2',
+    'title2'
   ];
+
 
 
   // Creazione di una sorgente dati per la tabella Utenti
   dataSourceUtente = new MatTableDataSource<IPeriodicElement>([]);
   // Creazione di una sorgente dati per la tabella Category
   dataSourceCategory = new MatTableDataSource<CategoryFile>([]);
-  // Creazione di una sorgente dati per la tabella Category
+  // Creazione di una sorgente dati per la tabella Film
   dataSourceFilm = new MatTableDataSource<IRispostaFilm>([]);
 
   // Observable per ottenere i dati degli utenti dal server
@@ -66,7 +71,7 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private distruggi$ = new Subject<void>()
   dati!: CategoryFile[];
-  films: IRispostaFilm[] = [];
+  films: any[] = [];
 
   // Riferimento alla paginazione della tabella Utenti
   @ViewChild('paginatorUtente') paginatorUtente!: MatPaginator;
@@ -86,6 +91,8 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
     this.dataSourceUtente.paginator = this.paginatorUtente;
     // Associa il paginatore alla sorgente dati della tabella Generi
     this.dataSourceCategory.paginator = this.paginatorCategory;
+    // Associa il paginatore alla sorgente dati della tabella Films
+    this.dataSourceFilm.paginator = this.paginatorFilm;
   }
 
   // Questo metodo viene chiamato quando il componente è inizializzato
@@ -232,10 +239,25 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
   getFilmsFile(): Observable<IRispostaServer> {
     return this.api.getFilmsFile().pipe(
       tap((response) => {
-        console.log("Risposta HTTP per FilmFile:", response);
+        console.log("Risposta HTTP per Generi:", response, (response.data && response.data.films && response.data.films.length > 0));
+
+        if (response.data && response.data.films && response.data.films.length > 0) {
+          // Assegna i dati dei film all'array films
+          this.films = response.data.films;
+        } else {
+          console.error("L'array 'films' è vuoto o indefinito nella risposta HTTP.");
+        }
+      }),
+      catchError((error) => {
+        console.error("Errore durante la richiesta API:", error);
+        // Puoi gestire l'errore qui o lanciare un errore personalizzato
+        return throwError("Errore durante la richiesta API");
       })
     );
   }
+
+
+
 
   // Metodo per combinare i dati utente
   private combinaDati(data: any): IPeriodicElement[] {
@@ -296,35 +318,18 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
     return datiCombinatiCategory;
   }
 
-  // Metodo per combinare i dati dei Film richiamando l'api
-  // private recuperaDati(): Observable<IRispostaServer> {
-  //   console.log("ROUTE", this.route.params)
-  //   return this.route.params.pipe(
-  //     map(x => x['id']),
-  //     tap(x => console.log("%c Recupero ID " + x, "color:0000AA")),
-  //     concatMap((x: string, index: number): Observable<IRispostaServer> => {
-  //       return this.api.getFilmsFile()
-  //       // return this.api.getFilmsFile()
-  //     }),
-  //     takeUntil(this.distruggi$)
-  //   )
-  // }
-
   //########################################
   // Observer FILMS
   //########################################
   private osservoFilms() {
     return (response: IRispostaServer) => {
-      console.log("Funzione 'next' chiamata con la risposta", response);
+      console.log("Funzione 'osservoFilms' chiamata con la risposta", response);
 
       // Verifica se 'films' esiste e ha una lunghezza prima di iterare
       if (response.data && response.data.length > 0) {
-        const elementi = response.data;
-        const films: IRispostaFilm[] = [];
+        const films: IRispostaFilm[] = response.data.map((filmData: any) => {
+          console.log("Dati del film:", filmData);
 
-        for (let i = 0; i < elementi.length; i++) {
-          const filmData = elementi[i];
-          console.log("ELEMENTI", elementi)
           const film: IRispostaFilm = {
             idFilm: filmData.idFilm,
             titolo: filmData.titolo,
@@ -335,24 +340,32 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
             icona: filmData.icona,
             anno: new Date(filmData.anno),
             watch: filmData.watch,
-            file: filmData.files.map((file: any) => ({
-              idFile: file.idFile,
-              idTipoFile: file.idTipoFile,
-              src: file.src,
-              alt: file.alt,
-              title: file.title,
-            }))
+            file: filmData.files.map((file: any) => {
+              console.log("Dati del file:", file);
+
+              return {
+                idFile: file.idFile,
+                idTipoFile: file.idTipoFile,
+                src: file.src,
+                alt: file.alt,
+                title: file.title,
+                descrizione: file.descrizione || '', // Assicurati che questo campo sia presente nella risposta API
+                formato: file.formato || '', // Assicurati che questo campo sia presente nella risposta API
+              };
+            })
           };
 
-          console.log("film", film)
-          films.push(film);
-        }
+          console.log("Film completo:", film);
+          return film;
+        });
 
-        // Assegna l'array di films a dataSourceFilm
-        this.dataSourceFilm.data = films;
+        console.log("Array di films:", films);
+        this.films = films; // Assegna i dati dei film alla variabile 'films'
+        this.dataSourceFilm.data = this.films; // Aggiorna la sorgente dati della tabella dei film
       } else {
         console.log("L'array 'films' è vuoto o indefinito nella risposta HTTP.");
       }
     };
   }
+
 }

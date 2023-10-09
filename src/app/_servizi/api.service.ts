@@ -260,6 +260,23 @@ export class ApiService {
     return this.richiestaGenerica(risorsa, 'POST', parametri);
   }
 
+  // REGISTRAZIONE MODULO CONTATTO
+
+  /**
+   * Funzione per la REGISTRAZIONE MODULO CONTATTO
+   *
+   * @returns Observable
+   */
+
+  public inviaEmail(email: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ['invia-email'];
+    const parametri = { email: email };
+    console.log(parametri); // Aggiungi questa riga per il debug
+    return this.richiestaGenerica(risorsa, 'POST', parametri);
+  }
+
+
+
   //###########################################################################
 
   /**

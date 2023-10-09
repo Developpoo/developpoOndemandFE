@@ -1,3 +1,7 @@
+<div class="container-fluid">
+    <app-carousel></app-carousel>
+</div>
+
 <form [formGroup]="contactForm" (ngSubmit)="inviaEmail()" class="center-form">
     <h2>MODULO DI CONTATTO</h2>
     <p>Vuoi contattarci.. compila il modulo</p>
@@ -25,5 +29,9 @@
         <button mat-raised-button color="primary" type="submit" [disabled]="!contactForm.valid">Invia
             <mat-icon matSuffix>mark_email_read</mat-icon>
         </button>
+        <!-- <app-modal></app-modal> -->
     </p>
+    <div *ngIf="isEmailSent" class="alert alert-success">
+        Il contatto è andato a buon fine!
+    </div>
 </form>

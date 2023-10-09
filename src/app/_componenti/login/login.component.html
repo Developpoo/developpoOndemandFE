@@ -21,10 +21,11 @@
     </button>
 
 </ng-container> -->
-<ng-container>
-    <!-- <app-upload-img></app-upload-img> -->
-</ng-container>
 
 <ng-container *ngIf="(auth | async)?.token!==null">
     <app-database></app-database>
+</ng-container>
+
+<ng-container>
+    <!-- <app-upload-img></app-upload-img> -->
 </ng-container>

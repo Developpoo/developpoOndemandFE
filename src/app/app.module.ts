@@ -16,6 +16,7 @@ import { ModalComponent, ModalComponentForm } from './_componenti/modal/modal.co
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './_interceptor/auth.interceptor.interceptor';
 import { DatabaseComponent } from './_componenti/database/database.component';
+import { ContattiComponent } from './_pagine/contatti/contatti.component';
 
 @NgModule({
   declarations: [
