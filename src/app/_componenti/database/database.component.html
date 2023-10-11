@@ -27,11 +27,13 @@
                     </td>
                 </ng-container>
 
-                <!-- ADD Cancella Column -->
+                <!-- Cancella Utente Column -->
                 <ng-container matColumnDef="delete.utente">
                     <th mat-header-cell *matHeaderCellDef> CANCELLA </th>
                     <td mat-cell *matCellDef="let element"> <button mat-icon-button matTooltip="Cancella Utente"
-                            matTooltipPosition="left" type="button"><mat-icon>{{element.delete}} </mat-icon></button>
+                            matTooltipPosition="left" type="button"
+                            (click)="onDeleteUtente(element.idUserAuth)"><mat-icon>{{element.delete}}
+                            </mat-icon></button>
                     </td>
                 </ng-container>
 

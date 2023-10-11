@@ -242,15 +242,29 @@ export class ApiService {
   // REGISTRAZIONE UTENTE
 
   /**
-   * Funzione per la Registrazione di un Utente su UserClient
-   *
-   * @returns Observable
-   */
-
+ * Registra un nuovo utente su UserClient mediante una richiesta HTTP POST.
+ *
+ * @param parametri - I parametri per la registrazione dell'utente.
+ * @returns Un Observable che restituisce la risposta dal server.
+ */
   public postRegistrazioneUserClient(
     parametri: Partial<ParametriSaveAuth>): Observable<IRispostaServer> {
     const risorsa: string[] = ['registrazione'];
     return this.richiestaGenerica(risorsa, 'POST', parametri);
+  }
+
+  // CANCELLAZIONE UTENTE
+
+  /**
+ * Cancella un utente dal servizio UserClient mediante una richiesta HTTP DELETE.
+ *
+ * @param parametri - I parametri per la cancellazione dell'utente.
+ * @returns Un Observable che restituisce la risposta dal server.
+ */
+  public deleteUserClient(
+    id: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ['userClient', id];
+    return this.richiestaGenerica(risorsa, 'DELETE');
   }
 
   // REGISTRAZIONE MODULO CONTATTO

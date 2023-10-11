@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { IPeriodicElement } from 'src/app/_interfacce/IPeriodicElement.interface';
-import { Observable, Subject, catchError, concatMap, forkJoin, map, takeUntil, tap, throwError } from 'rxjs';
+import { Observable, Subject, catchError, concatMap, forkJoin, map, take, takeUntil, tap, throwError } from 'rxjs';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 import { UserAuth } from 'src/app/_types/UserAuth.type';
 import { UserClient } from 'src/app/_types/UserClient.type';
@@ -100,25 +100,38 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('paginatorFilm') paginatorFilm!: MatPaginator;
 
   // ########### REGISTRAZIONE UTENTE ###############
-
-  // isRegistrationActive: boolean = false
-  // // Attiva il form di registrazione
-  // attivaRegistrazione(): void {
-  //   this.isRegistrationActive = true;
-  // }
-
-  // // Disattiva il form di registrazione
-  // disattivaRegistrazione(): void {
-  //   this.isRegistrationActive = false;
-  // }
-
-
-  constructor(private api: ApiService, private route: ActivatedRoute, private formVisibilityService: FormVisibilityService) { }
-
+  // // Attiva e Disattiva il form di registrazione
   attivaForm() {
     this.formVisibilityService.setFormVisibility();
   }
 
+  // ########### CANCELLAZIONE UTENTE ###############
+  // Funzione per cancellare un utente specifico
+
+  idRisorsa: number | null = null
+
+  onDeleteUtente(id: number | null) {
+    console.log("Cancella", id)
+    if (id !== null) {
+      this.obsDeleteUtente(id).subscribe(this.osservatoreDelete)
+
+    }
+    // this.api.deleteUserClient({ idUserClient: idUserClient }).subscribe((data) => {
+    //   console.log(data)
+    // });
+  }
+
+  obsDeleteUtente(id: number) {
+    const idRisorsa = id + ''
+    return this.api.deleteUserClient(idRisorsa).pipe(
+      take(1),
+      tap(x => console.log("OBS DELETE ", x)),
+      map(x => x.data),
+      takeUntil(this.distruggi$)
+    )
+  }
+
+  constructor(private api: ApiService, private route: ActivatedRoute, private formVisibilityService: FormVisibilityService) { }
 
   ngAfterViewInit() {
     console.log('ngAfterViewInit is called');
@@ -217,9 +230,6 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
         console.log("%c COMPLETATO", "color:#00AA00");
       },
     });
-
-
-
   }
 
   // Questo metodo viene chiamato quando il componente è terminato
@@ -410,6 +420,20 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
         console.log("L'array 'films' è vuoto o indefinito nella risposta HTTP.");
       }
     };
+  }
+
+  // OSSERVATORI
+
+  private osservatore = {
+    next: (ritorno: any) => console.log(ritorno),
+    error: (err: string) => console.log(err),
+    complete: () => console.log("Completato osservatore")
+  }
+
+  private osservatoreDelete = {
+    next: () => console.log("cancellato"),
+    error: (err: string) => console.log(err),
+    complete: () => console.log("Completato osservatore")
   }
 
 }
