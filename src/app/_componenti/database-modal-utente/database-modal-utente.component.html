@@ -1,0 +1,224 @@
+<ng-container align="center">
+    <!-- Menu Button Aggiungi Modifica e Cancella Menu DB -->
+    <!-- LEGGI UTENTE  -->
+    <!-- <button *ngIf="(auth | async)?.token !== null" mat-icon-button matTooltip="Leggi Utente" matTooltipPosition="below"
+        type="button" (click)="attivaModifica()"><mat-icon>person_search</mat-icon></button> -->
+    <!-- AGGIUNGI UTENTE -->
+    <!-- <button *ngIf="(auth | async)?.token !== null" mat-icon-button matTooltip="Registra Utente"
+        matTooltipPosition="below" type="button"
+        (click)="attivaRegistrazione()"><mat-icon>person_add</mat-icon></button> -->
+    <!-- MODIFICA UTENTE  -->
+    <!-- <button *ngIf="(auth | async)?.token !== null" mat-icon-button matTooltip="Modifica Utente"
+        matTooltipPosition="below" type="button" (click)="attivaModifica()"><mat-icon>person_check</mat-icon></button> -->
+    <!-- CANCELLA UTENTE  -->
+    <!-- <button *ngIf="(auth | async)?.token !== null" mat-icon-button matTooltip="Cancella Utente"
+        matTooltipPosition="below" type="button"><mat-icon>person_off</mat-icon></button> -->
+</ng-container>
+
+<!-- FORM AGGIUNGI UTENTE-->
+<h2 *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationActive$ | async)" align="center"
+    class="bgcscuro"><strong>REGISTRAZIONE
+        UTENTE</strong></h2>
+<ng-container>
+    <form *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationActive$ | async)"
+        [formGroup]="registrationForm" (ngSubmit)="registra()" align="center" class="bgcscuro text-white">
+        <p>
+            <!-- USER -->
+            <!-- {{f['user'].errors | json}} -->
+            <mat-form-field color="primary" appearance="fill">
+                <mat-label for="user">USER</mat-label>
+                <input matInput type="text" name="user" id="user" title="inserisci la tua email" formControlName="user"
+                    placeholder="Inserisci la tua mail">
+                <mat-icon matSuffix class="icon-dark">account_circle</mat-icon>
+                <mat-hint class="text-dark">Usa la tua mail come User</mat-hint>
+            </mat-form-field>
+            <!-- PASSWORD -->
+            <!-- {{f['passwordSave'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="passwordSave">Password</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" placeholder="Inserisci la Password"
+                    name="passwordSave" id="passwordSave" title="inserisci la tua password"
+                    formControlName="passwordSave">
+                <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon class="icon-dark">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-hint class="text-dark"
+                    *ngIf="registrationForm.hasError('customPasswwordNotTheSameError', 'confirmPasswordSave')">Controlla
+                    la Password</mat-hint>
+                <mat-hint class="text-dark"
+                    *ngIf="!registrationForm.hasError('customPasswwordNotTheSameError', 'confirmPasswordSave')">Password
+                    OK!!!</mat-hint>
+            </mat-form-field>
+            <!-- PASSWORD CONFERMATA -->
+            <!-- {{f['confirmPasswordSave'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="confirmPasswordSave">Conferma la
+                    password</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" placeholder="Conferma la tua password"
+                    name="confirmPasswordSave" id="confirmPasswordSave" title="conferma la tua password"
+                    formControlName="confirmPasswordSave">
+                <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon class="icon-dark">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-hint class="text-dark"
+                    *ngIf="registrationForm.hasError('customPasswwordNotTheSameError', 'confirmPasswordSave')">Controlla
+                    la Password</mat-hint>
+                <mat-hint class="text-dark"
+                    *ngIf="!registrationForm.hasError('customPasswwordNotTheSameError', 'confirmPasswordSave')">Password
+                    OK!!!</mat-hint>
+            </mat-form-field>
+        </p>
+        <p>
+            <!-- NOME -->
+            <!-- {{f['nome'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="nome">Nome</mat-label>
+                <input type="text" matInput placeholder="Inserisci il tuo nome" name="nome" id="nome"
+                    title="inserisci il tuo nome" formControlName="nome">
+            </mat-form-field>
+            <!-- COGNOME -->
+            <!-- {{f['cognome'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="cognome">Cognome</mat-label>
+                <input type="text" matInput placeholder="Inserisci la tuo cognome" name="cognome" id="cognome"
+                    formControlName="cognome">
+            </mat-form-field>
+            <!-- LINGUA  -->
+            <!-- {{f['idLingua'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="idLingua">Lingua
+                    preferita</mat-label>
+                <ng-container *ngIf="datiLingua.length>=1">
+                    <mat-select name="idLingua" id="idLingua" title="inserisci la tua lingua preferita"
+                        formControlName="idLingua">
+                        <mat-option *ngFor="let valori of datiLingua" [value]="valori.idLingua">
+                            {{valori.nome}}
+                        </mat-option>
+                    </mat-select>
+                </ng-container>
+                <ng-container *ngIf="datiLingua.length<1">
+                    <mat-spinner></mat-spinner>
+                </ng-container>
+            </mat-form-field>
+        </p>
+        <p>
+            <!-- SESSO -->
+            <!-- {{f['sesso'].errors | json}} -->
+            <!-- [ngClass]="{'is-invalid': registrationForm.controls['sesso'].errors}" -->
+            <mat-radio-group color="primary" aria-label="Select an option" formControlName="sesso">
+                <mat-label for="sesso" class="text-dark">Sesso</mat-label>
+                <mat-radio-button value="0">Uomo</mat-radio-button>
+                <mat-radio-button value="1">Donna</mat-radio-button>
+            </mat-radio-group>
+        </p>
+        <p>
+            <!-- DATA DI NASCITA  -->
+            <!-- {{f['dataNascita'].valid | json}} -->
+            <mat-form-field color="primary">
+                <mat-label>Data di nascita</mat-label>
+                <input matInput [matDatepicker]="picker" placeholder="Mese/Giorno/Anno" formControlName="dataNascita">
+                <mat-hint class="text-dark">MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <!-- CODICE FISCALE  -->
+            <!-- {{f['codiceFiscale'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for=" codiceFiscale">Codice Fiscale</mat-label>
+                <span matPrefix>+1 &nbsp;</span>
+                <input type="text" matInput placeholder="Codice Fiscale" id="codiceFiscale" name="codiceFiscale"
+                    title="inserisci il tuo codice fiscale" formControlName="codiceFiscale">
+                <mat-icon matSuffix class="icon-dark">mode_edit</mat-icon>
+            </mat-form-field>
+        </p>
+        <p>
+            <!-- INDIRIZZO  -->
+            <!-- {{f['indirizzo'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="indirizzo">Indirizzo</mat-label>
+                <input type="text" matInput placeholder="Indirizzo di Residenza" id="indirizzo"
+                    formControlName="indirizzo">
+                <mat-icon matSuffix class="icon-dark">home</mat-icon>
+                <mat-hint class="text-dark">Scrivi indirizzo e numero civico</mat-hint>
+            </mat-form-field>
+            <!-- TELEFONO  -->
+            <!-- {{f['recapito'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="recapito">Telefono</mat-label>
+                <span matPrefix>+39 &nbsp;</span>
+                <input type="tel" matInput placeholder="il tuo cellulare" formControlName="recapito">
+                <mat-icon matSuffix class="icon-dark">phone</mat-icon>
+                <mat-hint class="text-dark">Usa solo caretteri numerici</mat-hint>
+            </mat-form-field>
+        </p>
+
+        <p>
+            <!-- CITTA  -->
+            <!-- {{f['idComune'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="citta">Città</mat-label>
+                <ng-container *ngIf="datiComune.length>=1">
+                    <mat-select id="citta" formControlName="idComune">
+                        <mat-option *ngFor="let valori of datiComune" [value]="valori.idComune">
+                            {{valori.comune}}
+                        </mat-option>
+                    </mat-select>
+                </ng-container>
+                <ng-container *ngIf="datiComune.length<1">
+                    <mat-spinner></mat-spinner>
+                </ng-container>
+            </mat-form-field>
+            <!-- {{f['idNazione'].errors | json}} -->
+            <!-- NAZIONE  --><mat-form-field color="primary">
+                <mat-label for="nazione">Nazione</mat-label>
+                <ng-container *ngIf="datiNazione.length>=1">
+                    <mat-select id="nazione" formControlName="idNazione">
+                        <mat-option *ngFor="let valori of datiNazione" [value]="valori.idNazione">
+                            {{valori.nome}}
+                        </mat-option>
+                    </mat-select>
+                </ng-container>
+                <ng-container *ngIf="datiNazione.length<1">
+                    <mat-spinner></mat-spinner>
+                </ng-container>
+            </mat-form-field>
+            <!-- CAP  -->
+            <!-- {{f['cap'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="cap">Cap</mat-label>
+                <input type="text" matInput #postalCode maxlength="5" placeholder="Codice postale" id="cap"
+                    formControlName="cap">
+                <mat-hint align="end" class="text-dark">{{postalCode.value.length}} / 5</mat-hint>
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-checkbox color="primary" type="checkbox" name="accettaTermini" id="accettaTermini"
+                title="accetta termini e condizioni" formControlName="accettaTermini">Accetta Termini e
+                Condizioni</mat-checkbox>
+        </p>
+        <!-- REGISTRA  -->
+        <!-- [disabled]="!registrationForm.valid" da capire perchè non funziona il disabled sul tasto registra -->
+        <!-- {{ registrationForm.valid | json}} -->
+        <button mat-button
+            *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationActive$ | async)"
+            type="submit" (click)="disattivaRegistrazione()">Registra</button>
+    </form>
+</ng-container>
+<ng-container *ngIf="(auth | async)?.token !== null  && (formVisibilityService.isRegistrationActive$ | async)">
+    <!-- MESSAGGIO DI LOGIN  -->
+    <p mat-dialog-title class="text-center text-dark">
+        Ciao <strong>{{ (auth | async)?.nome }}</strong> da qui puoi gestire il DB comodamente se pur nei limiti delle
+        tuo
+        ruolo
+    </p>
+</ng-container>
+<!-- <router-outlet></router-outlet> -->
+
+<!-- </mat-dialog-content> -->
+<!-- PULSANTI -->
+<!-- <mat-dialog-actions align="end">
+
+</mat-dialog-actions> -->
+<br>

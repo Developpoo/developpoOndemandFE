@@ -239,13 +239,6 @@ export class ApiService {
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
-  // UPLOAD FILE
-
-  public upload(dati: FormData): Observable<IRispostaServer> {
-    const risorsa: string[] = ['upload'];
-    return this.richiestaGenerica(risorsa, 'POST', dati);
-  }
-
   // REGISTRAZIONE UTENTE
 
   /**
@@ -275,7 +268,12 @@ export class ApiService {
     return this.richiestaGenerica(risorsa, 'POST', parametri);
   }
 
+  // UPLOAD FILE
 
+  public upload(dati: FormData): Observable<IRispostaServer> {
+    const risorsa: string[] = ['upload'];
+    return this.richiestaGenerica(risorsa, 'POST', dati);
+  }
 
   //###########################################################################
 

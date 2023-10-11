@@ -8,7 +8,7 @@ table {
 
   /* Definisci una larghezza massima per le celle */
 .truncate {
-    max-width: 100px; /* Personalizza la larghezza massima come desideri */
+    max-width: 400px; /* Personalizza la larghezza massima come desideri */
     overflow: hidden;
     white-space: nowrap; /* Evita il wrap del testo */
     text-overflow: ellipsis; /* Aggiunge i puntini di sospensione per il testo in eccesso */

@@ -16,6 +16,8 @@ import { Genere } from 'src/app/_types/Genere.type';
 import { ActivatedRoute } from '@angular/router';
 import { IRispostaFilm } from 'src/app/_interfacce/IRispostaFilm.interface';
 import { CommonModule } from '@angular/common';
+import { FormVisibilityService } from 'src/app/_servizi/formVisibility.service';
+
 
 @Component({
   selector: 'app-database',
@@ -26,7 +28,24 @@ import { CommonModule } from '@angular/common';
 })
 export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
   // Definizione delle colonne da visualizzare nella tabella Utenti
-  displayedColumnsUtenti: string[] = ['idUserAuth', 'nome', 'cognome', 'idUserStatus', 'idLingua', 'sesso', 'codiceFiscale', 'idNazione', 'idComune', 'dataNascita', 'accettaTermini', 'user', 'password'];
+  displayedColumnsUtenti: string[] = [
+    'add.utente',
+    'update.utente',
+    'delete.utente',
+    'idUserAuth',
+    'nome',
+    'cognome',
+    'idUserStatus',
+    'idLingua',
+    'sesso',
+    'codiceFiscale',
+    'idNazione',
+    'idComune',
+    'dataNascita',
+    'accettaTermini',
+    'user',
+    'password'
+  ];
   // Definizione delle colonne da visualizzare nella tabella Category
   displayedColumnsCategory: string[] = ['idCategory', 'idFile', 'nome', 'src', 'alt', 'title', 'icona', 'watch',];
   // Definizione delle colonne da visualizzare nella tabella Film
@@ -80,9 +99,26 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
   // Riferimento alla paginazione della tabella Films
   @ViewChild('paginatorFilm') paginatorFilm!: MatPaginator;
 
+  // ########### REGISTRAZIONE UTENTE ###############
+
+  // isRegistrationActive: boolean = false
+  // // Attiva il form di registrazione
+  // attivaRegistrazione(): void {
+  //   this.isRegistrationActive = true;
+  // }
+
+  // // Disattiva il form di registrazione
+  // disattivaRegistrazione(): void {
+  //   this.isRegistrationActive = false;
+  // }
 
 
-  constructor(private api: ApiService, private route: ActivatedRoute,) { }
+  constructor(private api: ApiService, private route: ActivatedRoute, private formVisibilityService: FormVisibilityService) { }
+
+  attivaForm() {
+    this.formVisibilityService.setFormVisibility();
+  }
+
 
   ngAfterViewInit() {
     console.log('ngAfterViewInit is called');
@@ -265,6 +301,9 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
     const authData: UserAuth[] = data.authData.data; // Accedi all'array di authData
     const clientData: UserClient[] = data.clientData.data; // Accedi all'array di clientData
     const passwordData: UserPassword[] = data.passwordData.data; // Accedi all'array di passwordData
+    const person_add = 'person_add'
+    const person_check = 'person_check'
+    const person_off = 'person_off'
 
     // Implementa la logica per combinare i dati e creare un array di IPeriodicElement
     const datiCombinati: IPeriodicElement[] = [];
@@ -274,6 +313,9 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
       const fileCorrispondente = clientData.find((client: UserClient) => client.idUserClient === utenteJSON.idUserClient);
       if (fileCorrispondente) {
         datiCombinati.push({
+          add: person_add,
+          update: person_check,
+          delete: person_off,
           idUserAuth: utenteJSON.idUserAuth,
           nome: fileCorrispondente.nome,
           cognome: fileCorrispondente.cognome,
@@ -339,6 +381,8 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
             attori: filmData.attori,
             icona: filmData.icona,
             anno: new Date(filmData.anno),
+            // anno: filmData.anno ? new Date(filmData.anno) : null,
+
             watch: filmData.watch,
             file: filmData.files.map((file: any) => {
               console.log("Dati del file:", file);

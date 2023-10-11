@@ -4,11 +4,13 @@ import { LoginComponent } from './_componenti/login/login.component';
 import { GenereComponent } from './_pagine/genere/genere.component';
 import { FilmComponent } from './_pagine/film/film.component';
 import { ModalComponent } from './_componenti/modal/modal.component';
+import { DatabaseModalUtenteComponent } from './_componenti/database-modal-utente/database-modal-utente.component';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./_pagine/home/home.module').then(m => m.HomeModule) },
   { path: 'home', loadChildren: () => import('./_pagine/home/home.module').then(m => m.HomeModule) },
   { path: 'login', component: LoginComponent },
+  { path: 'dbUtente', component: DatabaseModalUtenteComponent },
   { path: 'contatti', loadChildren: () => import('./_pagine/contatti/contatti.module').then(m => m.ContattiModule) },
   { path: 'serietv', loadChildren: () => import('./_pagine/serie-tv/serie-tv.module').then(m => m.SerieTVModule) },
   { path: 'genere', loadChildren: () => import('./_pagine/genere/genere.module').then(m => m.GenereModule) },

@@ -1,4 +1,7 @@
 export interface IPeriodicElement {
+    add?: string;
+    update?: string;
+    delete?: string;
     idUserAuth: number;
     nome: string;
     cognome: string;

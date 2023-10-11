@@ -17,6 +17,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './_interceptor/auth.interceptor.interceptor';
 import { DatabaseComponent } from './_componenti/database/database.component';
 import { ContattiComponent } from './_pagine/contatti/contatti.component';
+import { DatabaseModalUtenteComponent } from './_componenti/database-modal-utente/database-modal-utente.component';
+import { FormVisibilityService } from './_servizi/formVisibility.service';
 
 @NgModule({
   declarations: [
@@ -27,10 +29,11 @@ import { ContattiComponent } from './_pagine/contatti/contatti.component';
     OffcanvasComponent,
     HighlightDirective,
     UploadImgComponent,
-    DragdropDirective,
+    DragdropDirective
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    FormVisibilityService
   ],
   bootstrap: [AppComponent],
   imports: [
@@ -43,7 +46,8 @@ import { ContattiComponent } from './_pagine/contatti/contatti.component';
     BrowserAnimationsModule,
     ModalComponent,
     ModalComponentForm,
-    DatabaseComponent
+    DatabaseComponent,
+    DatabaseModalUtenteComponent
   ]
 })
 export class AppModule { }
