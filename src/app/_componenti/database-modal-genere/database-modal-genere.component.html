@@ -1,0 +1,49 @@
+<!-- FORM AGGIUNGI Category-->
+<h2 *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationCategoryActiveSubject$ | async)"
+    align="center" class="bgcscuro"><strong>REGISTRAZIONE
+        GENERE</strong></h2>
+<ng-container>
+    <form *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationCategoryActiveSubject$ | async)"
+        [formGroup]="registrationFormCategory" (ngSubmit)="registraGenere()" align="center" class="bgcscuro text-white">
+        <p>
+            <!-- NOME -->
+            <!-- {{f['nome'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="nome">Nome</mat-label>
+                <input type="text" matInput placeholder="Inserisci il tuo nome" name="nome" id="nome"
+                    title="inserisci il tuo nome" formControlName="nome">
+            </mat-form-field>
+            <!-- ICONA -->
+            <!-- {{f['cognome'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="icona">Icona</mat-label>
+                <input type="text" matInput placeholder="Inserisci la tua icona" name="icona" id="icona"
+                    formControlName="icona">
+            </mat-form-field>
+        </p>
+        <p>
+            <!-- WATCH  -->
+            <!-- {{f['watch'].errors | json}} -->
+            <mat-radio-group color="primary" aria-label="Select an option" formControlName="watch">
+                <mat-label for="watch" class="text-dark">Visibile</mat-label>
+                <mat-radio-button value="0">SI</mat-radio-button>
+                <mat-radio-button value="1">NO</mat-radio-button>
+            </mat-radio-group>
+        </p>
+
+
+        <!-- REGISTRA  -->
+        <button mat-button
+            *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationCategoryActiveSubject$ | async)"
+            type="submit" (click)="disattivaRegistrazione()">Salva</button>
+    </form>
+</ng-container>
+<ng-container
+    *ngIf="(auth | async)?.token !== null  && (formVisibilityService.isRegistrationCategoryActiveSubject$ | async)">
+    <!-- MESSAGGIO DI LOGIN  -->
+    <p mat-dialog-title class="text-center text-dark">
+        Ciao <strong>{{ (auth | async)?.nome }}</strong> da qui puoi inserire i generi o le categorie dei Film se pur
+        nei limiti delle tuo ruolo
+    </p>
+</ng-container>
+<br>

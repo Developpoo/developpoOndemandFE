@@ -19,6 +19,9 @@ import { DatabaseComponent } from './_componenti/database/database.component';
 import { ContattiComponent } from './_pagine/contatti/contatti.component';
 import { DatabaseModalUtenteComponent } from './_componenti/database-modal-utente/database-modal-utente.component';
 import { FormVisibilityService } from './_servizi/formVisibility.service';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DatabaseModalGenereComponent } from './_componenti/database-modal-genere/database-modal-genere.component';
+import { DatabaseModalFilmComponent } from './_componenti/database-modal-film/database-modal-film.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,8 @@ import { FormVisibilityService } from './_servizi/formVisibility.service';
     OffcanvasComponent,
     HighlightDirective,
     UploadImgComponent,
-    DragdropDirective
+    DragdropDirective,
+    DatabaseModalFilmComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -47,7 +51,9 @@ import { FormVisibilityService } from './_servizi/formVisibility.service';
     ModalComponent,
     ModalComponentForm,
     DatabaseComponent,
-    DatabaseModalUtenteComponent
+    DatabaseModalUtenteComponent,
+    MatDialogModule,
+    DatabaseModalGenereComponent,
   ]
 })
 export class AppModule { }

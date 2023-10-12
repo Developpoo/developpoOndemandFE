@@ -103,6 +103,17 @@ export class ApiService {
   }
 
   /**
+ * Cancella un film dal servizio Film mediante una richiesta HTTP DELETE.
+ *
+ * @param id - id per la cancellazione del film.
+ * @returns Un Observable che restituisce la risposta dal server.
+ */
+  public deleteFilm(id: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ['film', id];
+    return this.richiestaGenerica(risorsa, 'DELETE');
+  }
+
+  /**
  * Funzione per chiamare l'elenco dei Films unità ai File associati
  *
  * @returns Observable
@@ -145,6 +156,29 @@ export class ApiService {
   public getGenere(idCategory: number): Observable<IRispostaServer> {
     const risorsa: (string | number)[] = ['category', idCategory];
     return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+  /**
+ * Registra un nuovo genere mediante una richiesta HTTP POST.
+ *
+ * @param parametri - I parametri per la registrazione della categoria.
+ * @returns Un Observable che restituisce la risposta dal server.
+ */
+  public postRegistrazioneGenere(
+    parametri: Partial<Genere>): Observable<IRispostaServer> {
+    const risorsa: string[] = ['category'];
+    return this.richiestaGenerica(risorsa, 'POST', parametri);
+  }
+
+  /**
+* Cancella un film dal servizio Film mediante una richiesta HTTP DELETE.
+*
+* @param id - id per la cancellazione del film.
+* @returns Un Observable che restituisce la risposta dal server.
+*/
+  public deleteGenere(id: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ['category', id];
+    return this.richiestaGenerica(risorsa, 'DELETE');
   }
 
   // LINGUE
@@ -258,13 +292,27 @@ export class ApiService {
   /**
  * Cancella un utente dal servizio UserClient mediante una richiesta HTTP DELETE.
  *
- * @param parametri - I parametri per la cancellazione dell'utente.
+ * @param id - id per la cancellazione dell'utente.
  * @returns Un Observable che restituisce la risposta dal server.
  */
   public deleteUserClient(
     id: string): Observable<IRispostaServer> {
     const risorsa: string[] = ['userClient', id];
     return this.richiestaGenerica(risorsa, 'DELETE');
+  }
+
+  // MODIFICA UTENTE
+
+  /**
+   * Modifica un utente client esistente.
+   *
+   * @param id - L'identificativo numerico dell'utente client da modificare.
+   * @param parametri - Oggetto contenente i parametri necessari per l'operazione di modifica.
+   * @returns Un Observable che rappresenta la risposta del server.
+   */
+  public putUserClient(id: number, body: {}): Observable<IRispostaServer> {
+    const risorsa: [string, number] = ['user-client', id];
+    return this.richiestaGenerica(risorsa, 'PUT', body);
   }
 
   // REGISTRAZIONE MODULO CONTATTO

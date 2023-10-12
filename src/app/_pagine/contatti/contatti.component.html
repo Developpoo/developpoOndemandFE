@@ -1,37 +1,39 @@
-<div class="container-fluid">
-    <app-carousel></app-carousel>
-</div>
-
-<form [formGroup]="contactForm" (ngSubmit)="inviaEmail()" class="center-form">
-    <h2>MODULO DI CONTATTO</h2>
-    <p>Vuoi contattarci.. compila il modulo</p>
-    <p>
-        <mat-form-field class="full-width">
-            <input matInput placeholder="Nome" formControlName="nome" required>
-            <mat-icon matSuffix class="icon-dark">sentiment_very_satisfied</mat-icon>
-        </mat-form-field>
-    </p>
-    <p>
-        <mat-form-field class="full-width">
-            <input matInput placeholder="Email" formControlName="email" required>
-            <mat-error *ngIf="contactForm.get('email')?.hasError('email')">Inserisci un indirizzo email
-                valido</mat-error>
-            <mat-icon matSuffix class="icon-dark">mark_email_unread</mat-icon>
-        </mat-form-field>
-    </p>
-    <p>
-        <mat-form-field class="full-width">
-            <textarea matInput placeholder="Messaggio" formControlName="messaggio" required></textarea>
-            <mat-icon matSuffix class="icon-dark">mode_edit</mat-icon>
-        </mat-form-field>
-    </p>
-    <p>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!contactForm.valid">Invia
-            <mat-icon matSuffix>mark_email_read</mat-icon>
-        </button>
-        <!-- <app-modal></app-modal> -->
-    </p>
-    <div *ngIf="isEmailSent" class="alert alert-success">
-        Il contatto è andato a buon fine!
+<ng-container class="totalWhite">
+    <div class="container-fluid">
+        <app-carousel></app-carousel>
     </div>
-</form>
+
+    <form [formGroup]="contactForm" (ngSubmit)="inviaEmail()" class="center-form">
+        <h2>MODULO DI CONTATTO</h2>
+        <p>Contattaci compilando il modulo</p>
+        <p>
+            <mat-form-field class="full-width">
+                <input matInput placeholder="Nome" formControlName="nome" required>
+                <mat-icon matSuffix class="icon-dark">sentiment_very_satisfied</mat-icon>
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field class="full-width">
+                <input matInput placeholder="Email" formControlName="email" required>
+                <mat-error *ngIf="contactForm.get('email')?.hasError('email')">Inserisci un indirizzo email
+                    valido</mat-error>
+                <mat-icon matSuffix class="icon-dark">mark_email_unread</mat-icon>
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field class="full-width">
+                <textarea matInput placeholder="Messaggio" formControlName="messaggio" required></textarea>
+                <mat-icon matSuffix class="icon-dark">mode_edit</mat-icon>
+            </mat-form-field>
+        </p>
+        <p>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!contactForm.valid">Invia
+                <mat-icon matSuffix>mark_email_read</mat-icon>
+            </button>
+            <!-- <app-modal></app-modal> -->
+        </p>
+        <div *ngIf="isEmailSent" class="alert alert-success">
+            Il contatto è andato a buon fine!
+        </div>
+    </form>
+</ng-container>

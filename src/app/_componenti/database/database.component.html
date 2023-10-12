@@ -23,7 +23,9 @@
                 <ng-container matColumnDef="update.utente">
                     <th mat-header-cell *matHeaderCellDef> MODIFICA </th>
                     <td mat-cell *matCellDef="let element"> <button mat-icon-button matTooltip="Modifica Utente"
-                            matTooltipPosition="left" type="button"><mat-icon>{{element.update}} </mat-icon></button>
+                            matTooltipPosition="left" type="button"
+                            (click)="onUpdateUtente(element.idUserAuth, element.parametri)"><mat-icon>{{element.update}}
+                            </mat-icon></button>
                     </td>
                 </ng-container>
 
@@ -133,6 +135,35 @@
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSourceCategory">
 
+                <!-- ADD Category Column -->
+                <ng-container matColumnDef="add.category">
+                    <th mat-header-cell *matHeaderCellDef> AGGIUNGI </th>
+                    <td mat-cell *matCellDef="let element"> <button mat-icon-button matTooltip="Registra Genere"
+                            matTooltipPosition="left" type="button"
+                            (click)="attivaFormGenere()"><mat-icon>{{element.add}}
+                            </mat-icon></button>
+                    </td>
+                </ng-container>
+
+                <!-- UPDATE Category Column -->
+                <ng-container matColumnDef="update.category">
+                    <th mat-header-cell *matHeaderCellDef> MODIFICA </th>
+                    <td mat-cell *matCellDef="let element"> <button mat-icon-button matTooltip="Modifica Genere"
+                            matTooltipPosition="left" type="button" (click)="attivaForm()"><mat-icon>{{element.update}}
+                            </mat-icon></button>
+                    </td>
+                </ng-container>
+
+                <!-- DELETE Category Column -->
+                <ng-container matColumnDef="delete.category">
+                    <th mat-header-cell *matHeaderCellDef> CANCELLA </th>
+                    <td mat-cell *matCellDef="let element"> <button mat-icon-button matTooltip="Cancella Genere"
+                            matTooltipPosition="left" type="button"
+                            (click)="onDeleteGenere(element.idCategory)"><mat-icon>{{element.delete}}
+                            </mat-icon></button>
+                    </td>
+                </ng-container>
+
                 <!-- idCategory Column -->
                 <ng-container matColumnDef="idCategory">
                     <th mat-header-cell *matHeaderCellDef> ID.Cat </th>
@@ -198,6 +229,34 @@
         </ng-template>
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSourceFilm">
+
+                <!-- ADD Film Column -->
+                <ng-container matColumnDef="add.film">
+                    <th mat-header-cell *matHeaderCellDef> AGGIUNGI </th>
+                    <td mat-cell *matCellDef="let element"> <button mat-icon-button matTooltip="Registra Film"
+                            matTooltipPosition="left" type="button" (click)="attivaFormFilm()"><mat-icon>{{element.add}}
+                            </mat-icon></button>
+                    </td>
+                </ng-container>
+
+                <!-- UPDATE Film Column -->
+                <ng-container matColumnDef="update.film">
+                    <th mat-header-cell *matHeaderCellDef> MODIFICA </th>
+                    <td mat-cell *matCellDef="let element"> <button mat-icon-button matTooltip="Modifica Film"
+                            matTooltipPosition="left" type="button" (click)="attivaForm()"><mat-icon>{{element.update}}
+                            </mat-icon></button>
+                    </td>
+                </ng-container>
+
+                <!-- DELETE Film Column -->
+                <ng-container matColumnDef="delete.film">
+                    <th mat-header-cell *matHeaderCellDef> CANCELLA </th>
+                    <td mat-cell *matCellDef="let element"> <button mat-icon-button matTooltip="Cancella Film"
+                            matTooltipPosition="left" type="button"
+                            (click)="onDeleteFilm(element.idFilm)"><mat-icon>{{element.delete}}
+                            </mat-icon></button>
+                    </td>
+                </ng-container>
 
                 <!-- idFilm Column -->
                 <ng-container matColumnDef="idFilm">

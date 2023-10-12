@@ -17,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IRispostaFilm } from 'src/app/_interfacce/IRispostaFilm.interface';
 import { CommonModule } from '@angular/common';
 import { FormVisibilityService } from 'src/app/_servizi/formVisibility.service';
+import { ParametriSaveAuth } from 'src/app/_types/ParametriSaveAuth.type';
 
 
 @Component({
@@ -47,9 +48,24 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
     'password'
   ];
   // Definizione delle colonne da visualizzare nella tabella Category
-  displayedColumnsCategory: string[] = ['idCategory', 'idFile', 'nome', 'src', 'alt', 'title', 'icona', 'watch',];
+  displayedColumnsCategory: string[] = [
+    'add.category',
+    'update.category',
+    'delete.category',
+    'idCategory',
+    'idFile',
+    'nome',
+    'src',
+    'alt',
+    'title',
+    'icona',
+    'watch',
+  ];
   // Definizione delle colonne da visualizzare nella tabella Film
   displayedColumnsFilm: string[] = [
+    'add.film',
+    'update.film',
+    'delete.film',
     'idFilm',
     'titolo',
     'descrizione',
@@ -107,7 +123,6 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
 
   // ########### CANCELLAZIONE UTENTE ###############
   // Funzione per cancellare un utente specifico
-
   idRisorsa: number | null = null
 
   onDeleteUtente(id: number | null) {
@@ -116,9 +131,6 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
       this.obsDeleteUtente(id).subscribe(this.osservatoreDelete)
 
     }
-    // this.api.deleteUserClient({ idUserClient: idUserClient }).subscribe((data) => {
-    //   console.log(data)
-    // });
   }
 
   obsDeleteUtente(id: number) {
@@ -130,6 +142,91 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
       takeUntil(this.distruggi$)
     )
   }
+
+  // ########### MODIFICA UTENTE ###############
+  // Funzione per Modifcare un utente specifico
+
+  onUpdateUtente(id: number, parametri: Partial<ParametriSaveAuth>) {
+    console.log("Modifica");
+
+    this.obsUpdateUtente(id, parametri).subscribe(this.osservatore);
+  }
+
+
+  obsUpdateUtente(id: number, parametri: Partial<ParametriSaveAuth>) {
+    return this.api.putUserClient(id, parametri).pipe(
+      take(1),
+      tap(x => console.log("OBS PUT ", x)),
+      map(x => x.data),
+      takeUntil(this.distruggi$)
+    );
+  }
+
+  // ########### REGISTRAZIONE GENERE ###############
+  // // Attiva e Disattiva il form di registrazione Genere
+  attivaFormGenere() {
+    this.formVisibilityService.setFormVisibilityCategory();
+    console.log("attivaFormGenere")
+
+  }
+
+  // ########### CANCELLAZIONE GENERE ###############
+  // Funzione per cancellare un GENERE specifico
+  idRisorsaGenere: number | null = null
+
+  onDeleteGenere(id: number | null) {
+    console.log("Cancella", id)
+    if (id !== null) {
+      this.obsDeleteGenere(id).subscribe(this.osservatoreDelete)
+
+    }
+  }
+
+  obsDeleteGenere(id: number) {
+    const idRisorsaGenere = id + ''
+    return this.api.deleteGenere(idRisorsaGenere).pipe(
+      take(1),
+      tap(x => console.log("OBS DELETE ", x)),
+      map(x => x.data),
+      takeUntil(this.distruggi$)
+    )
+  }
+
+  // ########### MODIFICA GENERE ###############
+  // Funzione per Modifcare un GENERE specifico
+
+  // ########### REGISTRAZIONE FILM ###############
+  // // Attiva e Disattiva il form di registrazione FILM
+  attivaFormFilm() {
+    // this.formVisibilityService.setFormVisibility();
+    console.log("attivaFormFilm")
+  }
+
+  // ########### CANCELLAZIONE FILM ###############
+  // Funzione per cancellare un FILM specifico
+  idRisorsaFilm: number | null = null
+
+  onDeleteFilm(id: number | null) {
+    console.log("Cancella", id)
+    if (id !== null) {
+      this.obsDeleteFilm(id).subscribe(this.osservatoreDelete)
+
+    }
+  }
+
+  obsDeleteFilm(id: number) {
+    const idRisorsaFilm = id + ''
+    return this.api.deleteFilm(idRisorsaFilm).pipe(
+      take(1),
+      tap(x => console.log("OBS DELETE ", x)),
+      map(x => x.data),
+      takeUntil(this.distruggi$)
+    )
+  }
+
+  // ########### MODIFICA FILM ###############
+  // Funzione per Modifcare un FILM specifico
+
 
   constructor(private api: ApiService, private route: ActivatedRoute, private formVisibilityService: FormVisibilityService) { }
 
@@ -351,10 +448,16 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
   // Metodo per combinare i dati dei generi e dei file
   private combinaDatiCategory(catData: Genere[], fileData: any[]): CategoryFile[] {
     const datiCombinatiCategory: CategoryFile[] = [];
+    const add_box = 'add_box'
+    const update = 'update'
+    const delete_box = 'delete'
     for (const categoria of catData) {
       const fileCorrispondente = fileData.find((file) => file.idFile === categoria.idFile);
       if (fileCorrispondente) {
         datiCombinatiCategory.push({
+          add: add_box,
+          update: update,
+          delete: delete_box,
           idFile: fileCorrispondente.idFile,
           nome: categoria.nome,
           idCategory: categoria.idCategory,
@@ -374,6 +477,11 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
   // Observer FILMS
   //########################################
   private osservoFilms() {
+    // costanti crud 
+    const movie = 'movie'
+    const movie_edit = 'movie_edit'
+    const delete_forever = 'delete_forever'
+
     return (response: IRispostaServer) => {
       console.log("Funzione 'osservoFilms' chiamata con la risposta", response);
 
@@ -392,7 +500,9 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
             icona: filmData.icona,
             anno: new Date(filmData.anno),
             // anno: filmData.anno ? new Date(filmData.anno) : null,
-
+            add: movie,
+            update: movie_edit,
+            delete: delete_forever,
             watch: filmData.watch,
             file: filmData.files.map((file: any) => {
               console.log("Dati del file:", file);

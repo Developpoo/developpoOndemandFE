@@ -1,4 +1,7 @@
 export interface IRispostaFilm {
+    add?: string,
+    update?: string,
+    delete?: string,
     idFilm: number;
     titolo: string;
     descrizione: string;

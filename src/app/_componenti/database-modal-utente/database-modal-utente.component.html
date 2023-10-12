@@ -1,20 +1,3 @@
-<ng-container align="center">
-    <!-- Menu Button Aggiungi Modifica e Cancella Menu DB -->
-    <!-- LEGGI UTENTE  -->
-    <!-- <button *ngIf="(auth | async)?.token !== null" mat-icon-button matTooltip="Leggi Utente" matTooltipPosition="below"
-        type="button" (click)="attivaModifica()"><mat-icon>person_search</mat-icon></button> -->
-    <!-- AGGIUNGI UTENTE -->
-    <!-- <button *ngIf="(auth | async)?.token !== null" mat-icon-button matTooltip="Registra Utente"
-        matTooltipPosition="below" type="button"
-        (click)="attivaRegistrazione()"><mat-icon>person_add</mat-icon></button> -->
-    <!-- MODIFICA UTENTE  -->
-    <!-- <button *ngIf="(auth | async)?.token !== null" mat-icon-button matTooltip="Modifica Utente"
-        matTooltipPosition="below" type="button" (click)="attivaModifica()"><mat-icon>person_check</mat-icon></button> -->
-    <!-- CANCELLA UTENTE  -->
-    <!-- <button *ngIf="(auth | async)?.token !== null" mat-icon-button matTooltip="Cancella Utente"
-        matTooltipPosition="below" type="button"><mat-icon>person_off</mat-icon></button> -->
-</ng-container>
-
 <!-- FORM AGGIUNGI UTENTE-->
 <h2 *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationActive$ | async)" align="center"
     class="bgcscuro"><strong>REGISTRAZIONE
@@ -209,16 +192,9 @@
 <ng-container *ngIf="(auth | async)?.token !== null  && (formVisibilityService.isRegistrationActive$ | async)">
     <!-- MESSAGGIO DI LOGIN  -->
     <p mat-dialog-title class="text-center text-dark">
-        Ciao <strong>{{ (auth | async)?.nome }}</strong> da qui puoi gestire il DB comodamente se pur nei limiti delle
+        Ciao <strong>{{ (auth | async)?.nome }}</strong> da qui puoi inserire i tuoi utenti se pur nei limiti delle
         tuo
         ruolo
     </p>
 </ng-container>
-<!-- <router-outlet></router-outlet> -->
-
-<!-- </mat-dialog-content> -->
-<!-- PULSANTI -->
-<!-- <mat-dialog-actions align="end">
-
-</mat-dialog-actions> -->
 <br>
