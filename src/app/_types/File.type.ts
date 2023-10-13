@@ -1,11 +1,11 @@
 export type File = {
-    idCategory: number,
-    idFile: number,
+    idCategory?: number,
+    idFile?: number,
     idTipo: number,
-    nome: string,
+    nome?: string,
     src: string,
     alt: string,
     title: string,
-    descrizione: string,
-    formato: string,
+    descrizione?: string,
+    formato?: string,
 }

@@ -198,7 +198,7 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
   // ########### REGISTRAZIONE FILM ###############
   // // Attiva e Disattiva il form di registrazione FILM
   attivaFormFilm() {
-    // this.formVisibilityService.setFormVisibility();
+    this.formVisibilityService.setFormVisibilityFilm();
     console.log("attivaFormFilm")
   }
 

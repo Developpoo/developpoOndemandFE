@@ -1,1 +1,146 @@
-<p>database-modal-film works!</p>
+<!-- FORM AGGIUNGI FILM-->
+<h2 *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationFilmActiveSubject$ | async)"
+    align="center" class="bgcscuro"><strong>REGISTRAZIONE
+        GENERE</strong></h2>
+<ng-container>
+    <form *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationFilmActiveSubject$ | async)"
+        [formGroup]="registrationFormFilm" (ngSubmit)="registraFilm()" align="center" class="bgcscuro text-white">
+        <p>
+            <!-- TITOLO -->
+            <!-- {{f['titolo'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="titolo">Titolo</mat-label>
+                <input type="text" matInput placeholder="Inserisci il titolo" name="titolo" id="titolo"
+                    title="inserisci il titolo" formControlName="titolo">
+            </mat-form-field>
+            <!-- DESCRIZIONE -->
+            <!-- {{f['descrizione'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="descrizione">Descrizione</mat-label>
+                <input type="text" matInput placeholder="Inserisci la descrizione" name="descrizione" id="descrizione"
+                    formControlName="descrizione">
+            </mat-form-field>
+            <!-- DURATA -->
+            <!-- {{f['durata'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="durata">Durata</mat-label>
+                <input type="number" matInput placeholder="Inserisci la durata" name="durata" id="durata"
+                    formControlName="durata">
+            </mat-form-field>
+            <!-- REGISTA -->
+            <!-- {{f['regista'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="regista">Regista</mat-label>
+                <input type="text" matInput placeholder="Inserisci la regista" name="regista" id="regista"
+                    formControlName="regista">
+            </mat-form-field>
+            <!-- ATTORI -->
+            <!-- {{f['attori'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="attori">Attori</mat-label>
+                <input type="text" matInput placeholder="Inserisci gli attori" name="attori" id="attori"
+                    formControlName="attori">
+            </mat-form-field>
+            <!-- ICONA -->
+            <!-- {{f['icona'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="icona">Icona</mat-label>
+                <input type="text" matInput placeholder="Inserisci l'icona" name="icona" id="icona"
+                    formControlName="icona">
+            </mat-form-field>
+            <!-- ANNO -->
+            <!-- {{f['anno'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="anno">Anno</mat-label>
+                <input type="number" matInput placeholder="Inserisci l'anno" name="anno" id="anno"
+                    formControlName="anno">
+            </mat-form-field>
+        </p>
+        <p>
+            <!-- WATCH  -->
+            <!-- {{f['watch'].errors | json}} -->
+            <mat-radio-group color="primary" aria-label="Select an option" formControlName="watch">
+                <mat-label for="watch" class="text-dark">Visibile</mat-label>
+                <mat-radio-button value="0">SI</mat-radio-button>
+                <mat-radio-button value="1">NO</mat-radio-button>
+            </mat-radio-group>
+        </p>
+        <p>
+            <!-- TIPOFILE1  -->
+            <!-- {{f['idTipoFile1'].errors | json}} -->
+            <mat-radio-group color="primary" aria-label="Select an option" formControlName="idTipoFile1">
+                <mat-label for="idTipoFile1" class="text-dark">Tipo File 1</mat-label>
+                <mat-radio-button value="1">IMG</mat-radio-button>
+                <mat-radio-button value="2">VIDEO</mat-radio-button>
+            </mat-radio-group>
+        </p>
+        <p>
+            <!-- SRC1 -->
+            <!-- {{f['src1'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="src1">SRC1</mat-label>
+                <input type="text" matInput placeholder="Inserisci la sorgente del file" name="src1" id="src1"
+                    formControlName="src1">
+            </mat-form-field>
+            <!-- ALT1 -->
+            <!-- {{f['alt1'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="alt1">ALT1</mat-label>
+                <input type="text" matInput placeholder="Inserisci alt" name="alt1" id="alt1" formControlName="alt1">
+            </mat-form-field>
+            <!-- TITLE1 -->
+            <!-- {{f['title1'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="title1">TITLE1</mat-label>
+                <input type="text" matInput placeholder="Inserisci il title" name="title1" id="title1"
+                    formControlName="title1">
+            </mat-form-field>
+        </p>
+        <p>
+            <!-- TIPOFILE2  -->
+            <!-- {{f['idTipoFile2'].errors | json}} -->
+            <mat-radio-group color="primary" aria-label="Select an option" formControlName="idTipoFile2">
+                <mat-label for="idTipoFile2" class="text-dark">Tipo File 2</mat-label>
+                <mat-radio-button value="1">IMG</mat-radio-button>
+                <mat-radio-button value="2">VIDEO</mat-radio-button>
+            </mat-radio-group>
+        </p>
+        <p>
+            <!-- SRC2 -->
+            <!-- {{f['src2'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="src2">SRC2</mat-label>
+                <input type="text" matInput placeholder="Inserisci la sorgente del file" name="src2" id="src2"
+                    formControlName="src2">
+            </mat-form-field>
+            <!-- ALT2 -->
+            <!-- {{f['alt2'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="alt2">ALT2</mat-label>
+                <input type="text" matInput placeholder="Inserisci alt" name="alt2" id="alt2" formControlName="alt2">
+            </mat-form-field>
+            <!-- TITLE2 -->
+            <!-- {{f['title2'].errors | json}} -->
+            <mat-form-field color="primary">
+                <mat-label for="title2">TITLE2</mat-label>
+                <input type="text" matInput placeholder="Inserisci il title" name="title2" id="title2"
+                    formControlName="title2">
+            </mat-form-field>
+        </p>
+
+
+        <!-- REGISTRA  -->
+        <button mat-button
+            *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationFilmActiveSubject$ | async)"
+            type="submit" (click)="disattivaRegistrazione()">Salva</button>
+    </form>
+</ng-container>
+<ng-container
+    *ngIf="(auth | async)?.token !== null  && (formVisibilityService.isRegistrationFilmActiveSubject$ | async)">
+    <!-- MESSAGGIO DI LOGIN  -->
+    <p mat-dialog-title class="text-center text-dark">
+        Ciao <strong>{{ (auth | async)?.nome }}</strong> da qui puoi inserire i tuoi Film se pur
+        nei limiti delle tuo ruolo
+    </p>
+</ng-container>
+<br>

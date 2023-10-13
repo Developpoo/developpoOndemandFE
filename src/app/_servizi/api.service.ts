@@ -11,6 +11,7 @@ import { ParametriSaveAuth } from '../_types/ParametriSaveAuth.type';
 import { HttpHeaders } from '@angular/common/http';
 import { Auth } from '../_types/Auth.type';
 import { AuthService } from './auth.service';
+import { IRispostaFilm } from '../_interfacce/IRispostaFilm.interface';
 
 /**
  * Servizio per la gestione delle chiamate API al server.
@@ -103,6 +104,18 @@ export class ApiService {
   }
 
   /**
+* Registra un nuovo genere mediante una richiesta HTTP POST.
+*
+* @param parametri - I parametri per la registrazione della categoria.
+* @returns Un Observable che restituisce la risposta dal server.
+*/
+  public postRegistrazioneFilm(
+    parametri: Partial<IRispostaFilm>): Observable<IRispostaServer> {
+    const risorsa: string[] = ['filmFile'];
+    return this.richiestaGenerica(risorsa, 'POST', parametri);
+  }
+
+  /**
  * Cancella un film dal servizio Film mediante una richiesta HTTP DELETE.
  *
  * @param id - id per la cancellazione del film.
@@ -171,7 +184,7 @@ export class ApiService {
   }
 
   /**
-* Cancella un film dal servizio Film mediante una richiesta HTTP DELETE.
+* Cancella un Genere dal servizio Genere mediante una richiesta HTTP DELETE.
 *
 * @param id - id per la cancellazione del film.
 * @returns Un Observable che restituisce la risposta dal server.

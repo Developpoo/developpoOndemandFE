@@ -33,7 +33,6 @@ import { DatabaseModalFilmComponent } from './_componenti/database-modal-film/da
     HighlightDirective,
     UploadImgComponent,
     DragdropDirective,
-    DatabaseModalFilmComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -54,6 +53,7 @@ import { DatabaseModalFilmComponent } from './_componenti/database-modal-film/da
     DatabaseModalUtenteComponent,
     MatDialogModule,
     DatabaseModalGenereComponent,
+    DatabaseModalFilmComponent,
   ]
 })
 export class AppModule { }

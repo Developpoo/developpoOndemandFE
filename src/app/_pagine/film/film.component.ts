@@ -33,7 +33,7 @@ export class FilmComponent implements OnInit, OnDestroy {
       map(x => x['id']),
       tap(x => console.log("%c Recupero ID " + x, "color:0000AA")),
       concatMap((x: string, index: number): Observable<IRispostaServer> => {
-        return this.api.getFilmsDaGenere(+(x))
+        return this.api.getFilmFile(+(x))
         // return this.api.getFilmsFile()
       }),
       takeUntil(this.distruggi$)

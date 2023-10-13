@@ -89,7 +89,7 @@ export class DatabaseModalGenereComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
-    // AGGIUNGI UTENTE
+    // AGGIUNGI GENERE
     // Registration Form
     this.registrationFormCategory = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
@@ -105,7 +105,7 @@ export class DatabaseModalGenereComponent implements OnInit, OnDestroy {
     this.distruggi$.complete();
   }
 
-  // Registra un utente
+  // Registra un genere
   registraGenere(): void {
     if (this.registrationFormCategory.invalid === true) {
       console.log('Form di registrazione genere non valido', this.registrationFormCategory);
@@ -144,14 +144,6 @@ export class DatabaseModalGenereComponent implements OnInit, OnDestroy {
   disattivaRegistrazione(): void {
     this.isRegistrationActive = false;
   }
-
-
-
-
-
-
-
-
 
   //---------------------------------------------------------------------------------------------------------------
   // Restituisce i controlli del form di registrazione
