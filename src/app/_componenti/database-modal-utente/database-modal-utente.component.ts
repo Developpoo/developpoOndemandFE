@@ -394,7 +394,7 @@ export class DatabaseModalUtenteComponent implements OnInit, OnDestroy {
           };
           this.authService.settaObsAuth(auth);
           this.authService.scriviAuthSuSessionStorage(auth);
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/home');
         } else {
           console.log('ERRORE in osservoLogin');
           this.mostraMessaggioErrore = true;
@@ -434,3 +434,12 @@ export class DatabaseModalUtenteComponent implements OnInit, OnDestroy {
 
 
 }
+
+
+
+
+// per MODIFICA PUT da Rino
+
+// this.form.patchValue(UtiliService.impostaFormGroup(this.datiFilm));
+// //correggo bug che mi riporta idCategoria a stringa
+// this.form.controls["idCategoria"].setValue(this.datiFilm.idCategoria * 1);

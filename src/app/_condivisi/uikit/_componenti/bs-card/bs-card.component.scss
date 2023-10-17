@@ -1,0 +1,78 @@
+// .card {
+//     position: relative;
+//     margin: 10px;
+  
+//     img {
+//       max-width: 100%;
+//     }
+  
+//     a {
+//       position: absolute;
+//       top: 0;
+//       left: 0;
+//       right: 0;
+//       bottom: 0;
+//     }
+  
+//     .card-body {
+//       position: relative;
+  
+//       .card-title {
+//         text-align: center;
+//       }
+//     }
+//   }
+
+.card {
+  position: relative;
+  padding: 20px; /* Aggiunge il padding desiderato tra le card */
+  background-color: rgba(0, 0, 0, 0.2); /* Imposta l'opacità al 20% */
+
+}
+
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* Proporzione 16:9 (9 / 16 * 100%) */
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Mantieni la proporzione 16:9 */
+  }
+}
+
+a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: white;
+}
+
+.card-body {
+  position: relative;
+  padding: 20px;
+  color: white;
+}
+
+.card-title {
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.7); /* Sfondo semitrasparente per migliorare la leggibilità */
+  padding: 7px; /* Spazio intorno al testo */
+  transform: translate(-50%, -50%); /* Per centrare il titolo al centro dell'immagine */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-decoration: none; 
+}
+
+
+ 

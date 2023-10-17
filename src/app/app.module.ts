@@ -16,12 +16,12 @@ import { ModalComponent, ModalComponentForm } from './_componenti/modal/modal.co
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './_interceptor/auth.interceptor.interceptor';
 import { DatabaseComponent } from './_componenti/database/database.component';
-import { ContattiComponent } from './_pagine/contatti/contatti.component';
 import { DatabaseModalUtenteComponent } from './_componenti/database-modal-utente/database-modal-utente.component';
 import { FormVisibilityService } from './_servizi/formVisibility.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DatabaseModalGenereComponent } from './_componenti/database-modal-genere/database-modal-genere.component';
 import { DatabaseModalFilmComponent } from './_componenti/database-modal-film/database-modal-film.component';
+
 
 @NgModule({
   declarations: [
@@ -54,6 +54,7 @@ import { DatabaseModalFilmComponent } from './_componenti/database-modal-film/da
     MatDialogModule,
     DatabaseModalGenereComponent,
     DatabaseModalFilmComponent,
+    NgbModule
   ]
 })
 export class AppModule { }

@@ -9,8 +9,8 @@
 </ng-container>
 
 <ng-container *ngIf="generi.length>0">
-    <ul class="row">
-        <li *ngFor="let genere of generi" class="col">
+    <ul class="row ">
+        <li *ngFor="let genere of generi" class="col-2">
             <app-bs-card [opzioni]="genere"></app-bs-card>
         </li>
     </ul>

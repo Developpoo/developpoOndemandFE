@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'src/app/_servizi/auth.service';
 import { Auth } from 'src/app/_types/Auth.type';
@@ -20,7 +21,8 @@ export class NavbarComponent {
 * Costruttore del componente NavbarComponent.
 * @param authService Servizio di autenticazione per gestire lo stato dell'utente.
 */
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+    private route: ActivatedRoute,) { }
 
   /**
  * Ottiene un messaggio di saluto in base all'orario corrente.

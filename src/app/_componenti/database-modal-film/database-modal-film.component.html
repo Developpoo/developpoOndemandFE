@@ -1,7 +1,7 @@
 <!-- FORM AGGIUNGI FILM-->
 <h2 *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationFilmActiveSubject$ | async)"
     align="center" class="bgcscuro"><strong>REGISTRAZIONE
-        GENERE</strong></h2>
+        FILM</strong></h2>
 <ng-container>
     <form *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationFilmActiveSubject$ | async)"
         [formGroup]="registrationFormFilm" (ngSubmit)="registraFilm()" align="center" class="bgcscuro text-white">

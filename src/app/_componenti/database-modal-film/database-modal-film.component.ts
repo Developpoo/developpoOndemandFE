@@ -57,7 +57,7 @@ export class DatabaseModalFilmComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private router: Router,   // private _formBuilder: FormBuilder,
+    private router: Router,
     private fb: FormBuilder,
     private api: ApiService,
     private route: ActivatedRoute,
@@ -139,6 +139,8 @@ export class DatabaseModalFilmComponent implements OnInit, OnDestroy {
     } else {
       console.log('Form di registrazione valido', this.registrationFormFilm);
 
+      let tmpArrFile: IFileObject[] = [];
+
       const parametro: IRispostaFilm = {
         idFilm: 0, // Assegna un valore valido per idFilm
         titolo: this.registrationFormFilm.controls['titolo'].value,
@@ -149,7 +151,7 @@ export class DatabaseModalFilmComponent implements OnInit, OnDestroy {
         icona: this.registrationFormFilm.controls['icona'].value || null,
         anno: this.registrationFormFilm.controls['anno'].value || null,
         watch: this.registrationFormFilm.controls['watch'].value || null,
-        file: [], // Inizializza un array per i file
+        file: tmpArrFile // Inizializza un array per i file
       };
 
       const file1: IFileObject = {
@@ -166,7 +168,9 @@ export class DatabaseModalFilmComponent implements OnInit, OnDestroy {
         title: this.registrationFormFilm.controls['title2'].value || null,
       };
 
-      parametro.file.push(file1, file2);
+      parametro.file.push(file1);
+      parametro.file.push(file2)
+
 
       this.obsAddFilm(parametro).subscribe(this.osservatore);
       this.isRegistrationComplete = true;
@@ -175,7 +179,7 @@ export class DatabaseModalFilmComponent implements OnInit, OnDestroy {
 
 
   // Observable per la registrazione di un utente
-  obsAddFilm(dati: Partial<IRispostaFilm>) {
+  obsAddFilm(dati: IRispostaFilm) {
     return this.api.postRegistrazioneFilm(dati).pipe(
       take(1),
       tap((x) => console.log('OBS', x)),
@@ -186,12 +190,12 @@ export class DatabaseModalFilmComponent implements OnInit, OnDestroy {
 
   // Attiva il form di registrazione
   attivaRegistrazione(): void {
-    this.isRegistrationActive = true;
+    // this.isRegistrationActive = true;
   }
 
   // Disattiva il form di registrazione
   disattivaRegistrazione(): void {
-    this.isRegistrationActive = false;
+    // this.isRegistrationActive = false;
   }
 
   //---------------------------------------------------------------------------------------------------------------

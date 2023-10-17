@@ -1,40 +1,40 @@
 <ng-template #content let-offcanvas>
-	<div class="offcanvas-header offcanvas-primary">
-		<h4 class="offcanvas-title" id="offcanvas-basic-title">MENU</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
-	</div>
-	<div class="offcanvas-body">
+    <div class="offcanvas-header offcanvas-primary">
+        <h4 class="offcanvas-title" id="offcanvas-basic-title">MENU</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+    </div>
+    <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end me-auto">
             <li class="nav-item">
                 <a class="nav-link" href="javascript:void(0)" title="Vai alla Home" [routerLink]="['/home']"
                     [routerLinkActive]="['attivo']">Home</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="javascript:void(0)" title="Vai alla tua lista dei preferiti"
                     [routerLink]="['/collezioni']" [routerLinkActive]="['attivo']">Collezioni</a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="javascript:void(0)" title="Scegli i tuoi titoli per genere"
                     [routerLink]="['/genere']" [routerLinkActive]="['attivo']">Genere</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="javascript:void(0)" title="Scegli i tuoi titoli preferiti"
                     [routerLink]="['/preferiti']" [routerLinkActive]="['attivo']">Preferiti</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="javascript:void(0)" title="Scopri le novità in arrivo"
                     [routerLink]="['/novita']" [routerLinkActive]="['attivo']">Novità</a>
+            </li> -->
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" title="Vai alla Contatti" [routerLink]="['/contatti']"
+                    [routerLinkActive]="['attivo']">Contatti</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)" title="Vai alla Contatti"
-                    [routerLink]="['/contatti']" [routerLinkActive]="['attivo']">Contatti</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)" title="Vai alla Contatti"
-                    [routerLink]="['/login']" [routerLinkActive]="['attivo']">Account</a>
+                <a class="nav-link" href="javascript:void(0)" title="Vai alla Contatti" [routerLink]="['/login']"
+                    [routerLinkActive]="['attivo']">Account</a>
             </li>
         </ul>
-		<!-- <form>
+        <!-- <form>
 			<div class="mb-3">
 				<label for="dateOfBirth">Date of birth</label>
 				<div class="input-group">
@@ -50,11 +50,12 @@
 				</div>
 			</div>
 		</form> -->
-		<!-- <div class="text-end">
+        <!-- <div class="text-end">
 			<button type="button" class="btn btn-outline-dark" (click)="offcanvas.close('Save click')">Save</button>
 		</div> -->
-	</div>
+    </div>
 </ng-template>
-<button class="navbar-toggler navbar-dark border-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" (click)="open(content)">
+<button class="navbar-toggler navbar-dark border-white" type="button" data-bs-toggle="offcanvas"
+    data-bs-target="#navbarOffcanvas" (click)="open(content)">
     <span class="navbar-toggler-icon" data-bs-toggle="#navbarOffcanvas"></span>
 </button>

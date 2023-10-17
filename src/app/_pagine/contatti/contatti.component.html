@@ -4,8 +4,8 @@
     </div>
 
     <form [formGroup]="contactForm" (ngSubmit)="inviaEmail()" class="center-form">
-        <h2>MODULO DI CONTATTO</h2>
-        <p>Contattaci compilando il modulo</p>
+        <h2><strong>CONTATTACI</strong></h2>
+        <!-- <p>compilando il modulo</p> -->
         <p>
             <mat-form-field class="full-width">
                 <input matInput placeholder="Nome" formControlName="nome" required>
@@ -27,7 +27,7 @@
             </mat-form-field>
         </p>
         <p>
-            <button mat-raised-button color="primary" type="submit" [disabled]="!contactForm.valid">Invia
+            <button mat-raised-button color="light" type="submit" [disabled]="!contactForm.valid">Invia
                 <mat-icon matSuffix>mark_email_read</mat-icon>
             </button>
             <!-- <app-modal></app-modal> -->

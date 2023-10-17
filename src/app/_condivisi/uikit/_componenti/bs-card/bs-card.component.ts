@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { Card } from 'src/app/_types/Card.type';
 
 @Component({

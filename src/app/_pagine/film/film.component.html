@@ -6,7 +6,10 @@
 
 <ng-container *ngIf="films.length>0">
     <ul class="row">
-        <li *ngFor="let film of films" class="col">
+        <li *ngFor="let film of films" class="col-md-3 d-md-block d-none">
+            <app-bs-card [opzioni]="film"></app-bs-card>
+        </li>
+        <li *ngFor="let film of films" class="col-12 d-block d-md-none">
             <app-bs-card [opzioni]="film"></app-bs-card>
         </li>
     </ul>

@@ -357,7 +357,7 @@ export class ModalComponentForm implements OnInit, OnDestroy {
           };
           this.authService.settaObsAuth(auth);
           this.authService.scriviAuthSuSessionStorage(auth);
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/home');
         } else {
           console.log('ERRORE in osservoLogin');
           this.mostraMessaggioErrore = true;

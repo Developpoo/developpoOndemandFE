@@ -5,16 +5,17 @@
     justify-content: center;
     height: 60vh;
     // background-color: rgb(197, 198, 198);
-    background-color: white;
-    margin: 30px;
+    background-color: rgba(0, 0, 0, 0.7); /* Imposta l'opacità al 50% */
+    margin: 10px;
     padding-top: 50px;
   }
 
   .icon-dark {
-    color: #868686; 
+    color: black; 
   }
 
-  h2, p{
-    background-color: white;
-    color: #6e6d6d; 
+  h2{
+    color: white;
+    font-size: 3em;
+    padding-bottom: 20px; 
   }

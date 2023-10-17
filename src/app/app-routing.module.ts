@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'serietv', loadChildren: () => import('./_pagine/serie-tv/serie-tv.module').then(m => m.SerieTVModule) },
   { path: 'genere', loadChildren: () => import('./_pagine/genere/genere.module').then(m => m.GenereModule) },
   { path: 'genere/:id', loadChildren: () => import('./_pagine/film/film.module').then(m => m.FilmModule) },
+  { path: 'filmVideo/:id', loadChildren: () => import('./_pagine/film-video/film-video.module').then(m => m.FilmVideoModule) },
   // { path: 'genere', component: GenereComponent, children:[
   //   {path: ':idFilm', component: FilmComponent}
   // ] },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'chisono', loadChildren: () => import('./_pagine/chisono/chisono.module').then(m => m.ChisonoModule) },
   { path: 'collezioni', loadChildren: () => import('./_pagine/collezioni-film/collezioni-film.module').then(m => m.CollezioniFilmModule) },
   { path: 'upload', loadChildren: () => import('./_pagine/upload/upload.module').then(m => m.UploadModule) },
+
   { path: '**', loadChildren: () => import('./_pagine/not-found404/not-found404.module').then(m => m.NotFound404Module) }
 ];
 

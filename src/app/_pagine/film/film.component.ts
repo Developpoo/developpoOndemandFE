@@ -19,25 +19,32 @@ export class FilmComponent implements OnInit, OnDestroy {
 
   constructor(private api: ApiService, private route: ActivatedRoute) { }
 
+  /**
+   * Questo componente gestisce la visualizzazione dei film in base al genere.
+   * Recupera i dati del genere dai parametri dell'URL e carica i film corrispondenti.
+   */
+
   ngOnInit(): void {
-    this.recuperaDati().subscribe(this.osservoFilms())
+    // Richiama il metodo per recuperare i dati e osservarli
+    this.recuperaDati().subscribe(this.osservoFilms());
   }
 
   ngOnDestroy(): void {
-    this.distruggi$.next()
+    // Notifica la distruzione del componente
+    this.distruggi$.next();
   }
 
   private recuperaDati(): Observable<IRispostaServer> {
-    console.log("ROUTE", this.route.params)
+    // Recupera il parametro 'id' dalla route
     return this.route.params.pipe(
       map(x => x['id']),
       tap(x => console.log("%c Recupero ID " + x, "color:0000AA")),
       concatMap((x: string, index: number): Observable<IRispostaServer> => {
-        return this.api.getFilmFile(+(x))
-        // return this.api.getFilmsFile()
+        // Utilizza il servizio ApiService per recuperare i film in base al genere
+        return this.api.getFilmsDaGenere(+(x))
       }),
       takeUntil(this.distruggi$)
-    )
+    );
   }
 
   //########################################
@@ -57,26 +64,31 @@ export class FilmComponent implements OnInit, OnDestroy {
 
             console.log("ELEMENTI", elementi)
 
+            // Crea un oggetto Immagine per l'elemento corrente
             const tmpImg: Immagine = {
               idFile: elementi[i].idFile,
+              idTipoFile: elementi[0].idTipoFile,
               src: elementi[i].src,
               alt: elementi[i].alt,
               title: elementi[i].title
             }
+
+            // Crea un oggetto Bottone per il pulsante "Visualizza"
             const bottone: Bottone = {
               testo: "Visualizza",
-              title: "Visualizza " + elementi[i].nome,
+              title: "Visualizza " + elementi[i].title,
               icona: elementi[i].icona,
               tipo: "button",
               emitId: null,
-              link: "/genere/" + elementi[i].idFilm
+              link: "/filmVideo/" + elementi[i].idFilm
             }
+
+            // Crea un oggetto Card per il film corrente e lo aggiunge all'array films
             const card: Card = {
               immagine: tmpImg,
               descrizione: elementi[i].descrizione,
               titolo: elementi[i].titolo,
               bottone: bottone
-
             }
             this.films.push(card)
           }
@@ -88,5 +100,4 @@ export class FilmComponent implements OnInit, OnDestroy {
       complete: () => { console.log("%c COMPLETATO", "color:#00AA00") }
     }
   }
-
 }

@@ -1,0 +1,54 @@
+<div id="filmVideoBody">
+    <div class="container">
+        <div class="row" *ngFor="let film of films; let i = index">
+            <div class="col-lg-3">
+                <div class="content">
+                    <h1 class="text-light">{{ film.titolo | uppercase }}</h1>
+                    <p class="text-primary">Durata: {{ film.durata }} min </p>
+                    <p class="text-primary">Anno: {{ film.anno | date:'yyyy' }} </p>
+                    <p class="text-light">Trama: {{ film.descrizione }}</p>
+                    <p class="text-primary">Regista: {{ film.regista }}</p>
+                    <p class="text-primary">Attori: {{ film.attori }}</p>
+                    <p class="text-primary">Genere: Commedia</p>
+                    <p class="text-primary">Lingua: Italiano</p>
+                    <p class="text-primary">Sottotitoli: Italiano, Inglese</p>
+
+                    <!-- Bottoni disabilitati quando non c'è URL -->
+                    <button *ngIf="getYouTubeVideoUrl(film)" class="btn btn-outline-light me-1"
+                        (click)="mostraVideo(film)">
+                        Film
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-play-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path
+                                d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z" />
+                        </svg>
+                    </button>
+
+                    <!-- Bottone Trailer (questo può essere modificato come desiderato) -->
+                    <button type="button" class="btn btn-outline-light me-1" disabled>
+                        Trailer
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-play-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path
+                                d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z" />
+                        </svg>
+                    </button>
+
+                    <p class="text-primary pt-5">Facendo click sul Riproduci accetti i nostri <span
+                            class="text-light">Termini e Condizioni</span></p>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="image-container" id="imagePrincipal">
+                    <img src="{{ getPrimaryImageSrc(film) }}" alt="Immagine">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal per il film -->
+    <app-modal-video #videoModal [title]="filmSelezionato?.titolo ?? ''">
+        <iframe width="560" height="315" [src]="getSafeYouTubeUrl() | safe" frameborder="0" allowfullscreen></iframe>
+    </app-modal-video>
+</div>

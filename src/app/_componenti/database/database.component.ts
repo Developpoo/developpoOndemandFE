@@ -146,14 +146,14 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
   // ########### MODIFICA UTENTE ###############
   // Funzione per Modifcare un utente specifico
 
-  onUpdateUtente(id: number, parametri: Partial<ParametriSaveAuth>) {
+  onUpdateUtente(id: number, parametri: ParametriSaveAuth) {
     console.log("Modifica");
 
     this.obsUpdateUtente(id, parametri).subscribe(this.osservatore);
   }
 
 
-  obsUpdateUtente(id: number, parametri: Partial<ParametriSaveAuth>) {
+  obsUpdateUtente(id: number, parametri: ParametriSaveAuth) {
     return this.api.putUserClient(id, parametri).pipe(
       take(1),
       tap(x => console.log("OBS PUT ", x)),

@@ -1,3 +1,5 @@
+import { IFileObject } from "./IFileObject.interface";
+
 export interface IRispostaFilm {
     add?: string,
     update?: string,
@@ -10,16 +12,8 @@ export interface IRispostaFilm {
     attori: string;
     icona: string;
     anno: Date;
-    watch: string;
-    file: {
-        idFile?: number;
-        idTipoFile: number;
-        src: string;
-        alt: string;
-        title: string;
-        descrizione?: string;
-        formato?: string;
-    }[];
+    watch: number;
+    file: IFileObject[];
     // Aggiungi le proprietà per i file da inviare
     idTipoFile1?: number;
     src1?: string;
@@ -29,4 +23,8 @@ export interface IRispostaFilm {
     src2?: string;
     alt2?: string;
     title2?: string;
+    idTipoFile?: number;
+    src?: string;
+    alt?: string;
+    title?: string;
 }

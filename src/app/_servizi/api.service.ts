@@ -62,7 +62,7 @@ export class ApiService {
   }
 
   /**
-   * Funzione per chiamare l'elenco dei generi dei Film
+   * Funzione per chiamare l'elenco dei generi dei File
    *
    * @returns Observable
    */
@@ -110,7 +110,9 @@ export class ApiService {
 * @returns Un Observable che restituisce la risposta dal server.
 */
   public postRegistrazioneFilm(
-    parametri: Partial<IRispostaFilm>): Observable<IRispostaServer> {
+    parametri: IRispostaFilm): Observable<IRispostaServer> {
+
+    console.log("PARAMETRI", parametri);
     const risorsa: string[] = ['filmFile'];
     return this.richiestaGenerica(risorsa, 'POST', parametri);
   }
@@ -143,7 +145,7 @@ export class ApiService {
 * @returns Observable
 */
   public getFilmFile(idFilm: number): Observable<IRispostaServer> {
-    const risorsa: (string | number)[] = ['film', idFilm];
+    const risorsa: (string | number)[] = ['filmFile', idFilm];
     return this.richiestaGenerica(risorsa, 'GET');
   }
 
@@ -323,8 +325,8 @@ export class ApiService {
    * @param parametri - Oggetto contenente i parametri necessari per l'operazione di modifica.
    * @returns Un Observable che rappresenta la risposta del server.
    */
-  public putUserClient(id: number, body: {}): Observable<IRispostaServer> {
-    const risorsa: [string, number] = ['user-client', id];
+  public putUserClient(id: number, body: ParametriSaveAuth): Observable<IRispostaServer> {
+    const risorsa: [string, number] = ['userClient', id];
     return this.richiestaGenerica(risorsa, 'PUT', body);
   }
 

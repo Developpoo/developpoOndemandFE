@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { Card } from 'src/app/_types/Card.type';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
@@ -7,7 +7,6 @@ import { concatMap, map, catchError, tap } from 'rxjs/operators';
 import { Bottone } from 'src/app/_types/Bottone.type';
 import { CategoryFile } from 'src/app/_types/CategoryFile.type';
 import { Genere } from 'src/app/_types/Genere.type';
-import { File } from 'src/app/_types/File.type';
 import { Immagine } from 'src/app/_types/Immagine.type';
 
 @Component({
@@ -22,7 +21,12 @@ export class GenereComponent implements OnInit {
   dati: any;
   cat$!: Observable<IRispostaServer>;
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService,) { }
+
+  /**
+   * Questo componente gestisce la visualizzazione dei generi di film.
+   * Recupera i dati dei generi e dei file correlati da un'API e crea le Card per la visualizzazione.
+   */
 
   ngOnInit(): void {
     // Concatena le chiamate API e gestisci gli errori
@@ -110,13 +114,13 @@ export class GenereComponent implements OnInit {
     return datiCombinati;
   }
 
-
   // Metodo per creare le Card dai dati combinati
   private creaCardDaDati(dati: any[]): Card[] {
     const generi: Card[] = [];
     for (const dato of dati) {
       const tmpImg: Immagine = {
         idFile: dato.idFile,
+        idTipoFile: 1,
         src: dato.src,
         alt: dato.alt,
         title: dato.title
@@ -144,4 +148,3 @@ export class GenereComponent implements OnInit {
   }
 
 }
-

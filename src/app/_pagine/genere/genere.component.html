@@ -2,17 +2,21 @@
     <app-carousel></app-carousel>
 </div>
 
-<ng-container *ngIf="!(generi.length>0)">
+<ng-container *ngIf="!(generi.length > 0)">
     <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
 </ng-container>
 
-<ng-container *ngIf="generi.length>0">
+<ng-container *ngIf="generi.length > 0">
     <ul class="row">
-        <li *ngFor="let genere of generi" class="col">
+        <li *ngFor="let genere of generi" class="col-md-3 d-md-block d-none">
+            <app-bs-card [opzioni]="genere"></app-bs-card>
+        </li>
+        <li *ngFor="let genere of generi" class="col-12 d-block d-md-none">
             <app-bs-card [opzioni]="genere"></app-bs-card>
         </li>
     </ul>
 </ng-container>
+
 <router-outlet></router-outlet>
