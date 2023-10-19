@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IRispostaFilm } from 'src/app/_interfacce/IRispostaFilm.interface';
 import { IFileObject } from 'src/app/_interfacce/IFileObject.interface';
 import { SafePipe } from 'src/app/safe.pipe';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-film-video',
@@ -13,6 +14,8 @@ import { SafePipe } from 'src/app/safe.pipe';
   styleUrls: ['./film-video.component.scss']
 })
 export class FilmVideoComponent implements OnDestroy, OnInit {
+
+  constructor(private api: ApiService, private route: ActivatedRoute, private sanitizer: DomSanitizer) { }
 
   error: string = '';
   private distruggi$ = new Subject<void>()
@@ -24,7 +27,6 @@ export class FilmVideoComponent implements OnDestroy, OnInit {
   // Aggiungi un riferimento alla modal usando ViewChild (questa parte dipende dalla tua implementazione della modal)
   @ViewChild('videoModal') videoModal: any;
 
-  constructor(private api: ApiService, private route: ActivatedRoute) { }
 
   /**
    * Questo componente gestisce la visualizzazione dei video dei film.
@@ -128,10 +130,16 @@ export class FilmVideoComponent implements OnDestroy, OnInit {
     this.videoModal.showModal();
   }
 
-  getSafeYouTubeUrl(): string {
+  // getSafeYouTubeUrl(): string {
+  //   const videoFile = this.filmSelezionato?.file.find(f => f.idTipoFile === 2);
+  //   return videoFile ? videoFile.src : '';
+  // }
+
+  getSafeYouTubeUrl(): SafeResourceUrl {
     const videoFile = this.filmSelezionato?.file.find(f => f.idTipoFile === 2);
-    return videoFile ? videoFile.src : '';
+    return videoFile ? this.sanitizer.bypassSecurityTrustResourceUrl(videoFile.src) : '';
   }
+
 
 
 }

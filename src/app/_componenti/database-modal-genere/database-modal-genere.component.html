@@ -36,14 +36,9 @@
         <button mat-button
             *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationCategoryActiveSubject$ | async)"
             type="submit" (click)="disattivaRegistrazione()">Salva</button>
+        <!-- CHIUDI  -->
+        <button mat-button
+            *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationCategoryActiveSubject$ | async)"
+            type="submit" (click)="attivaForm()">Chiudi</button>
     </form>
 </ng-container>
-<ng-container
-    *ngIf="(auth | async)?.token !== null  && (formVisibilityService.isRegistrationCategoryActiveSubject$ | async)">
-    <!-- MESSAGGIO DI LOGIN  -->
-    <p mat-dialog-title class="text-center text-dark">
-        Ciao <strong>{{ (auth | async)?.nome }}</strong> da qui puoi inserire i generi o le categorie dei Film se pur
-        nei limiti delle tuo ruolo
-    </p>
-</ng-container>
-<br>

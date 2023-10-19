@@ -49,6 +49,7 @@
     </div>
     <!-- Modal per il film -->
     <app-modal-video #videoModal [title]="filmSelezionato?.titolo ?? ''">
-        <iframe width="560" height="315" [src]="getSafeYouTubeUrl() | safe" frameborder="0" allowfullscreen></iframe>
+        <iframe width="560" height="315" [src]="getSafeYouTubeUrl()" frameborder="0" allowfullscreen></iframe>
+        <!-- {{getSafeYouTubeUrl() }} -->
     </app-modal-video>
 </div>

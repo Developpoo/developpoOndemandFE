@@ -13,6 +13,7 @@ export class ContattiComponent {
 
 
   constructor(private fb: FormBuilder, private api: ApiService) {
+
     this.contactForm = this.fb.group({
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],

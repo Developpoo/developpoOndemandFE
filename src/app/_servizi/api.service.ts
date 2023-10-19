@@ -302,6 +302,35 @@ export class ApiService {
     return this.richiestaGenerica(risorsa, 'POST', parametri);
   }
 
+  // MODIFICA UTENTE
+
+  /**
+   * Aggiorna un utente esistente su UserClient mediante una richiesta HTTP PUT.
+   *
+   * @param parametri - I parametri per l'aggiornamento dell'utente.
+   * @returns Un Observable che restituisce la risposta dal server.
+   */
+  public putAggiornaUserClient(
+    id: string,
+    parametri: Partial<ParametriSaveAuth>): Observable<IRispostaServer> {
+    const risorsa: string[] = ['aggiornamentoUtente', id]; // Cambia 'aggiornamento' con la risorsa appropriata
+    return this.richiestaGenerica(risorsa, 'PUT', parametri);
+  }
+
+  // LEGGI UTENTE
+
+  /**
+   * Ottiene un utente specifico da UserClient mediante una richiesta HTTP GET.
+   *
+   * @param id - L'ID dell'utente da ottenere.
+   * @returns Un Observable che restituisce la risposta dal server.
+   */
+  public getLeggiUtente(id: string): Observable<IRispostaServer> {
+    const risorsa: string[] = ['leggiUtente', id]; // Cambia 'ottieniUtente' con la risorsa appropriata
+    return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+
   // CANCELLAZIONE UTENTE
 
   /**
@@ -338,11 +367,9 @@ export class ApiService {
    * @returns Observable
    */
 
-  public inviaEmail(email: string): Observable<IRispostaServer> {
+  public inviaEmail(dati: any): Observable<IRispostaServer> {
     const risorsa: string[] = ['invia-email'];
-    const parametri = { email: email };
-    console.log(parametri); // Aggiungi questa riga per il debug
-    return this.richiestaGenerica(risorsa, 'POST', parametri);
+    return this.richiestaGenerica(risorsa, 'POST', dati);
   }
 
   // UPLOAD FILE

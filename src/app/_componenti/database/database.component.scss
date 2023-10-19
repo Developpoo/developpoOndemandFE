@@ -13,4 +13,11 @@ table {
     white-space: nowrap; /* Evita il wrap del testo */
     text-overflow: ellipsis; /* Aggiunge i puntini di sospensione per il testo in eccesso */
   }
+
+  .truncate2 {
+    max-width: 10px; /* Personalizza la larghezza massima come desideri */
+    overflow: hidden;
+    white-space: nowrap; /* Evita il wrap del testo */
+    text-overflow: ellipsis; /* Aggiunge i puntini di sospensione per il testo in eccesso */
+  }
   

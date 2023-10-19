@@ -123,44 +123,60 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
 
   // ########### CANCELLAZIONE UTENTE ###############
   // Funzione per cancellare un utente specifico
-  idRisorsa: number | null = null
+  idRisorsa: number | null = null;
 
   onDeleteUtente(id: number | null) {
-    console.log("Cancella", id)
-    if (id !== null) {
-      this.obsDeleteUtente(id).subscribe(this.osservatoreDelete)
+    console.log("Cancella", id);
 
+    // Mostra una finestra di dialogo di conferma
+    const conferma = confirm("Sei sicuro di voler cancellare questo utente?");
+
+    if (conferma && id !== null) {
+      this.obsDeleteUtente(id).subscribe(this.osservatoreDelete);
+    } else {
+      console.log("Cancellazione annullata");
     }
   }
 
   obsDeleteUtente(id: number) {
-    const idRisorsa = id + ''
+    const idRisorsa = id + '';
     return this.api.deleteUserClient(idRisorsa).pipe(
       take(1),
       tap(x => console.log("OBS DELETE ", x)),
       map(x => x.data),
       takeUntil(this.distruggi$)
-    )
+    );
   }
+
 
   // ########### MODIFICA UTENTE ###############
   // Funzione per Modifcare un utente specifico
 
-  onUpdateUtente(id: number, parametri: ParametriSaveAuth) {
-    console.log("Modifica");
+  modificaUtente(idUserClient: number): void {
+    // Qui puoi fare ciò che devi fare con l'idUserClient
+    // Ad esempio, passarlo al tuo servizio o navigare verso un altro componente, ecc.
+    console.log('ID Utente da modificare:', idUserClient);
 
-    this.obsUpdateUtente(id, parametri).subscribe(this.osservatore);
+    // Supponiamo che tu voglia navigare verso un altro componente e passare l'ID come parametro:
+    // this.router.navigate(['/path-to-your-component', idUserClient]);
   }
 
 
-  obsUpdateUtente(id: number, parametri: ParametriSaveAuth) {
-    return this.api.putUserClient(id, parametri).pipe(
-      take(1),
-      tap(x => console.log("OBS PUT ", x)),
-      map(x => x.data),
-      takeUntil(this.distruggi$)
-    );
-  }
+  // onUpdateUtente(id: number, parametri: any) {
+  //   console.log("Modifica");
+
+  //   this.obsUpdateUtente(id, parametri).subscribe(this.osservatore);
+  // }
+
+
+  // obsUpdateUtente(id: number, parametri: ParametriSaveAuth) {
+  //   return this.api.putUserClient(id, parametri).pipe(
+  //     take(1),
+  //     tap(x => console.log("OBS PUT ", x)),
+  //     map(x => x.data),
+  //     takeUntil(this.distruggi$)
+  //   );
+  // }
 
   // ########### REGISTRAZIONE GENERE ###############
   // // Attiva e Disattiva il form di registrazione Genere
@@ -172,24 +188,29 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
 
   // ########### CANCELLAZIONE GENERE ###############
   // Funzione per cancellare un GENERE specifico
-  idRisorsaGenere: number | null = null
+  idRisorsaGenere: number | null = null;
 
   onDeleteGenere(id: number | null) {
-    console.log("Cancella", id)
-    if (id !== null) {
-      this.obsDeleteGenere(id).subscribe(this.osservatoreDelete)
+    console.log("Cancella", id);
 
+    // Mostra una finestra di dialogo di conferma
+    const confermaGenere = confirm("Sei sicuro di voler cancellare questo genere?");
+
+    if (confermaGenere && id !== null) {
+      this.obsDeleteGenere(id).subscribe(this.osservatoreDelete);
+    } else {
+      console.log("Cancellazione genere annullata");
     }
   }
 
   obsDeleteGenere(id: number) {
-    const idRisorsaGenere = id + ''
+    const idRisorsaGenere = id + '';
     return this.api.deleteGenere(idRisorsaGenere).pipe(
       take(1),
       tap(x => console.log("OBS DELETE ", x)),
       map(x => x.data),
       takeUntil(this.distruggi$)
-    )
+    );
   }
 
   // ########### MODIFICA GENERE ###############
@@ -204,24 +225,29 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
 
   // ########### CANCELLAZIONE FILM ###############
   // Funzione per cancellare un FILM specifico
-  idRisorsaFilm: number | null = null
+  idRisorsaFilm: number | null = null;
 
   onDeleteFilm(id: number | null) {
-    console.log("Cancella", id)
-    if (id !== null) {
-      this.obsDeleteFilm(id).subscribe(this.osservatoreDelete)
+    console.log("Cancella", id);
 
+    // Mostra una finestra di dialogo di conferma
+    const confermaFilm = confirm("Sei sicuro di voler cancellare questo film?");
+
+    if (confermaFilm && id !== null) {
+      this.obsDeleteFilm(id).subscribe(this.osservatoreDelete);
+    } else {
+      console.log("Cancellazione film annullata");
     }
   }
 
   obsDeleteFilm(id: number) {
-    const idRisorsaFilm = id + ''
+    const idRisorsaFilm = id + '';
     return this.api.deleteFilm(idRisorsaFilm).pipe(
       take(1),
       tap(x => console.log("OBS DELETE ", x)),
       map(x => x.data),
       takeUntil(this.distruggi$)
-    )
+    );
   }
 
   // ########### MODIFICA FILM ###############

@@ -182,11 +182,17 @@ export class DatabaseModalUtenteComponent implements OnInit, OnDestroy {
         this.datiComune = x;
       },
     });
+
+
   }
 
   ngOnDestroy(): void {
     this.distruggi$.next();
     this.distruggi$.complete();
+  }
+
+  attivaForm() {
+    this.formVisibilityService.setFormVisibility();
   }
 
   // ########### REGISTRAZIONE UTENTE ###############
@@ -429,10 +435,6 @@ export class DatabaseModalUtenteComponent implements OnInit, OnDestroy {
   get f(): { [key: string]: AbstractControl } {
     return this.registrationForm.controls;
   }
-
-
-
-
 }
 
 

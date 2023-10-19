@@ -1,30 +1,9 @@
-// .modal-dialog {
-//     max-width: 100% //!important; // Usa '!important' solo se necessario per sovrascrivere stili esistenti
-// }
-
-// .modal-body {
-//     position: relative;
-
-//     // Aumenta il padding rispetto all'originale
-//     padding-bottom: calc(56.25% + 50px); // Rapporto 16:9 più margine di 40px (10px originale + 30px aggiunto)
-//     padding-top: 55px;  // 25px originale + 30px aggiunto
-//     height: 0;
-//     overflow: hidden;
-
-//     iframe {
-//         position: absolute;
-//         top: 10px;  // Margine superiore
-//         left: 10px; // Margine sinistro
-//         width: calc(100% - 20px);  // Sottrae il margine da ciascun lato orizzontale
-//         height: calc(100% - 20px); // Sottrae il margine da ciascun lato verticale
-//     }
-// }
 
 
 .modal-dialog {
     &.modal-xl {
-        width: 80%; // Occupa l'80% della larghezza dello schermo
-        max-width: 250px; // Ma non più di 1000px
+        width: 80%; 
+        max-width: 1000px; 
     }
 }
 
@@ -32,9 +11,10 @@
     padding: 0; // Rimuovi il padding per evitare spazi bianchi intorno al video
 
     iframe {
-        display: block; // Assicura che l'iframe sia un blocco
-        width: 100%; // Usa l'intera larghezza del contenitore
-        height: 500px; // Definisci un'altezza appropriata per il tuo video
-        border: none; // Rimuovi qualsiasi bordo intorno all'iframe
+        display: block; 
+        margin: 0 auto; 
+        width: 100%; 
+        height: 100%; 
+        border: none; 
     }
 }

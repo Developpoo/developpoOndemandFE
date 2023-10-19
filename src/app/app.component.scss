@@ -1,8 +1,27 @@
-body {
+// #body {
+//     margin: 0;
+//     padding: 0;
+//     padding-top: 50px;
+//     background-color:#000;
+//     background-image: url('../assets/img/imgBackground/lens-490806_1920.jpg');
+//     background-size: cover;
+//     background-repeat: no-repeat;
+//     background-position: center center;
+//     background-attachment: fixed;
+//     color: whitesmoke;
+//     display: flex;
+//     flex-direction: column;
+//     min-height: 100vh;
+//     // overflow-x: hidden;
+// }
+
+#body {
     margin: 0;
     padding: 0;
     padding-top: 50px;
-    background-image: url('../assets/img/imgBackground/lens-490806_1920.jpg');
+    background-color: #000;
+    /* Usa lo sfondo lineare con il colore nero con un certo livello di trasparenza e sovrapponilo all'immagine */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)), url('../assets/img/imgBackground/lens-490806_1920.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -14,12 +33,9 @@ body {
     // overflow-x: hidden;
 }
 
+
 main {
     flex: 1;
     padding: 10px;
 }
 
-// * {
-//     background-color: black;
-//     color: white; /* Opzionale - impostare il colore del testo su bianco per una migliore leggibilità */
-// }

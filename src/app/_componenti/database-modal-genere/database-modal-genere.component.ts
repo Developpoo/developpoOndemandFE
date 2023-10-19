@@ -135,6 +135,10 @@ export class DatabaseModalGenereComponent implements OnInit, OnDestroy {
     );
   }
 
+  attivaForm() {
+    this.formVisibilityService.setFormVisibilityCategory();
+  }
+
   // Attiva il form di registrazione
   attivaRegistrazione(): void {
     this.isRegistrationActive = true;
