@@ -12,6 +12,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Auth } from '../_types/Auth.type';
 import { AuthService } from './auth.service';
 import { IRispostaFilm } from '../_interfacce/IRispostaFilm.interface';
+import { CategoryFile } from '../_types/CategoryFile.type';
 
 /**
  * Servizio per la gestione delle chiamate API al server.
@@ -72,6 +73,16 @@ export class ApiService {
   }
 
   /**
+ * Funzione per scrivere l'elenco  dei File
+ *
+ * @returns Observable
+ */
+  public postFile(parametri: CategoryFile): Observable<IRispostaServer> {
+    const risorsa: string[] = ['file'];
+    return this.richiestaGenerica(risorsa, 'POST', parametri);
+  }
+
+  /**
  * Funzione per chiamare l'elenco dei generi dei Film
  *
  * @returns Observable
@@ -104,9 +115,9 @@ export class ApiService {
   }
 
   /**
-* Registra un nuovo genere mediante una richiesta HTTP POST.
+* Registra un nuovo film mediante una richiesta HTTP POST.
 *
-* @param parametri - I parametri per la registrazione della categoria.
+* @param parametri - I parametri per la registrazione della film.
 * @returns Un Observable che restituisce la risposta dal server.
 */
   public postRegistrazioneFilm(
@@ -180,7 +191,7 @@ export class ApiService {
  * @returns Un Observable che restituisce la risposta dal server.
  */
   public postRegistrazioneGenere(
-    parametri: Partial<Genere>): Observable<IRispostaServer> {
+    parametri: Partial<CategoryFile>): Observable<IRispostaServer> {
     const risorsa: string[] = ['category'];
     return this.richiestaGenerica(risorsa, 'POST', parametri);
   }

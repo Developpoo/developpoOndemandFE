@@ -86,7 +86,8 @@ export class FilmComponent implements OnInit, OnDestroy {
             // Crea un oggetto Card per il film corrente e lo aggiunge all'array films
             const card: Card = {
               immagine: tmpImg,
-              descrizione: elementi[i].descrizione,
+              // descrizione: elementi[i].descrizione,
+              descrizione: "",
               titolo: elementi[i].titolo,
               bottone: bottone
             }

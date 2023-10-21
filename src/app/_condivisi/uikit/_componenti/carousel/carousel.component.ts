@@ -32,37 +32,26 @@ export class CarouselComponent implements OnInit {
 
   ngOnInit(): void {
     const windowWidth = window.innerWidth;
-    // this.images = [700, 533, 807, 124].map((n) => `https://picsum.photos/id/${n}/${windowWidth}/700`);
     this.updateWindowSize();
     this.updateImages();
   }
-
-  // @HostListener('window:resize', ['$event'])
-  // onResize(event: any): void {
-  //   this.updateWindowSize();
-  //   this.updateImages();
-  // }
 
   updateWindowSize(): void {
     this.windowHeight = window.innerHeight;
     this.windowWidth = window.innerWidth;
   }
 
-  // updateImages(): void {
-  //   this.images = [700, 533, 807, 124, 324, 688].map(
-  //     // (n) => `https://picsum.photos/id/${n}/${this.windowWidth}/${this.windowHeight}`
-  //     (n) => `https://picsum.photos/id/${n}/${this.windowWidth}`
-  //   );
-  // }
-
   updateImages(): void {
     this.api.getFile().subscribe(
       (response: IRispostaServer) => {
         if (response && response.data && Array.isArray(response.data)) {
-          // Filtra solo i file con idTipoFile uguale a 1
-          this.images = response.data
+          // Filtra solo i file con idTipoFile uguale a 3 e mappa il loro src
+          let imagesArray = response.data
             .filter((file: Immagine) => file.idTipoFile === 3)
             .map((file: Immagine) => file.src);
+
+          // Mescola l'array delle immagini
+          this.images = this.shuffle(imagesArray);
         } else {
           console.error('La risposta non contiene dati validi.');
         }
@@ -73,6 +62,22 @@ export class CarouselComponent implements OnInit {
     );
   }
 
+
+  shuffle(array: any[]): any[] {
+    let currentIndex = array.length, randomIndex;
+
+    // Mentre ci sono elementi da mescolare...
+    while (currentIndex !== 0) {
+      // Scegli un elemento a caso...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // E scambialo con l'elemento attuale.
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+  }
 
 
 }

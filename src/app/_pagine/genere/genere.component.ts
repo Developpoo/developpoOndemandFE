@@ -143,6 +143,19 @@ export class GenereComponent implements OnInit {
 
       console.log("Card creata:", card);
     }
+    // METTO IN ORDINE ALFABETICO LE CARD
+    generi.sort((a, b) => {
+      if (a.titolo && b.titolo) {
+        return a.titolo.localeCompare(b.titolo);
+      } else if (a.titolo) {
+        return -1; // a viene prima se b.titolo è null
+      } else if (b.titolo) {
+        return 1;  // b viene prima se a.titolo è null
+      } else {
+        return 0;  // entrambi sono null, quindi non cambia l'ordine
+      }
+    });
+
     console.log("Dati delle card:", generi);
     return generi;
   }

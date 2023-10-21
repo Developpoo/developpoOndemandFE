@@ -5,13 +5,14 @@ export type CategoryFile = {
     add?: string,
     update?: string,
     delete?: string,
-    idCategory: Genere | undefined | number,
-    idFile: File | undefined,
-    nome: string,
-    src: string,
-    alt: string,
-    title: string,
+    idCategory?: Genere | undefined | number,
+    idFile?: number | undefined,
+    idTipoFile?: number,
+    nome?: string,
+    src?: string,
+    alt?: string,
+    title?: string,
     icona?: string,
-    watch?: number
+    watch?: number,
 }
 

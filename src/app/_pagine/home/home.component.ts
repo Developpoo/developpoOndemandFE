@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'src/app/_servizi/auth.service';
+import { Auth } from 'src/app/_types/Auth.type';
 
 @Component({
   selector: 'app-home',
@@ -8,6 +10,9 @@ import { AuthService } from 'src/app/_servizi/auth.service';
 })
 export class HomeComponent {
 
-  constructor(private auth: AuthService) { }
+  auth: BehaviorSubject<Auth> = this.authService.leggiObsAuth()
+
+
+  constructor(private authService: AuthService) { }
 
 }

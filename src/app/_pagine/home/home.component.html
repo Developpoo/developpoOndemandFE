@@ -3,4 +3,6 @@
 </div>
 <br>
 
-<p>Benvenuto..</p>
+<p *ngIf="(auth | async)?.token === null">Benvenuto.. registrati se non sei ancora loggato</p>
+
+<p *ngIf="(auth | async)?.token !== null">Bentrovato.. guarda pure il film che preferisci</p>
