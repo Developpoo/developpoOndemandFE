@@ -57,9 +57,13 @@
         <button mat-button
             *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationCategoryActiveSubject$ | async)"
             type="submit" (click)="disattivaRegistrazione()">Salva</button>
+        <!-- Modifica  -->
+        <button mat-button
+            *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationCategoryActiveSubject$ | async)"
+            type="button" (click)="inviaModificaGenere()">Modifica</button>
         <!-- CHIUDI  -->
         <button mat-button
             *ngIf="(auth | async)?.token !== null && (formVisibilityService.isRegistrationCategoryActiveSubject$ | async)"
-            type="submit" (click)="attivaForm()">Chiudi</button>
+            type="button" (click)="attivaForm()">Chiudi</button>
     </form>
 </ng-container>

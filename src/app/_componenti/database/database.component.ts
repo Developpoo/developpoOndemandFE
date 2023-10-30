@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { IPeriodicElement } from 'src/app/_interfacce/IPeriodicElement.interface';
-import { Observable, Subject, catchError, concatMap, forkJoin, map, take, takeUntil, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, concatMap, forkJoin, map, take, takeUntil, tap, throwError } from 'rxjs';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 import { UserAuth } from 'src/app/_types/UserAuth.type';
 import { UserClient } from 'src/app/_types/UserClient.type';
@@ -114,6 +114,7 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('paginatorCategory') paginatorCategory!: MatPaginator;
   // Riferimento alla paginazione della tabella Films
   @ViewChild('paginatorFilm') paginatorFilm!: MatPaginator;
+  row: any;
 
   // ########### REGISTRAZIONE UTENTE ###############
   // // Attiva e Disattiva il form di registrazione
@@ -148,35 +149,18 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
     );
   }
 
-
   // ########### MODIFICA UTENTE ###############
   // Funzione per Modifcare un utente specifico
+  modificaFormUtente(id: number) {
+    // Funzione per modificare la visibilità del form di un UTENTE specifico che riporta l'idUserClient
+    console.log("Sono dentro modificaUtente", id)
 
-  modificaUtente(idUserClient: number): void {
-    // Qui puoi fare ciò che devi fare con l'idUserClient
-    // Ad esempio, passarlo al tuo servizio o navigare verso un altro componente, ecc.
-    console.log('ID Utente da modificare:', idUserClient);
+    // Imposta l'ID nel BehaviorSubject.
+    this.formVisibilityService.setRowId(id);
 
-    // Supponiamo che tu voglia navigare verso un altro componente e passare l'ID come parametro:
-    // this.router.navigate(['/path-to-your-component', idUserClient]);
+    // Mostra il form categoria.
+    this.formVisibilityService.setFormVisibility();
   }
-
-
-  // onUpdateUtente(id: number, parametri: any) {
-  //   console.log("Modifica");
-
-  //   this.obsUpdateUtente(id, parametri).subscribe(this.osservatore);
-  // }
-
-
-  // obsUpdateUtente(id: number, parametri: ParametriSaveAuth) {
-  //   return this.api.putUserClient(id, parametri).pipe(
-  //     take(1),
-  //     tap(x => console.log("OBS PUT ", x)),
-  //     map(x => x.data),
-  //     takeUntil(this.distruggi$)
-  //   );
-  // }
 
   // ########### REGISTRAZIONE GENERE ###############
   // // Attiva e Disattiva il form di registrazione Genere
@@ -215,6 +199,16 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
 
   // ########### MODIFICA GENERE ###############
   // Funzione per Modifcare un GENERE specifico
+  modificaFormGenere(id: number) {
+    // Funzione per modificare la visibilità del form di un GENERE specifico che riporta l'idCategory
+    console.log("Sono dentro modificaGenere", id)
+
+    // Imposta l'ID nel BehaviorSubject.
+    this.formVisibilityService.setRowId(id);
+
+    // Mostra il form categoria.
+    this.formVisibilityService.setFormVisibilityCategory();
+  }
 
   // ########### REGISTRAZIONE FILM ###############
   // // Attiva e Disattiva il form di registrazione FILM
@@ -252,7 +246,16 @@ export class DatabaseComponent implements AfterViewInit, OnInit, OnDestroy {
 
   // ########### MODIFICA FILM ###############
   // Funzione per Modifcare un FILM specifico
+  modificaFormFilm(id: number) {
+    // Funzione per modificare la visibilità del form di un Film specifico che riporta l'idFilm
+    console.log("Sono dentro modificaUtente", id)
 
+    // Imposta l'ID nel BehaviorSubject.
+    this.formVisibilityService.setRowId(id);
+
+    // Mostra il form categoria.
+    this.formVisibilityService.setFormVisibilityFilm();
+  }
 
   constructor(private api: ApiService, private route: ActivatedRoute, private formVisibilityService: FormVisibilityService) { }
 

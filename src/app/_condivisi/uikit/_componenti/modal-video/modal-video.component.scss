@@ -1,20 +1,36 @@
+// Modal generale
+.modal-header, 
+.modal-body, 
+.modal-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;  // Centra verticalmente gli elementi
+    width: 100%;  // Assicura che gli elementi occupino l'intera larghezza
+}
 
+// Video all'interno della modal
+.modal-body video {
+    max-width: 100%; // Impedisce al video di superare la larghezza della modal
+    max-height: 100%; // Impedisce al video di superare l'altezza della modal
+    display: block;  // Rimuove eventuali spazi bianchi intorno al video
+    margin: 0 auto;  // Centra orizzontalmente il video
+}
 
-.modal-dialog {
-    &.modal-xl {
-        width: 80%; 
-        max-width: 1000px; 
+// Tasto in basso
+.modal-footer {
+    justify-content: flex-start;  // Allinea il tasto a destra
+
+    .btn-secondary {
+        margin-left: auto;  // Spinge il pulsante 'Chiudi' a sinistra
     }
 }
 
-.modal-body {
-    padding: 0; // Rimuovi il padding per evitare spazi bianchi intorno al video
+// Titolo e pulsante di chiusura
+.modal-header {
+    justify-content: space-between;  // Spazia tra titolo e pulsante di chiusura
 
-    iframe {
-        display: block; 
-        margin: 0 auto; 
-        width: 100%; 
-        height: 100%; 
-        border: none; 
+    .modal-title {
+        margin-right: auto;  // Spinge il titolo a sinistra
     }
 }

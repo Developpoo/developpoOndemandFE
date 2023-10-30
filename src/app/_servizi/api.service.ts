@@ -3,7 +3,7 @@ import { Observable, catchError, concatMap, map, of, take, tap, throwError } fro
 import { IRispostaServer } from '../_interfacce/IRispostaServer.interface';
 import { Immagine } from '../_types/Immagine.type';
 import { Genere } from '../_types/Genere.type';
-import { Film } from '../_types/Film.types';
+import { Film } from '../_types/Film.type';
 import { ChiamataHTTP } from '../_types/ChiamataHTTP.type';
 import { HttpClient } from '@angular/common/http';
 import { UtilityServices } from './utility.services';
@@ -27,7 +27,6 @@ export class ApiService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
   ) { }
 
   // METODI PER LE CHIAMATE API
@@ -63,7 +62,7 @@ export class ApiService {
   }
 
   /**
-   * Funzione per chiamare l'elenco dei generi dei File
+   * Funzione per chiamare l'elenco dei File
    *
    * @returns Observable
    */
@@ -73,6 +72,17 @@ export class ApiService {
   }
 
   /**
+ * Funzione per chiamare l'elenco dei File
+ *
+ * @returns Observable
+ */
+  public getSingleFile(idFile: number): Observable<IRispostaServer> {
+    const risorsa: (string | number)[] = ['file', idFile];
+    return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+
+  /**
  * Funzione per scrivere l'elenco  dei File
  *
  * @returns Observable
@@ -80,6 +90,16 @@ export class ApiService {
   public postFile(parametri: CategoryFile): Observable<IRispostaServer> {
     const risorsa: string[] = ['file'];
     return this.richiestaGenerica(risorsa, 'POST', parametri);
+  }
+
+  /**
+* Funzione per modifica l'elenco  dei File
+*
+* @returns Observable
+*/
+  public putFile(id: string, parametri: CategoryFile): Observable<IRispostaServer> {
+    const risorsa: string[] = ['file', id];
+    return this.richiestaGenerica(risorsa, 'PUT', parametri);
   }
 
   /**
@@ -150,7 +170,7 @@ export class ApiService {
   }
 
   /**
-* La funzione ritorna i dati di un singolo Film
+* La funzione ritorna i dati di un singolo Film con i File associati
 *
 * @param idFilm id identificativo del Film scelto
 * @returns Observable
@@ -179,9 +199,21 @@ export class ApiService {
    * @param idCategory id identificativo dellla Genere Scelto
    * @returns Observable
    */
-  public getGenere(idCategory: number): Observable<IRispostaServer> {
-    const risorsa: (string | number)[] = ['category', idCategory];
+  public getGenere(id: number): Observable<IRispostaServer> {
+    const risorsa: (string | number)[] = ['category', id];
     return this.richiestaGenerica(risorsa, 'GET');
+  }
+
+  /**
+ * Aggiorna un genere esistente mediante una richiesta HTTP PUT.
+ *
+ * @param id - L'ID del genere da aggiornare.
+ * @param parametri - I parametri per l'aggiornamento della categoria.
+ * @returns Un Observable che restituisce la risposta dal server.
+ */
+  public putGenere(id: string, parametri: Partial<CategoryFile>): Observable<IRispostaServer> {
+    const risorsa: string[] = ['category', id];
+    return this.richiestaGenerica(risorsa, 'PUT', parametri);
   }
 
   /**

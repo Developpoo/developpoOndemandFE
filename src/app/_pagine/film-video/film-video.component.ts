@@ -130,15 +130,17 @@ export class FilmVideoComponent implements OnDestroy, OnInit {
     this.videoModal.showModal();
   }
 
-  // getSafeYouTubeUrl(): string {
-  //   const videoFile = this.filmSelezionato?.file.find(f => f.idTipoFile === 2);
-  //   return videoFile ? videoFile.src : '';
-  // }
+  getSafeYouTubeUrl(): string {
+    console.log(this.filmSelezionato);
 
-  getSafeYouTubeUrl(): SafeResourceUrl {
     const videoFile = this.filmSelezionato?.file.find(f => f.idTipoFile === 2);
-    return videoFile ? this.sanitizer.bypassSecurityTrustResourceUrl(videoFile.src) : '';
+    return videoFile ? videoFile.src : '';
   }
+
+  // getSafeYouTubeUrl(): SafeResourceUrl {
+  //   const videoFile = this.filmSelezionato?.file.find(f => f.idTipoFile === 2);
+  //   return videoFile ? this.sanitizer.bypassSecurityTrustResourceUrl(videoFile.src) : '';
+  // }
 
 
 

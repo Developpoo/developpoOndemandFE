@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 /**
  * Servizio per la gestione dello stato di visibilità di form multipli.
@@ -15,6 +15,9 @@ export class FormVisibilityService {
 
   private isRegistrationFilmActiveSubject = new BehaviorSubject<boolean>(false);
   public isRegistrationFilmActiveSubject$: Observable<boolean> = this.isRegistrationFilmActiveSubject.asObservable();
+
+  private rowIdSubject = new BehaviorSubject<number | null>(null);
+  public rowId$: Observable<number | null> = this.rowIdSubject.asObservable();
 
   /**
    * Imposta lo stato di visibilità del form principale.
@@ -39,4 +42,13 @@ export class FormVisibilityService {
   setFormVisibilityFilm() {
     this.isRegistrationFilmActiveSubject.next(!this.isRegistrationFilmActiveSubject.value);
   }
+
+  setRowId(id: number) {
+    this.rowIdSubject.next(id);
+  }
+
+  getRowId(): BehaviorSubject<number | null> {
+    return this.rowIdSubject
+  }
+
 }

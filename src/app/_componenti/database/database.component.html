@@ -24,7 +24,7 @@
                     <th mat-header-cell *matHeaderCellDef> MODIFICA </th>
                     <td mat-cell *matCellDef="let element">
                         <button mat-icon-button matTooltip="Modifica Utente" matTooltipPosition="left" type="button"
-                            (click)="modificaUtente(element.idUserClient)">
+                            (click)="modificaFormUtente(element.idUserAuth)">
                             <mat-icon>{{element.update}}</mat-icon>
                         </button>
                     </td>
@@ -131,7 +131,7 @@
     <mat-tab>
         <ng-template mat-tab-label>
             <mat-icon class="tab-icon">category</mat-icon>
-            CATEGORIE
+            GENERE
         </ng-template>
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSourceCategory">
@@ -150,7 +150,8 @@
                 <ng-container matColumnDef="update.category">
                     <th mat-header-cell *matHeaderCellDef> MODIFICA </th>
                     <td mat-cell *matCellDef="let element"> <button mat-icon-button matTooltip="Modifica Genere"
-                            matTooltipPosition="left" type="button" (click)="attivaForm()"><mat-icon>{{element.update}}
+                            matTooltipPosition="left" type="button"
+                            (click)="modificaFormGenere(element.idCategory)"><mat-icon>{{element.update}}
                             </mat-icon></button>
                     </td>
                 </ng-container>
@@ -244,7 +245,8 @@
                 <ng-container matColumnDef="update.film">
                     <th mat-header-cell *matHeaderCellDef> MODIFICA </th>
                     <td mat-cell *matCellDef="let element"> <button mat-icon-button matTooltip="Modifica Film"
-                            matTooltipPosition="left" type="button" (click)="attivaForm()"><mat-icon>{{element.update}}
+                            matTooltipPosition="left" type="button"
+                            (click)="modificaFormFilm(element.idFilm)"><mat-icon>{{element.update}}
                             </mat-icon></button>
                     </td>
                 </ng-container>

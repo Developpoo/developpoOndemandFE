@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject, concatMap, delay, map, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, concatMap, delay, forkJoin, map, switchMap, takeUntil, tap } from 'rxjs';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { Bottone } from 'src/app/_types/Bottone.type';
@@ -17,7 +17,7 @@ export class FilmComponent implements OnInit, OnDestroy {
   films: Card[] = [];
   private distruggi$ = new Subject<void>()
 
-  constructor(private api: ApiService, private route: ActivatedRoute) { }
+  constructor(private api: ApiService, private route: ActivatedRoute, private cd: ChangeDetectorRef) { }
 
   /**
    * Questo componente gestisce la visualizzazione dei film in base al genere.
@@ -27,6 +27,7 @@ export class FilmComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Richiama il metodo per recuperare i dati e osservarli
     this.recuperaDati().subscribe(this.osservoFilms());
+    console.log(this.films);
   }
 
   ngOnDestroy(): void {

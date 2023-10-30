@@ -91,22 +91,27 @@ export class DatabaseModalFilmComponent implements OnInit, OnDestroy {
 
   initRegistrationFormFilm(): void {
     this.registrationFormFilm = this.fb.group({
-      titolo: new FormControl(''),
-      descrizione: new FormControl(''),
-      durata: new FormControl(''),
-      regista: new FormControl(''),
-      attori: new FormControl(''),
-      icona: new FormControl(''),
-      anno: new FormControl(''),
-      watch: new FormControl(''),
-      idTipoFile1: new FormControl(''),
-      src1: new FormControl(''),
-      alt1: new FormControl(''),
-      title1: new FormControl(''),
-      idTipoFile2: new FormControl(''),
-      src2: new FormControl(''),
-      alt2: new FormControl(''),
-      title2: new FormControl('')
+      titolo: new FormControl('', Validators.required,),
+      descrizione: new FormControl('', Validators.required,),
+      durata: new FormControl('', Validators.required,),
+      regista: new FormControl('', Validators.required,),
+      attori: new FormControl('', Validators.required,),
+      icona: new FormControl('', Validators.required,),
+      anno: new FormControl('', [
+        Validators.required,
+        Validators.min(1860),
+        Validators.max(new Date().getFullYear()),
+        Validators.pattern('^[0-9]{4}$')
+      ]),
+      watch: new FormControl('', Validators.required,),
+      idTipoFile1: new FormControl('', Validators.required,),
+      src1: new FormControl('', Validators.required,),
+      alt1: new FormControl('', Validators.required,),
+      title1: new FormControl('', Validators.required,),
+      idTipoFile2: new FormControl('', Validators.required,),
+      src2: new FormControl('', Validators.required,),
+      alt2: new FormControl('', Validators.required,),
+      title2: new FormControl('', Validators.required,)
     });
   }
 
