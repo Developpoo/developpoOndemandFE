@@ -68,7 +68,7 @@ export class FilmComponent implements OnInit, OnDestroy {
             // Crea un oggetto Immagine per l'elemento corrente
             const tmpImg: Immagine = {
               idFile: elementi[i].idFile,
-              idTipoFile: elementi[0].idTipoFile,
+              idTipoFile: elementi[i].idTipoFile,
               src: elementi[i].src,
               alt: elementi[i].alt,
               title: elementi[i].title
@@ -102,4 +102,7 @@ export class FilmComponent implements OnInit, OnDestroy {
       complete: () => { console.log("%c COMPLETATO", "color:#00AA00") }
     }
   }
+
+
+
 }

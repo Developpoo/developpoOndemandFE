@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { Observable, Subject, concatMap, map, takeUntil, tap } from 'rxjs';
 import { IRispostaServer } from 'src/app/_interfacce/IRispostaServer.interface';
@@ -142,6 +142,15 @@ export class FilmVideoComponent implements OnDestroy, OnInit {
   //   return videoFile ? this.sanitizer.bypassSecurityTrustResourceUrl(videoFile.src) : '';
   // }
 
+  @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
+
+  showControls(): void {
+    this.videoElement.nativeElement.controls = true;
+  }
+
+  hideControls(): void {
+    this.videoElement.nativeElement.controls = false;
+  }
 
 
 }

@@ -10,7 +10,7 @@
 
 <ng-container *ngIf="generi.length > 0">
     <ul class="row">
-        <li *ngFor="let genere of generi" class="col-md-3 d-md-block d-none">
+        <li *ngFor="let genere of generi" class="col-md-4 d-md-block d-none">
             <app-bs-card [opzioni]="genere"></app-bs-card>
         </li>
         <li *ngFor="let genere of generi" class="col-12 d-block d-md-none">

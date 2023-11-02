@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -47,4 +47,6 @@ export class ModalVideoComponent {
     // Nasconde il modulo di dialogo
     this.hideModal();
   }
+
+
 }
