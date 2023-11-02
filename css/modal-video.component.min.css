@@ -1,1 +1,1 @@
-.modal-dialog.modal-xl{width:80%;max-width:1000px}.modal-body{padding:0}.modal-body iframe{display:block;margin:0 auto;width:100%;height:100%;border:none}
+.modal-header,.modal-body,.modal-footer{display:flex;justify-content:center;align-items:center;flex-direction:column;width:100%}.modal-body video{max-width:90%;max-height:90%;display:block;margin:0 auto}.modal-footer{justify-content:flex-start}.modal-footer .btn-secondary{margin-left:auto}.modal-header{justify-content:space-between}.modal-header .modal-title{margin-right:auto}

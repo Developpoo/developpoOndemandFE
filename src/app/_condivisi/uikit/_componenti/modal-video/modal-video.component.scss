@@ -11,8 +11,8 @@
 
 // Video all'interno della modal
 .modal-body video {
-    max-width: 100%; // Impedisce al video di superare la larghezza della modal
-    max-height: 100%; // Impedisce al video di superare l'altezza della modal
+    max-width: 90%; // Impedisce al video di superare la larghezza della modal
+    max-height: 90%; // Impedisce al video di superare l'altezza della modal
     display: block;  // Rimuove eventuali spazi bianchi intorno al video
     margin: 0 auto;  // Centra orizzontalmente il video
 }
