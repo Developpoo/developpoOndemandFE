@@ -95,7 +95,8 @@ export class FilmVideoComponent implements OnDestroy, OnInit {
       regista: data.regista,
       attori: data.attori,
       icona: data.icona,
-      anno: new Date(data.anno),
+      // anno: new Date(data.anno),
+      anno: data.anno,
       watch: data.watch,
       file: data.files ? data.files.map(this.mapFile) : []
     };

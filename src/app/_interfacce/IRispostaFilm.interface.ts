@@ -11,7 +11,7 @@ export interface IRispostaFilm {
     regista: string;
     attori: string;
     icona: string;
-    anno: Date;
+    anno: Date | number;
     watch: number;
     file: IFileObject[];
     // Aggiungi le proprietà per i file da inviare
