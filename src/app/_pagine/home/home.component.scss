@@ -1,8 +1,13 @@
 p {
     text-align: center;
-    font-size: 3em;
+    font-size: 2em;
     padding-top: 60px;
     padding-bottom: 60px;
     background-color: rgba(0, 0, 0, 0.5); /* Imposta l'opacità al 50% */
     padding: 60px 20px 60px 20px;
+}
+
+.fixed-image {
+    width: 210px;
+    height: 297px;
 }

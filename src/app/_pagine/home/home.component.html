@@ -6,3 +6,28 @@
 <p *ngIf="(auth | async)?.token === null">Benvenuto.. registrati se non sei ancora loggato</p>
 
 <p *ngIf="(auth | async)?.token !== null">Bentrovato.. guarda pure il film che preferisci</p>
+
+<br>
+
+<div *ngIf="(auth | async)?.token !== null" class="hstack gap-3 pt-5 ps-3 text-light">
+    <h3><span class="text-danger"> Selezionati per te</span> / Ultimi arrivi</h3>
+    <!-- <div class="vr"></div> -->
+</div>
+
+<ng-container *ngIf="!(films.length > 0 && (auth | async)?.token !== null)">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="films.length > 0 && (auth | async)?.token !== null">
+    <ul class="row">
+        <li *ngFor="let film of films" class="col-md-12 d-md-block d-none fixed-image">
+            <app-bs-card [opzioni]="film"></app-bs-card>
+        </li>
+        <li *ngFor="let film of films" class="col-12 d-block d-md-none fixed-image">
+            <app-bs-card [opzioni]="film"></app-bs-card>
+        </li>
+    </ul>
+</ng-container>
+<router-outlet></router-outlet>
