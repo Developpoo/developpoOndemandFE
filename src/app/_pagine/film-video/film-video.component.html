@@ -1,7 +1,7 @@
 <div id="filmVideoBody">
     <div class="container">
         <div class="row" *ngFor="let film of films; let i = index">
-            <div class="col-lg-3">
+            <div class="col-lg-7">
                 <div class="content">
                     <h1 class="text-light">{{ film.titolo | uppercase }}</h1>
                     <p class="text-primary">Durata: {{ film.durata }} min </p>
@@ -40,7 +40,7 @@
                             class="text-light">Termini e Condizioni</span></p>
                 </div>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-5">
                 <div class="image-container" id="imagePrincipal">
                     <img src="{{ getPrimaryImageSrc(film) }}" alt="Immagine">
                 </div>
