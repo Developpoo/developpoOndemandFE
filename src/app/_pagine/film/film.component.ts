@@ -69,7 +69,8 @@ export class FilmComponent implements OnInit, OnDestroy {
             const tmpImg: Immagine = {
               idFile: elementi[i].idFile,
               idTipoFile: elementi[i].idTipoFile,
-              src: elementi[i].src,
+              // src: elementi[i].src,
+              src: './assets/img/GENERE_WEB/UnderConstructionGPT.png',
               alt: elementi[i].alt,
               title: elementi[i].title
             }
